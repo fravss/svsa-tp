@@ -24,7 +24,7 @@ public class NewMenuBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Inject
-	private LoginSSOBean loginBean;	
+	private AutenticacaoBean loginBean;	
 		
 	public MenuModel getMenu() {
 		return loginBean.getModeloMenu();
