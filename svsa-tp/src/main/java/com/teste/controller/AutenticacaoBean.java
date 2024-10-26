@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 
 
 import com.teste.model.Usuario;
-import com.teste.service.MenuService;
 import com.teste.service.AutenticacaoService;
 
 import lombok.*;
@@ -38,11 +37,8 @@ public class AutenticacaoBean implements Serializable {
 	@Inject
     private AutenticacaoService autenticacaoService;
 	
-	@Inject
-	private MenuService montarMenu;
-	
 	private Usuario usuario = null;	
-	private MenuModel modeloMenu = null;
+	private MenuModel menu = null;
 	
 	
 	public void autenticar() throws IOException {
@@ -108,8 +104,7 @@ public class AutenticacaoBean implements Serializable {
   
 
    public void criarMenu() {
-	   MenuService montarMenu = new MenuService();
-       this.modeloMenu = montarMenu.montarMenu(this.usuario);
+       this.menu = autenticacaoService.criarMenu(this.usuario);
 	}
   
 

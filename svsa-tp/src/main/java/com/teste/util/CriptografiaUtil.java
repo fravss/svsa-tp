@@ -1,4 +1,4 @@
-package com.teste.util.jpa;
+package com.teste.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -8,15 +8,7 @@ import javax.xml.bind.DatatypeConverter;
 public class CriptografiaUtil {
 
     private static final String ALGORITMO_AES = "AES";
-    private static final String CHAVE = "chaveSecreta1234";
-
-    public static String criptografar(String dados) throws Exception {
-        SecretKey secretKey = new SecretKeySpec(CHAVE.getBytes(), ALGORITMO_AES);
-        Cipher cipher = Cipher.getInstance(ALGORITMO_AES);
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
-        byte[] dadosCriptografados = cipher.doFinal(dados.getBytes());
-        return DatatypeConverter.printBase64Binary(dadosCriptografados);
-    }
+    private static final String CHAVE = "chaveSecreta1234"; // tem que tirar daqui
 
   
     public static String descriptografar(String dadosCriptografados) throws Exception {

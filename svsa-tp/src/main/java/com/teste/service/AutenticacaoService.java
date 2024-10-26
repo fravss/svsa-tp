@@ -2,8 +2,10 @@ package com.teste.service;
 
 import javax.inject.Inject;
 
+import org.primefaces.model.menu.MenuModel;
+
 import com.teste.model.Usuario;
-import com.teste.util.jpa.CriptografiaUtil;
+import com.teste.util.CriptografiaUtil;
 
 import java.io.Serializable;
 
@@ -20,7 +22,10 @@ public class AutenticacaoService implements Serializable {
 	@Inject
 	private UsuarioService usuarioService;
 	
-	private Usuario usuario;
+	@Inject
+	private MenuService menuService;
+	
+	
 	
 
 	public Usuario autenticar(String idCriptografado) {
@@ -44,7 +49,7 @@ public class AutenticacaoService implements Serializable {
 
 	private Usuario buscarUsuario (Long id) {
 		if(id != null) {
-			usuario = usuarioService.buscarPorId(id);		
+			Usuario usuario = usuarioService.buscarPorId(id);		
 			
 			if(usuario != null ) {			
 				return usuario;	
@@ -53,6 +58,9 @@ public class AutenticacaoService implements Serializable {
 		return null;
 			
 	}
+	   public MenuModel criarMenu(Usuario usuario) {
+	       return menuService.montarMenu(usuario);
+		}
 
 
 }
