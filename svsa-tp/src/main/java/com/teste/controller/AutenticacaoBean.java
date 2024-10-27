@@ -49,6 +49,7 @@ public class AutenticacaoBean implements Serializable {
 			HttpSession session = getSession();
 			Usuario usuarioLogado = (Usuario)session.getAttribute("usuario");
 			if(usuarioLogado == null) {
+				log.info("o usuario é null");
 				
 				HttpServletRequest request = this.getRequest();
 				String idCriptografado = this.getCookie(request);
