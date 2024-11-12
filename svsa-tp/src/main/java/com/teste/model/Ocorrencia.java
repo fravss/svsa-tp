@@ -3,7 +3,6 @@ package com.teste.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -19,7 +18,6 @@ import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
 
-import com.teste.model.enums.Grupo;
 import com.teste.model.enums.StatusOcorrencia;
 import com.teste.model.enums.TipoOcorrencia;
 
@@ -44,6 +42,10 @@ public class Ocorrencia implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TipoOcorrencia tipo;
 	
+	@NotBlank(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
+	@Enumerated(EnumType.STRING)
+	private StatusOcorrencia status;
+	
 	@NotBlank(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
 	private String descricao;
 	
@@ -62,7 +64,7 @@ public class Ocorrencia implements Serializable {
 	//@OneToMany
 	//private ArrayList<Resposta> respostas;
 	
-	private StatusOcorrencia status;
+	
 	
 	
 	
