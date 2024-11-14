@@ -1,0 +1,61 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+    xmlns="http://www.w3.org/1999/xhtml"
+ 	xmlns:h="http://xmlns.jcp.org/jsf/html"
+ 	xmlns:f="http://xmlns.jcp.org/jsf/core"
+ 	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    xmlns:o="http://omnifaces.org/ui">
+
+    <ui:define name="titulo">Ocorrências</ui:define>
+    
+    <ui:define name="corpo">
+    	<h1>Ocorrências</h1>
+    	
+    	<h:form id="frmPesquisa">
+    	
+    		<p:messages id="messages" showDetail="false" closable="true">
+        		<p:autoUpdate />
+    		</p:messages>
+    		
+	    	<p:toolbar style="margin-top: 20px">
+	    		<p:toolbarGroup>
+	    			<p:commandButton icon="pi pi-plus" value="Novo" id="botaoNovo" action="/restrito/ocorrencia/CadastroOcorrencia.xhtm"/>
+	    		</p:toolbarGroup>
+	    	</p:toolbar>
+	    	
+	    	<p:dataTable id="ocorrenciaTable" value="#" var="ocorrencia"
+		    		style="margin-top: 20px" emptyMessage="Nenhuma ocorrência encontrada." rows="10"
+		    		paginator="true" paginatorAlwaysVisible="false" paginatorPosition="bottom"
+		    		lazy="false" rowsPerPageTemplate="5,10,15">		    		
+	    		
+	    		<p:column headerText="Ocorrência" style="text-align: left; width: 40px"
+	    			sortBy="#" filterBy="#">
+	    			<h:outputText value="Ocorrência 1" />
+	    		</p:column>   
+	    		
+	    		<p:column headerText="Usuário Remetente" style="text-align: left; width: 40px"
+	    			sortBy="#" filterBy="#">
+	    			<h:outputText value="João Miranda" />
+	    		</p:column> 
+	    		
+	    		<p:column headerText="Usuário Destinatário" style="text-align: left; width: 40px"
+	    			sortBy="#" filterBy="#">
+	    			<h:outputText value="Sabrina Lopes" />
+	    		</p:column>  		    		
+	    		
+	    		<p:column headerText="Data da ocorrência" style="text-align: center; width: 40px">
+	    			<h:outputText value="11/11/2024">
+	    				<f:convertDateTime pattern="dd/MM/yyyy" />
+	    			</h:outputText>
+	    		</p:column>	    		
+	    			  
+	    		
+	    		<p:column headerText="Resumo" style="text-align: center; width: 120px">
+	    			<h:outputText value="Resumo da Ocorrência 1" />
+	    		</p:column>  		    		
+	    			
+	    		
+		   	</p:dataTable>
+    	</h:form>
+    </ui:define>
+</ui:composition>

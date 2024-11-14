@@ -1,6 +1,11 @@
 <!DOCTYPE xml>
 <menu>
-	<submenu label="Usuario" icon="ui-icon-home">
+	<submenu label="Ocorrências" icon="ui-icon-home">
+	<grupo value="COORDENADORES"></grupo>
+	<grupo value="TECNICOS"></grupo>
+		<menuitem value="Gerar Ocorrência" outcome="/restrito/ocorrencia/PesquisaOcorrencia.xhtm"/>>
+	</submenu>
+	<submenu label="Usuário" icon="ui-icon-home">
 	<grupo value="COORDENADORES"></grupo>
 	<grupo value="TECNICOS"></grupo>
 		<menuitem value="Manter Usuário" outcome="/restrito/usuario/ManterUsuario.xhtml"/>>
