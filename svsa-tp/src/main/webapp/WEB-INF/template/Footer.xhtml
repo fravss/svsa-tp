@@ -8,30 +8,8 @@
 	<body>
 		<ui:composition>
 		<form>
-			<!--  Tratamento de Erros de sistema -->
-			<p:panel>
-				<p:ajaxExceptionHandler type="javax.faces.application.ViewExpiredException"
-		                                update="exceptionDialog"
-		                                onexception="PF('exceptionDialog').show();" />
-		
-		        <p:ajaxExceptionHandler type="java.lang.Throwable"
-		                                update="exceptionDialog"
-		                                onexception="PF('exceptionDialog').show();"/>
-		                                
-                <p:ajaxExceptionHandler type="javax.faces.FacesException"
-		                                update="exceptionDialog"
-		                                onexception="PF('exceptionDialog').show();" />
-
-
-				<p:dialog id="exceptionDialog" header="Exception: #{pfExceptionHandler.type} occured!" 
-					modal="true" resizable="true" closeOnEscape="true"
-					widgetVar="exceptionDialog" height="200px">
-					
-				    Message: #{pfExceptionHandler.message} <br/><br/>				    
-				    
-				</p:dialog>		
-
-			</p:panel>
+			 
+			<br/><br/>	
 	
 			<footer>				
 				

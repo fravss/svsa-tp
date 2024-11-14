@@ -18,7 +18,6 @@
 				               	<h:link outcome="\webapp\index.xhtml">
 									<h:graphicImage width="80" height="26" library="imagens" name="svsa_t.png" title="Voltar para Home"/>
 								</h:link>
-								<p:outputLabel value="CT-v2.3.2" onmouseover="PF('dlg').show();" style="font-size: 0.625rem"/>
 							</f:facet>					
 						</p:menubar>
 					
@@ -35,47 +34,6 @@
 				<div style="clear: both"></div>
 	
 			</header>
-			<p:dialog header="Notas da Versão SVSA-CT"
-				modal="true" 
-				resizable="true" 
-	       		widgetVar="dlg" 
-	       		dynamic="true" 
-	       		closeOnEscape="true"
-	       		position="center"
-	       		width="600" height="400"
-	       		hideEffect="explode">   		
-				<br/>
-				
-				<b><h:outputText value="SVSA-CT v2.3.2 : out-2023"/></b> <br/>
-				<h:outputText value="Incluída opção para atribuir responsável para envolvidos/membros da RD."/> <br/>
-				<h:outputText value="Incluída opção para emitir notificação"/> <br/>
-				<b><h:outputText value="SVSA-CT v2.3.1 : set-2023"/></b> <br/>
-				<h:outputText value="Apresentação da unidade do usuário na tela do login."/> <br/>
-				<b><h:outputText value="SVSA-CT v2.3.0 : set-2023"/></b> <br/>
-				<h:outputText value="Criada funcionalidade de emitir notificação" /> <br/>
-				<h:outputText value="Criada funcionalidade para atendimento familiar" /> <br/>
-				<b><h:outputText value="SVSA-CT v2.2.0 : ago-2023"/></b> <br/>
-				<h:outputText value="Criado Conselheiro de Referencia no RD" /> <br/>
-				<h:outputText value="Criado Conselheiro Responsável para membros familiares" /> <br/>
-				<h:outputText value="Incluídos os parentescos 'Guardião, Avó e Avô' " /> <br/>
-				<h:outputText value="Inserido RD Físico no RD" /> <br/>
-				<h:outputText value="Alteradas as permissões e criação da visão do RD para Administrativos" /> <br/>		
-				<b><h:outputText value="SVSA-CT v2.1.0 : ago-2023"/></b> <br/>
-				<h:outputText value="Reestruturação do sistema." /> <br/>
-				<b><h:outputText value="SVSA-CT v2.0.0 : fev-2023"/></b> <br/>
-				<h:outputText value="Reestruturação do sistema e alteração de técnico para conselheiro." /> <br/>
-				<b><h:outputText value="SVSA-CT v1.0.0 : dez-2022"/></b> <br/>
-				<h:outputText value="Disponibilização da primeira versão com gestão de denúncia." /> <br/>
-												
-								
-		   		<center> 
-		   			<p:spacer height="20px" />  
-		   			<p:button value="Ok" 
-		        		onclick="PF('dlg').hide(); return false;" />
-	       		</center>
-	       		
-	        </p:dialog>	
-
 		
 		</ui:composition>
 		
