@@ -4,11 +4,9 @@ import java.io.Serializable;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-
 
 import com.teste.dao.lazy.LazyOcorrencia;
 import com.teste.model.Ocorrencia;
@@ -27,6 +25,7 @@ public class ManterOcorrenciaBean implements Serializable{
 	    
 	private static final long serialVersionUID = 1L;
 	
+	private Long codigoBusca;
 	
 	private LazyOcorrencia lazyOcorrencias;
     private List<Ocorrencia> ocorrencias;
@@ -41,6 +40,7 @@ public class ManterOcorrenciaBean implements Serializable{
         log.info("ManterOcorrenciaBean Inicializado com LazyOcorrencias: " + (this.lazyOcorrencias != null));
     	
     }
+    
     
     public String navegarParaOcorrencias() {
         return "/restrito/ocorrencia/ManterOcorrencia.xhtml?faces-redirect=true";

@@ -9,17 +9,21 @@
 
 		<h1>Manter Ocorrencias</h1>
 		
-		<p:dataTable value="#{manterOcorrenciasBean.lazyOcorrencias}" var="ocorrencia" lazy="true"
+		
+		<p:dataTable id="formBusca" value="#{manterOcorrenciaBean.lazyOcorrencias}" var="ocorrencia" lazy="true"
 		emptyMessage="Nenhuma ocorrência registrada." paginator="true" rows="10"
 		paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+			<p:column headerText="Código" filterBy="#{ocorrencia.codigo}" filterMatchMode="exact" filterPlaceholder="Buscar por código">
+                <h:outputText value="#{ocorrencia.codigo}" />
+            </p:column>
 		    <p:column headerText="Descrição">
-		        #{ocorrencia.descricao}
+		        <h:outputText value="#{ocorrencia.descricao}" />
 		    </p:column>
 		    <p:column>
 		    <!--  action="#{registrosBean.visualizar(registro.id)}"  -->
 		        <p:commandButton value="Visualizar"     
-		                         action="https://www.google.com"
-		                         update=":visualizarForm"/>
+		                         action="https://www.google.com" />
+		                         <!--  update=":visualizarForm"/>  -->
 		    </p:column>
 		</p:dataTable>
 		

@@ -1,10 +1,22 @@
 package com.teste.dao;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Order;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+
+import org.primefaces.model.FilterMeta;
+import org.primefaces.model.SortMeta;
+import org.primefaces.model.SortOrder;
 
 import com.teste.model.Ocorrencia;
 
@@ -25,33 +37,71 @@ public class OcorrenciaDAO implements Serializable{
 		return manager.createNamedQuery("Ocorrencia.buscarTodos").getResultList();
 	}
 	
-	@SuppressWarnings("unchecked")
-	public List<Ocorrencia> buscarComPaginacao(int first, int pageSize, String termo, int codigo) {
-
-		if (codigo == 1) { // CODIGO
-			return manager
-					.createQuery("Select o From Ocorrencia o where o.codigo LIKE :termo ")
-					.setParameter("termo", "%" + termo.toUpperCase() + "%")
-					.setFirstResult(first).setMaxResults(pageSize).getResultList();
-		} else {
-			return manager.createNamedQuery("Ocorrencia.buscarTodos")
-					.setFirstResult(first).setMaxResults(pageSize).getResultList();
-		}	
-	}
 	
-	public Long encontrarQdeOcorrencias(String termo, int codigo) {
+	public List<Ocorrencia> buscarRelatorios(int first, int pageSize, Map<String, SortMeta> sortBy,
+			Map<String, FilterMeta> filterBy) {
+        
+		CriteriaBuilder cb = manager.getCriteriaBuilder();
+        CriteriaQuery<Ocorrencia> cq = cb.createQuery(Ocorrencia.class);
+        Root<Ocorrencia> ocorrencia = cq.from(Ocorrencia.class);
 
-		if (codigo == 1) { // CODIGO
-			return (Long) manager
-					.createQuery("Select count(o) From Ocorrencia o where o.codigo LIKE :termo")
-					.setParameter("termo", "%" + termo.toUpperCase() + "%").getSingleResult();
-		} else {
-			return (Long) manager
-					.createQuery(
-							"Select count(o) From Ocorrencia o")
-					.getSingleResult();
-		}
-	}
+        // Aplicar filtros
+        List<Predicate> predicates = new ArrayList<>();
+        
+        filterBy.forEach((field, filterMeta) -> {
+            Object filterValue = filterMeta.getFilterValue();
+            if ("codigo".equals(field) && filterValue != null) {
+            	predicates.add(cb.equal(ocorrencia.get("codigo"), filterValue));
+            } else if ("descricao".equals(field) && filterValue != null) {
+                predicates.add(cb.like(ocorrencia.get("descricao"), "%" + filterValue + "%"));
+            } else if ("usuario".equals(field) && filterValue != null) {
+                predicates.add(cb.equal(ocorrencia.get("usuario").get("codigo"), filterValue));
+            }
+        });
+        cq.where(predicates.toArray(new Predicate[0]));
+
+        // Aplicar ordenação
+        List<Order> orders = new ArrayList<>();
+        sortBy.forEach((field, sortMeta) -> {
+            if (sortMeta.getOrder() == SortOrder.ASCENDING) {
+                orders.add(cb.asc(ocorrencia.get(field)));
+            } else if (sortMeta.getOrder() == SortOrder.DESCENDING) {
+                orders.add(cb.desc(ocorrencia.get(field)));
+            }
+        });
+        cq.orderBy(orders);
+
+        // Executar consulta com paginação
+        TypedQuery<Ocorrencia> query = manager.createQuery(cq);
+        query.setFirstResult(first);
+        query.setMaxResults(pageSize);
+
+        return query.getResultList();
+        
+    }
+
+    public int contarRelatorios(Map<String, FilterMeta> filterBy) {
+        CriteriaBuilder cb = manager.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Ocorrencia> ocorrencia = cq.from(Ocorrencia.class);
+
+        // Aplicar filtros
+        List<Predicate> predicates = new ArrayList<>();
+        filterBy.forEach((field, filterMeta) -> {
+            Object filterValue = filterMeta.getFilterValue();
+            if ("descricao".equals(field) && filterValue != null) {
+                predicates.add(cb.like(ocorrencia.get("descricao"), "%" + filterValue + "%"));
+            } else if ("codigo".equals(field) && filterValue != null){
+            	predicates.add(cb.equal(ocorrencia.get("codigo"), filterValue));
+            } else if ("usuario".equals(field) && filterValue != null) {
+                predicates.add(cb.equal(ocorrencia.get("usuario").get("codigo"), filterValue));
+            }
+        });
+        cq.where(predicates.toArray(new Predicate[0]));
+        cq.select(cb.count(ocorrencia));
+
+        return manager.createQuery(cq).getSingleResult().intValue();
+    }
 
 	public void setEntityManager(EntityManager manager) {
 		this.manager = manager;
