@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import org.primefaces.model.menu.MenuModel;
 
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 import com.teste.util.CriptografiaUtil;
 
 import java.io.Serializable;
@@ -28,7 +28,7 @@ public class AutenticacaoService implements Serializable {
 	
 	
 
-	public Usuario autenticar(String idCriptografado) {
+	public UsuarioEP autenticar(String idCriptografado) {
 		
 		try {
 			Long usuarioId = Long.parseLong(CriptografiaUtil.descriptografar(idCriptografado));
@@ -43,13 +43,13 @@ public class AutenticacaoService implements Serializable {
 		
 		
 		
-		Usuario usuario = null;
+		UsuarioEP usuario = null;
 		return usuario;
 	}
 
-	private Usuario buscarUsuario (Long id) {
+	private UsuarioEP buscarUsuario (Long id) {
 		if(id != null) {
-			Usuario usuario = usuarioService.buscarPorId(id);		
+			UsuarioEP usuario = usuarioService.buscarPorId(id);		
 			
 			if(usuario != null ) {			
 				return usuario;	
@@ -58,7 +58,7 @@ public class AutenticacaoService implements Serializable {
 		return null;
 			
 	}
-	   public MenuModel criarMenu(Usuario usuario) {
+	   public MenuModel criarMenu(UsuarioEP usuario) {
 	       return menuService.montarMenu(usuario);
 		}
 

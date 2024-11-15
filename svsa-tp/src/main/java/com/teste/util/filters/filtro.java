@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 
 import lombok.extern.log4j.Log4j;
 
@@ -34,7 +34,7 @@ public class filtro implements Filter {
         HttpSession session = req.getSession(false); 
 
 
-        Usuario user = (session != null) ? (Usuario) session.getAttribute("usuario") : null;
+        UsuarioEP user = (session != null) ? (UsuarioEP) session.getAttribute("usuario") : null;
 
         if (user == null) {
             log.info("Filtro: usuário nao está logado");

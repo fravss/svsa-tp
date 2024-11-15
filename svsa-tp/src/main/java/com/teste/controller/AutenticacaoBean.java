@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 
 
 
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 import com.teste.service.AutenticacaoService;
 
 import lombok.*;
@@ -37,7 +37,7 @@ public class AutenticacaoBean implements Serializable {
 	@Inject
     private AutenticacaoService autenticacaoService;
 	
-	private Usuario usuario = null;	
+	private UsuarioEP usuario = null;	
 	private MenuModel menu = null;
 	
 	
