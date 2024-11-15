@@ -1,12 +1,12 @@
-package com.teste.service;
+package com.svsa.ep.service;
 
 import java.io.Serializable;
 
 
 import javax.inject.Inject;
 
-import com.teste.dao.UsuarioDAO;
-import com.teste.model.UsuarioEP;
+import com.svsa.ep.dao.UsuarioDAO;
+import com.svsa.ep.model.UsuarioEP;
 
 import lombok.extern.log4j.Log4j;
 

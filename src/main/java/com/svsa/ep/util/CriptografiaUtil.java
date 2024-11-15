@@ -1,4 +1,4 @@
-package com.teste.util;
+package com.svsa.ep.util;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;

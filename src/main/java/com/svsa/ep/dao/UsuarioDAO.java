@@ -1,12 +1,11 @@
-package com.teste.dao;
+package com.svsa.ep.dao;
 
 import java.io.Serializable;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 
-import com.teste.model.UsuarioEP;
-
+import com.svsa.ep.model.UsuarioEP;
 
 import lombok.extern.log4j.Log4j;
 

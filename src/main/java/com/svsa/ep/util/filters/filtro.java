@@ -1,4 +1,4 @@
-package com.teste.util.filters;
+package com.svsa.ep.util.filters;
 
 
 import java.io.IOException;
@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.teste.model.UsuarioEP;
+import com.svsa.ep.model.UsuarioEP;
 
 import lombok.extern.log4j.Log4j;
 

@@ -1,4 +1,4 @@
-package com.teste.service;
+package com.svsa.ep.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.teste.model.UsuarioEP;
+import com.svsa.ep.model.UsuarioEP;
 
 @Named
 @RequestScoped
