@@ -63,8 +63,8 @@ public class AutenticacaoBean implements Serializable {
 				 else {
 					log.info("usuario não está logado, será redirecionado ");
 					try {
-						FacesContext.getCurrentInstance().getExternalContext()
-								.redirect("http://localhost:8080/svsa-ct/restricted/home/SvsaHome.xhtml");
+						FacesContext context = FacesContext.getCurrentInstance();
+						context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/restricted/home/SvsaHome.xhtml");
 					} catch (IOException ioException) {
 						log.error("Erro ao redirecionar: " + ioException.getMessage(), ioException);
 					}

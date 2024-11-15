@@ -38,7 +38,9 @@ public class filtro implements Filter {
 
         if (user == null) {
             log.info("Filtro: usuário nao está logado");
-            res.sendRedirect("http://localhost:8080/svsa-ct/restricted/home/SvsaHome.xhtml");
+            String contextPath = req.getContextPath();
+            String loginPage = contextPath + "/restricted/home/SvsaHome.xhtml";
+            res.sendRedirect(loginPage);
         } else {
         	log.info("Filtro: usuário logado");
             chain.doFilter(request, response);
