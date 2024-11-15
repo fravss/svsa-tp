@@ -1,4 +1,4 @@
-package com.svsa.ep.model;
+package com.teste.model;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -15,7 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
-import com.svsa.ep.model.enums.GrupoEP;
+import com.teste.model.enums.GrupoEP;
 
 import lombok.Getter;
 import lombok.Setter;

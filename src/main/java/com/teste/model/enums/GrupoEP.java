@@ -1,4 +1,4 @@
-package com.svsa.ep.model.enums;
+package com.teste.model.enums;
 
 public enum GrupoEP {
 	
