@@ -16,7 +16,7 @@ import lombok.extern.log4j.Log4j;
 @Getter
 @Setter
 public class AutenticacaoService implements Serializable {
-	private static final long serialVersionUID = 1L;
+private static final long serialVersionUID = 1L;
 
 	
 	@Inject
@@ -61,6 +61,4 @@ public class AutenticacaoService implements Serializable {
 	   public MenuModel criarMenu(UsuarioEP usuario) {
 	       return menuService.montarMenu(usuario);
 		}
-
-
 }

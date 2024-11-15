@@ -5,9 +5,6 @@ import java.io.Serializable;
 
 import org.primefaces.model.menu.MenuModel;
 
-import com.teste.model.UsuarioEP;
-import com.teste.service.AutenticacaoService;
-
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -17,6 +14,10 @@ import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import com.teste.model.UsuarioEP;
+import com.teste.service.AutenticacaoService;
 
 import lombok.*;
 import lombok.extern.log4j.Log4j;
@@ -45,17 +46,19 @@ public class AutenticacaoBean implements Serializable {
 		FacesMessage message = null;       
 		
 		try {
-	
-			if(usuario == null) {
+			HttpSession session = getSession();
+			UsuarioEP usuarioLogado = (UsuarioEP)session.getAttribute("usuario");
+			if(usuarioLogado == null) {
+				log.info("o usuario é null");
 				
 				HttpServletRequest request = this.getRequest();
 				String idCriptografado = this.getCookie(request);
 										
 				this.usuario = this.autenticacaoService.autenticar(idCriptografado);				
 					
-					if(usuario != null) {
-						
-						log.info("Bem vindo " + usuario.getNome() + "!");	
+					if(usuario != null) {			
+						log.info("Bem vindo " + usuario.getNome() + "!");
+						session.setAttribute("usuario", usuario);
 						this.criarMenu();
 					
 					}
@@ -102,6 +105,14 @@ public class AutenticacaoBean implements Serializable {
 				.getRequest();
 		
 		return request;
+	}
+   private HttpSession getSession() {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+		HttpSession session = request.getSession();
+		
+		return session;
 	}
   
 
