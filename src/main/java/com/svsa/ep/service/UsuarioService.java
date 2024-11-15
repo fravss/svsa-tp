@@ -1,12 +1,12 @@
-package com.teste.service;
+package com.svsa.ep.service;
 
 import java.io.Serializable;
 
 
 import javax.inject.Inject;
 
-import com.teste.dao.UsuarioDAO;
-import com.teste.model.Usuario;
+import com.svsa.ep.dao.UsuarioDAO;
+import com.svsa.ep.model.UsuarioEP;
 
 import lombok.extern.log4j.Log4j;
 
@@ -18,7 +18,7 @@ public class UsuarioService implements Serializable {
 	@Inject
 	private UsuarioDAO usuarioDAO;
 	
-	public Usuario buscarPorId(Long id) {
+	public UsuarioEP buscarPorId(Long id) {
 
 		log.info("Buscando usuario por Id");
 

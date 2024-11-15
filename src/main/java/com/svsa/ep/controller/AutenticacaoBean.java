@@ -1,9 +1,12 @@
-package com.teste.controller;
+package com.svsa.ep.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
 
 import org.primefaces.model.menu.MenuModel;
+
+import com.svsa.ep.model.UsuarioEP;
+import com.svsa.ep.service.AutenticacaoService;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -14,11 +17,6 @@ import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-
-
-
-import com.teste.model.Usuario;
-import com.teste.service.AutenticacaoService;
 
 import lombok.*;
 import lombok.extern.log4j.Log4j;
@@ -37,7 +35,7 @@ public class AutenticacaoBean implements Serializable {
 	@Inject
     private AutenticacaoService autenticacaoService;
 	
-	private Usuario usuario = null;	
+	private UsuarioEP usuario = null;	
 	private MenuModel menu = null;
 	
 	
@@ -65,8 +63,8 @@ public class AutenticacaoBean implements Serializable {
 				 else {
 					log.info("usuario não está logado, será redirecionado ");
 					try {
-						FacesContext.getCurrentInstance().getExternalContext()
-								.redirect("http://localhost:8080/svsa-ct/restricted/home/SvsaHome.xhtml");
+						FacesContext context = FacesContext.getCurrentInstance();
+						context.getExternalContext().redirect(context.getExternalContext().getRequestContextPath() + "/restricted/home/SvsaHome.xhtml");
 					} catch (IOException ioException) {
 						log.error("Erro ao redirecionar: " + ioException.getMessage(), ioException);
 					}

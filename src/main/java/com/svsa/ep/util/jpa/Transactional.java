@@ -1,4 +1,4 @@
-package com.teste.util.jpa;
+package com.svsa.ep.util.jpa;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
