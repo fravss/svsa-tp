@@ -9,7 +9,10 @@ import com.teste.dao.OcorrenciaDAO;
 import com.teste.dao.RespostaDAO;
 import com.teste.model.Ocorrencia;
 import com.teste.model.Resposta;
+import com.teste.model.UsuarioEP;
 import com.teste.model.enums.GrupoEP;
+import com.teste.model.enums.StatusOcorrencia;
+import com.teste.util.jpa.Transactional;
 
 import lombok.extern.log4j.Log4j;
 
@@ -31,22 +34,36 @@ public class OcorrenciaService implements Serializable {
 		return this.ocorrenciaDAO.buscarPeloCodigo(id);
 	}
 	
-	public List<Resposta> buscarTodasRespostas(Long id) {
+	public List<Resposta> buscarTodasRespostas(Ocorrencia ocorrencia) {
 		
-		return this.respostaDAO.buscarTodasPorOcorrenciaId(id);
-		
-	}
-	
-	public void novaResposta (Resposta resposta) {
-		this.respostaDAO.salvar(resposta);
-		
-		if(resposta.getUsuario().getGrupo() == GrupoEP.COORDENADORES) {
-			// mudar a ocorrencia para GESTORES
-		} else if (resposta.getUsuario().getGrupo() == GrupoEP.GESTORES) {
-			//mudar para finalizada
-		}
+		return this.respostaDAO.buscarTodasPorOcorrencia(ocorrencia);
 		
 	}
 	
+	public List<Ocorrencia> buscarTodasPendencias (UsuarioEP usuario) {
+		return this.ocorrenciaDAO.buscarPendenciasPorUsuario(usuario);
+	}
+	
+	@Transactional
+	public void novaResposta(Resposta resposta) {
+	    try {
+	        this.respostaDAO.salvar(resposta);
 
-}
+	        Ocorrencia ocorrencia = resposta.getOcorrencia();
+	        if (resposta.getUsuario().getGrupo() == GrupoEP.COORDENADORES && ocorrencia.getStatus() == StatusOcorrencia.COORDENADOR) {
+	            ocorrencia.setStatus(StatusOcorrencia.GESTOR);
+	            log.info("Coordenador criando nova ocorrência: " + ocorrencia);
+	            this.ocorrenciaDAO.salvar(ocorrencia);
+	        } else if (resposta.getUsuario().getGrupo() == GrupoEP.GESTORES && ocorrencia.getStatus() == StatusOcorrencia.GESTOR) {
+	            ocorrencia.setStatus(StatusOcorrencia.FECHADO);
+	            log.info("Gestor fechando ocorrência: " + ocorrencia);
+	            this.ocorrenciaDAO.salvar(ocorrencia);
+	        }
+	    } catch (Exception e) {
+	        log.error("Erro", e);
+
+	    }
+	}
+		
+	}
+	

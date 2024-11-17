@@ -25,11 +25,12 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Named
 @ViewScoped
-public class PesquisaOcorrenciaBean implements Serializable {
+public class RespostaOcorrenciaBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	private Ocorrencia ocorrencia;
+	private List<Ocorrencia> ocorrencias;
 	private UsuarioEP usuarioLogado;
 	private List<Resposta> respostas;
 	private Resposta novaResposta = new Resposta();
@@ -42,11 +43,12 @@ public class PesquisaOcorrenciaBean implements Serializable {
 	@PostConstruct
 	public void inicializar() {
 		this.usuarioLogado = this.autenticacaoBean.getUsuario();
+		this.buscarPendencias();
 	}
 
 	public void carregarOcorrencia() {
-		this.ocorrencia = ocorrenciaService.buscarPorId(Long.valueOf(1));
-		this.respostas = this.ocorrenciaService.buscarTodasRespostas(Long.valueOf(1));
+
+		this.respostas = this.ocorrenciaService.buscarTodasRespostas(this.ocorrencia);
 	}
 
 	public void salvarResposta() {
@@ -54,11 +56,23 @@ public class PesquisaOcorrenciaBean implements Serializable {
 		this.novaResposta.setUsuario(this.usuarioLogado);
 		this.ocorrenciaService.novaResposta(novaResposta);
 
+
 		PrimeFaces.current().ajax().update("ocorrenciaDetalhes");
 		PrimeFaces.current().executeScript("PF('respostaDialog').hide(); PF('ocorrenciaDialog').show();");
 
 		this.carregarOcorrencia();
-		this.limpar();
+	    this.limpar();
+
+	    PrimeFaces.current().ajax().update("frmPesquisa:pendenciasTable");
+	}
+	
+	public void buscarPendencias() {
+		this.ocorrencias = this.ocorrenciaService.buscarTodasPendencias(usuarioLogado);
+		
+		System.out.println("O user: "+ usuarioLogado.getNome());
+		System.out.println("A unidade: "+ usuarioLogado.getUnidade());
+		System.out.println("O Grupo: "+ usuarioLogado.getGrupo());
+
 	}
 
 	public void limpar() {

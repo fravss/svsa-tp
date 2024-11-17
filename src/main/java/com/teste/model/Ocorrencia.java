@@ -10,13 +10,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
-
+import javax.validation.constraints.NotNull;
 
 import com.teste.model.enums.StatusOcorrencia;
 import com.teste.model.enums.TipoOcorrencia;
@@ -30,6 +31,18 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name="ocorrencia")
+@NamedQueries({
+    @NamedQuery(
+        name = "Ocorrencia.buscarPendencias",
+        query = "select o from Ocorrencia o "
+                + "where o.destinatario = :usuario " // se a ocorrencia se destinar a ele, ** se ele escreveu a ocorrencia ele vai acompanhar ela na tabela do crud
+                + "or (o.tenant = :tenant and :grupo = ('COORDENADORES'))"  // se ele for o cordenador da ocorrenica, ele deve ver todas as fases
+                + "or (o.status in ('GESTOR', 'FECHADO') and  :grupo = ('GESTORES'))" // o gestor só seria depois de passar pelo coordenador
+                
+    ),
+})
+
+
 public class Ocorrencia implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -38,15 +51,15 @@ public class Ocorrencia implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
 	
-	@NotBlank(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
+	@NotNull(message = "O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
 	@Enumerated(EnumType.STRING)
 	private TipoOcorrencia tipo;
 	
-	@NotBlank(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
+	@NotNull(message = "O STATUS É OBRIGATÓRIO")
 	@Enumerated(EnumType.STRING)
 	private StatusOcorrencia status;
 	
-	@NotBlank(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
+	@NotNull(message = "POR FAVOR, PREENCHA A DESCRIÇÃO") ///TAVA NOT BLANK E TAVA DANDO ERRO 
 	private String descricao;
 	
 	@ManyToOne

@@ -3,13 +3,11 @@ package com.teste.model;
 import java.io.Serializable;
 import java.util.Date;
 
-import javax.persistence.Column;
+
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -17,39 +15,36 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
-import com.teste.model.enums.GrupoEP;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@ToString
+
+@ToString(onlyExplicitlyIncluded = true)
+@EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Getter
 @Setter
 @Entity
-@Table(name="usuario")
-public class UsuarioEP implements Serializable {
+@Table(name="unidade")
+public class UnidadeEP implements Serializable {
 
-	private static final long serialVersionUID = 82375949344894033L;
 
+	private static final long serialVersionUID = -5526059262907035239L;
+	
+	@EqualsAndHashCode.Include
+	@ToString.Include
 	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
 	
-	@NotBlank(message="O nome é obrigatório")
+	private Long tenant_id;
+	
+	@NotBlank(message="O nome da unidade é obrigatório.")
 	private String nome;
 	
-	private String registroProfissional;
-	
-	@Column(unique=true)
-	private String email;
-
-
-	@Enumerated(EnumType.STRING)
-	private GrupoEP grupo;
-	
-	@ManyToOne
-	@JoinColumn(name="codigo_unidade")
-	private UnidadeEP unidade;
+	private String contato;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCriacao;	
