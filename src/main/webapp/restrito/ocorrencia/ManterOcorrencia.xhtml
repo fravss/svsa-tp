@@ -9,23 +9,72 @@
 
 		<h1>Manter Ocorrencias</h1>
 		
+		<p:panelGrid>
 		
-		<p:dataTable id="formBusca" value="#{manterOcorrenciaBean.lazyOcorrencias}" var="ocorrencia" lazy="true"
+		<p:row>
+		<h:form id="formFiltro">
+		    <p:panelGrid>
+		    	<p:row>
+		    		FILTRAR: 
+			        <!-- Selecionar Coluna -->
+			        <p:selectOneMenu id="coluna" value="#{manterOcorrenciaBean.colunaSelecionada}">
+			        	<f:selectItem itemValue="codigo" itemLabel="Código" />
+			            <f:selectItem itemValue="descricao" itemLabel="Descrição" />
+			            <f:selectItem itemValue="tipo" itemLabel="Tipo" />
+			            
+			            <p:ajax event="change" update="inputPanel" process="@form" />
+			        </p:selectOneMenu>
+			        
+			        
+			
+			        <!-- Valor do Filtro -->
+			        <h:panelGroup id="inputPanel">
+		                <p:inputText id="filtroPadrao" value="#{manterOcorrenciaBean.valorFiltro}" placeholder="Buscar... " 
+		                             rendered="#{manterOcorrenciaBean.colunaSelecionada != 'tipo'}" />
+		
+		                <!-- SelectOneMenu renderizado quando a coluna 'tipo' for selecionada -->
+		                <p:selectOneMenu id="filtroTipo" value="#{manterOcorrenciaBean.valorTipo}"
+		                			     rendered="#{manterOcorrenciaBean.colunaSelecionada == 'tipo'}">
+						    <!--  O FILTRO GERADO PELO BACKEND NAO ESTA FUNCIONANDO
+						    <f:selectItems value="#{manterOcorrenciaBean.tiposOcorrencia}" var="tipo"
+						                   itemValue="#{tipo}" itemLabel="#{tipo}" /> -->
+						</p:selectOneMenu>
+		            </h:panelGroup>
+			
+			        <!-- Botão para Filtrar -->
+			        <p:commandButton value="Filtrar" actionListener="#{manterOcorrenciaBean.atualizarFiltro()}" update="tableOcorrencias" process="@form" />
+			        <p:commandButton value="Limpar Filtro" actionListener="#{manterOcorrenciaBean.limparFiltro()}" update="tableOcorrencias" process="@form" />
+			        <h:outputText value="#{manterOcorrenciaBean.colunaSelecionada}" />
+		        </p:row>
+		    </p:panelGrid>
+		</h:form>
+		
+		</p:row>
+		<p:row>
+		
+		<p:dataTable id="tableOcorrencias" value="#{manterOcorrenciaBean.lazyOcorrencias}" var="ocorrencia" lazy="true"
 		emptyMessage="Nenhuma ocorrência registrada." paginator="true" rows="10"
 		paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
-			<p:column headerText="Código" filterBy="#{ocorrencia.codigo}" filterMatchMode="exact" filterPlaceholder="Buscar por código">
+			<p:column headerText="Código">
                 <h:outputText value="#{ocorrencia.codigo}" />
             </p:column>
-		    <p:column headerText="Descrição">
-		        <h:outputText value="#{ocorrencia.descricao}" />
-		    </p:column>
-		    <p:column>
+            <p:column headerText="Tipo" >
+    			<h:outputText value="#{ocorrencia.tipo}" />
+			</p:column>
+		    <p:column headerText="Descrição" >
+    			<h:outputText value="#{ocorrencia.descricao}" />
+			</p:column>
+		    <p:column headerText="Ações">
 		    <!--  action="#{registrosBean.visualizar(registro.id)}"  -->
 		        <p:commandButton value="Visualizar"     
 		                         action="https://www.google.com" />
 		                         <!--  update=":visualizarForm"/>  -->
 		    </p:column>
 		</p:dataTable>
+		
+		</p:row>
+		
+		</p:panelGrid>
 		
 
 

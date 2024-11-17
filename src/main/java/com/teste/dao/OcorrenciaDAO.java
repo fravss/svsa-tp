@@ -19,6 +19,7 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import com.teste.model.Ocorrencia;
+import com.teste.model.enums.TipoOcorrencia;
 
 public class OcorrenciaDAO implements Serializable{
 	
@@ -38,7 +39,7 @@ public class OcorrenciaDAO implements Serializable{
 	}
 	
 	
-	public List<Ocorrencia> buscarRelatorios(int first, int pageSize, Map<String, SortMeta> sortBy,
+	public List<Ocorrencia> buscarOcorrencias(int first, int pageSize, Map<String, SortMeta> sortBy,
 			Map<String, FilterMeta> filterBy) {
         
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
@@ -48,16 +49,26 @@ public class OcorrenciaDAO implements Serializable{
         // Aplicar filtros
         List<Predicate> predicates = new ArrayList<>();
         
-        filterBy.forEach((field, filterMeta) -> {
-            Object filterValue = filterMeta.getFilterValue();
-            if ("codigo".equals(field) && filterValue != null) {
-            	predicates.add(cb.equal(ocorrencia.get("codigo"), filterValue));
-            } else if ("descricao".equals(field) && filterValue != null) {
-                predicates.add(cb.like(ocorrencia.get("descricao"), "%" + filterValue + "%"));
-            } else if ("usuario".equals(field) && filterValue != null) {
-                predicates.add(cb.equal(ocorrencia.get("usuario").get("codigo"), filterValue));
+        // *************************************************
+        // ADICIONAR A LOGICA PARA FILTRAR BASEADO EM FUNCAO
+        // FILTRO TECNICO
+        // FILTRO COORDENADOR
+        // GESTOR NAO PRECISA
+        // *************************************************
+        
+        for (Map.Entry<String, FilterMeta> filtro : filterBy.entrySet()) {
+            FilterMeta meta = filtro.getValue();
+            if (meta.getFilterValue() != null) {
+            	predicates.add(cb.equal(ocorrencia.get(filtro.getKey()), meta.getFilterValue()));
+            	/*if ("tipo".equals(filtro.getKey())) {
+            		TipoOcorrencia tipo = TipoOcorrencia.valueOf(meta.getFilterValue().toString().toUpperCase());  // Converte para o enum correspondente
+            		predicates.add(cb.equal(ocorrencia.get(filtro.getKey()), tipo));
+            	}
+            	else {
+            		predicates.add(cb.equal(ocorrencia.get(filtro.getKey()), meta.getFilterValue()));
+            	}*/
             }
-        });
+        }
         cq.where(predicates.toArray(new Predicate[0]));
 
         // Aplicar ordenação
@@ -80,7 +91,7 @@ public class OcorrenciaDAO implements Serializable{
         
     }
 
-    public int contarRelatorios(Map<String, FilterMeta> filterBy) {
+    public int contarOcorrencias(Map<String, FilterMeta> filterBy) {
         CriteriaBuilder cb = manager.getCriteriaBuilder();
         CriteriaQuery<Long> cq = cb.createQuery(Long.class);
         Root<Ocorrencia> ocorrencia = cq.from(Ocorrencia.class);

@@ -89,10 +89,17 @@ public class MenuService {
             }   
 
         }
+        
         DefaultMenuItem item = new DefaultMenuItem();
         item.setOutcome("/index.xhtml"); 
         item.setValue("Home");
         item.setIcon("pi pi-fw pi-power-off");
+		modelo.getElements().add(item);
+		
+		item = new DefaultMenuItem();
+		item.setOutcome("/restrito/ocorrencia/ManterOcorrencia.xhtml");
+		item.setValue("Ocorrências");
+		item.setIcon("pi pi-fw pi-book");
 		modelo.getElements().add(item);
 
         return modelo;
