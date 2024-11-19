@@ -31,7 +31,7 @@ import lombok.ToString;
 @NamedQueries({
     @NamedQuery(
         name = "Resposta.findByOcorrencia",
-        query = "SELECT r FROM Resposta r WHERE r.ocorrencia.codigo = :codigoOcorrencia"
+        query = "SELECT r FROM Resposta r WHERE r.ocorrencia.codigo = :codigoOcorrencia order by r.dataCriacao"
     )
 })
 public class Resposta implements Serializable {
@@ -47,6 +47,7 @@ public class Resposta implements Serializable {
 	private UsuarioEP usuario;
 	
 	private String resposta;
+	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="codigo_ocorrencia")
 	private Ocorrencia ocorrencia;

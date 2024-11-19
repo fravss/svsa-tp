@@ -3,7 +3,6 @@
 	<submenu label="Ocorrencias" icon="ui-icon-home">
 	<grupo value="COORDENADORES"></grupo>
 	<grupo value="GESTORES"></grupo>
-	<grupo value="ADMINISTRATIVOS"></grupo>
 	<grupo value="TECNICOS"></grupo>
 		<menuitem value="Pendências" outcome="/restrito/ocorrencia/GerirOcorrencia.xhtml"/>>
 	</submenu>

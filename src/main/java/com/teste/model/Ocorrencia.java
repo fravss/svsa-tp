@@ -36,7 +36,7 @@ import lombok.ToString;
         name = "Ocorrencia.buscarPendencias",
         query = "select o from Ocorrencia o "
                 + "where o.destinatario = :usuario " // se a ocorrencia se destinar a ele, ** se ele escreveu a ocorrencia ele vai acompanhar ela na tabela do crud
-                + "or (o.tenant = :tenant and :grupo = ('COORDENADORES'))"  // se ele for o cordenador da ocorrenica, ele deve ver todas as fases
+                + "or (o.unidade = :unidade and :grupo = ('COORDENADORES'))"  // se ele for o cordenador da ocorrenica, ele deve ver todas as fases
                 + "or (o.status in ('GESTOR', 'FECHADO') and  :grupo = ('GESTORES'))" // o gestor só seria depois de passar pelo coordenador
                 
     ),

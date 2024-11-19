@@ -52,17 +52,15 @@ public class RespostaOcorrenciaBean implements Serializable {
 	}
 
 	public void salvarResposta() {
+		System.out.println("aqui a resp " + novaResposta);
 		this.novaResposta.setOcorrencia(ocorrencia);
 		this.novaResposta.setUsuario(this.usuarioLogado);
 		this.ocorrenciaService.novaResposta(novaResposta);
 
-
-		PrimeFaces.current().ajax().update("ocorrenciaDetalhes");
-		PrimeFaces.current().executeScript("PF('respostaDialog').hide(); PF('ocorrenciaDialog').show();");
-
 		this.carregarOcorrencia();
 	    this.limpar();
-
+	    
+		PrimeFaces.current().ajax().update("ocorrenciaDetalhes");
 	    PrimeFaces.current().ajax().update("frmPesquisa:pendenciasTable");
 	}
 	
