@@ -1,6 +1,5 @@
 package com.teste.dao.lazy;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -17,7 +16,7 @@ import com.teste.service.OcorrenciaService;
 import lombok.Getter;
 import lombok.Setter;
 
-public class LazyOcorrencia extends LazyDataModel<Ocorrencia> implements Serializable{
+public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
 	
 	private static final long serialVersionUID = 1L;
 	
