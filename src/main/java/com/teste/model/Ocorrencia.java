@@ -38,7 +38,7 @@ public class Ocorrencia implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
 	
-	@NotBlank(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
+	@NotNull(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
 	@Enumerated(EnumType.STRING)
 	private TipoOcorrencia tipo;
 	
