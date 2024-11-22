@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 
 @Named
 @RequestScoped
@@ -54,7 +54,7 @@ public class MenuService {
     }
 
 
-    public MenuModel montarMenu(Usuario usuario) {
+    public MenuModel montarMenu(UsuarioEP usuario) {
         MenuModel modelo = new DefaultMenuModel();
 
 

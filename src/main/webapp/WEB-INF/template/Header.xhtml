@@ -14,16 +14,26 @@
 					<h:form>											
 						<p:menubar styleClass="menubar"
 							model="#{autenticacaoBean.menu}">		
+							<f:facet name="options" >
+				               	<h:link outcome="\webapp\index.xhtml">
+									<h:graphicImage width="80" height="26" library="imagens" name="svsa_t.png" title="Voltar para Home"/>
+								</h:link>
+							</f:facet>					
 						</p:menubar>
 					
 					</h:form>					
 				</div>	
-				
-
+				<p:ajaxStatus styleClass="ajax-status">
+					<f:facet name="start">
+						<h:graphicImage library="imagens" name="carregando.gif" />
+					</f:facet>
+					<f:facet name="complete">
+						<h:outputText value="" />
+					</f:facet>
+				</p:ajaxStatus>
+				<div style="clear: both"></div>
 	
 			</header>
-			
-
 		
 		</ui:composition>
 		

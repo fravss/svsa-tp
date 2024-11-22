@@ -16,7 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 import com.teste.service.AutenticacaoService;
 
 import lombok.*;
@@ -36,7 +36,7 @@ public class AutenticacaoBean implements Serializable {
 	@Inject
     private AutenticacaoService autenticacaoService;
 	
-	private Usuario usuario = null;	
+	private UsuarioEP usuario = null;	
 	private MenuModel menu = null;
 	
 	
@@ -47,7 +47,7 @@ public class AutenticacaoBean implements Serializable {
 		
 		try {
 			HttpSession session = getSession();
-			Usuario usuarioLogado = (Usuario)session.getAttribute("usuario");
+			UsuarioEP usuarioLogado = (UsuarioEP)session.getAttribute("usuario");
 			if(usuarioLogado == null) {
 				log.info("o usuario é null");
 				
@@ -66,8 +66,12 @@ public class AutenticacaoBean implements Serializable {
 				 else {
 					log.info("usuario não está logado, será redirecionado ");
 					try {
-						FacesContext.getCurrentInstance().getExternalContext()
-								.redirect("http://localhost:8080/svsa-ct/restricted/home/SvsaHome.xhtml");
+						FacesContext context = FacesContext.getCurrentInstance();
+						String baseUrl = context.getExternalContext().getRequestScheme() + "://" +
+						                 context.getExternalContext().getRequestServerName() + ":" +
+						                 context.getExternalContext().getRequestServerPort();
+						String redirectUrl = baseUrl + "/svsa-ct/restricted/home/SvsaHome.xhtml";
+						context.getExternalContext().redirect(redirectUrl);
 					} catch (IOException ioException) {
 						log.error("Erro ao redirecionar: " + ioException.getMessage(), ioException);
 					}
