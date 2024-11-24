@@ -54,11 +54,19 @@ public class OcorrenciaService implements Serializable {
 	            ocorrencia.setStatus(StatusOcorrencia.GESTOR);
 	            log.info("Coordenador criando nova ocorrência: " + ocorrencia);
 	            this.ocorrenciaDAO.salvar(ocorrencia);
-	        } else if (resposta.getUsuario().getGrupo() == GrupoEP.GESTORES && ocorrencia.getStatus() == StatusOcorrencia.GESTOR) {
-	            ocorrencia.setStatus(StatusOcorrencia.FECHADO);
-	            log.info("Gestor fechando ocorrência: " + ocorrencia);
-	            this.ocorrenciaDAO.salvar(ocorrencia);
 	        }
+	    } catch (Exception e) {
+	        log.error("Erro", e);
+
+	    }
+	}
+	
+	@Transactional
+	public void gerirOcorrencia (Ocorrencia ocorrencia) {
+	    try {
+	    	
+	        this.ocorrenciaDAO.salvar(ocorrencia);
+	       
 	    } catch (Exception e) {
 	        log.error("Erro", e);
 

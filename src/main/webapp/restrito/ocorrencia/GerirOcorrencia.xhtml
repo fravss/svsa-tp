@@ -12,14 +12,15 @@
 		<h:form id="frmPesquisa">
 
 			<p:messages id="messages" showDetail="false" closable="true">
-				<p:autoUpdate />
-			</p:messages>
+        		<p:autoUpdate />
+    		</p:messages>
+			
 
 			<p:dataTable id="pendenciasTable"
 				value="#{respostaOcorrenciaBean.ocorrencias}" var="ocorrencia"
 				style="margin-top: 20px"
 				emptyMessage="Nenhuma ocorrencia encontrada." rows="10"
-				paginator="true" paginatorAlwaysVisible="false"
+				paginator="true" paginatorAlwaysVisible="true"
 				paginatorPosition="bottom" lazy="false"
 				rowsPerPageTemplate="5,10,15">
 
@@ -73,23 +74,24 @@
 				<h:panelGroup id="ocorrenciaDetalhes" styleClass="p-3">
 
 
-					<p:panelGrid columns="6"  style="width: 100%;">
+					<p:panelGrid columns="6" style="width: 100%;">
 						<h:outputText value="Tipo: " style="font-weight: bold;" />
 						<h:outputText value="#{respostaOcorrenciaBean.ocorrencia.tipo}" />
 						<h:outputText value="Status: " style="font-weight: bold;" />
 						<h:outputText value="#{respostaOcorrenciaBean.ocorrencia.status}" />
 						<h:outputText value="Data: " style="font-weight: bold;" />
-						<h:outputText value="#{respostaOcorrenciaBean.ocorrencia.dataCriacao}">
-	    				<f:convertDateTime pattern="dd/MM/yyyy" />
-	    			</h:outputText>
+						<h:outputText
+							value="#{respostaOcorrenciaBean.ocorrencia.dataCriacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
 					</p:panelGrid>
-					<p:panelGrid columns="2"  style="width: 100%; margin-top: 5px">
+					<p:panelGrid columns="2" style="width: 100%; margin-top: 5px">
 						<h:outputText value="Descrição: " style="font-weight: bold;" />
 						<h:outputText
 							value="#{respostaOcorrenciaBean.ocorrencia.descricao}"
 							styleClass="ui-font-italic ui-text-primary" />
 					</p:panelGrid>
-					
+
 				</h:panelGroup>
 				<br></br>
 
@@ -106,7 +108,8 @@
 						<ui:repeat value="#{respostaOcorrenciaBean.respostas}"
 							var="resposta">
 							<h:outputText
-								value="#{resposta.usuario.nome} (#{resposta.usuario.grupo}): " style="font-weight: bold;"/>
+								value="#{resposta.usuario.nome} (#{resposta.usuario.grupo}): "
+								style="font-weight: bold;" />
 							<p:card styleClass="p-shadow-2 p-mb-2"
 								style="border: 1px solid #c1c1c1; border-radius: 8px; min-height: 20px; max-height: 200px; overflow-y: auto; word-wrap: break-word;">
 								<h:outputText value="#{resposta.resposta}"
@@ -119,8 +122,9 @@
 					<br></br>
 					<p:inputTextarea id="descricaoResposta"
 						value="#{respostaOcorrenciaBean.novaResposta.resposta}" rows="5"
-						required="true" 
-						style="width:97%; max-height: 100px;  overflow-y: auto;" height="100vh"/>
+						required="true"
+						style="width:97%; max-height: 100px;  overflow-y: auto;"
+						height="100vh" />
 					<br />
 					<h:panelGroup
 						style="display: flex; justify-content: flex-end; margin-top: 10px;">
@@ -130,8 +134,36 @@
 							oncomplete="PF('ocorrenciaDialog').show();" />
 					</h:panelGroup>
 				</p:panel>
-					
-	
+
+
+				<p:dialog header="Ocorrencia" id="confirmacaoDialog"
+					widgetVar="confirmacaoDialog" modal="true" resizable="false"
+					closeOnEscape="true" showEffect="fade" hideEffect="fade"
+					width="300" height="150" position="center"
+					closable="true">
+					<h:outputText value="Deseja retornar a ocorrência ao coordenador novamente?" style="font-weight: bold;" />
+
+					<h:panelGroup
+					style="display: flex; justify-content: flex-end; margin-top: 70px;">
+					<p:commandButton value="Solicitar nova resposta"
+						action="#{respostaOcorrenciaBean.gerirOcorrencia}"
+						onclick="PF('confirmacaoDialog').hide(); PF('ocorrenciaDialog').hide();" process="@this">
+						<f:setPropertyActionListener
+							target="#{respostaOcorrenciaBean.acao}" value="0" />
+					</p:commandButton>
+
+					<p:commandButton value="Encerrar ocorrência"
+						action="#{respostaOcorrenciaBean.gerirOcorrencia}"
+						onclick="PF('confirmacaoDialog').hide(); PF('ocorrenciaDialog').hide();" process="@this">
+						<f:setPropertyActionListener
+							target="#{respostaOcorrenciaBean.acao}" value="1" />
+					</p:commandButton>
+				</h:panelGroup>
+
+				</p:dialog>
+
+
+
 
 
 			</h:form>
