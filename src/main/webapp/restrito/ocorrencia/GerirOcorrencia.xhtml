@@ -38,7 +38,7 @@
 					<h:outputText value="#{ocorrencia.destinatario.nome}" />
 				</p:column>
 
-				<p:column headerText="Status"
+				<p:column headerText="Status" sortBy="#{ocorrencia.status}" filterBy="#{ocorrencia.status}"
 					style="width: 200px; text-align: center">
 					<h:outputText value="#{ocorrencia.status}" />
 				</p:column>
@@ -141,7 +141,7 @@
 					closeOnEscape="true" showEffect="fade" hideEffect="fade"
 					width="300" height="150" position="center"
 					closable="true">
-					<h:outputText value="Deseja retornar a ocorrência ao coordenador novamente?" style="font-weight: bold;" />
+					<h:outputText value="Deseja retornar a ocorrência ao coordenador novamente?" />
 
 					<h:panelGroup
 					style="display: flex; justify-content: flex-end; margin-top: 70px;">
