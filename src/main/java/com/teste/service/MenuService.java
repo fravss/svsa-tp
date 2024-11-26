@@ -90,8 +90,8 @@ public class MenuService {
 
         }
         DefaultMenuItem item = new DefaultMenuItem();
-        item.setOutcome("/index.xhtml"); 
-        item.setValue("Home");
+        item.setCommand("#{autenticacaoBean.sair}"); 
+        item.setValue("Sair");
         item.setIcon("pi pi-fw pi-power-off");
 		modelo.getElements().add(item);
 

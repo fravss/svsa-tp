@@ -14,6 +14,7 @@ import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.teste.model.UsuarioEP;
@@ -91,6 +92,7 @@ public class AutenticacaoBean implements Serializable {
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if ("SESSIONID".equals(cookie.getName())) {
+					removerCookie();
 					return cookie.getValue();
 				}
 			}
@@ -98,6 +100,29 @@ public class AutenticacaoBean implements Serializable {
 		return null;
 	}
 	
+	 public void removerCookie() {
+		 HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+         Cookie sessionCookie = new Cookie("SESSIONID", null);
+         sessionCookie.setMaxAge(0);
+         sessionCookie.setPath("/");
+         sessionCookie.setHttpOnly(true);
+         sessionCookie.setSecure(true);
+       
+
+       response.addCookie(sessionCookie);
+   }
+	public String sair() {
+		log.info("Invalidando sessão");		
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().invalidateSession();	    
+		
+		try {
+			 FacesContext.getCurrentInstance().getExternalContext().redirect("/teste/index.xhtml"); // mudar quando mudar esse teste
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "/Home.xhtml";
+	}
 
  
    public HttpServletRequest getRequest() {	
