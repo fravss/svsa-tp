@@ -8,6 +8,16 @@
 	<ui:define name="corpo">
 
 		<h1>Manter Ocorrencias</h1>
+		<div>
+			<p:commandButton 
+			    value="Adicionar Ocorrência" 
+			    type="button" 
+			    onclick="PF('dlg2').show()" 
+			    style="margin-bottom: 25px;" />		 
+			    
+				
+		</div>
+		
 		
 		<p:panelGrid>
 		
@@ -21,29 +31,30 @@
 			        	<f:selectItem itemValue="codigo" itemLabel="Código" />
 			            <f:selectItem itemValue="descricao" itemLabel="Descrição" />
 			            <f:selectItem itemValue="tipo" itemLabel="Tipo" />
+			            <f:selectItem itemValue="status" itemLabel="Pendentes" />
+			            
 			            
 			            <p:ajax event="change" update="inputPanel" process="@form" />
 			        </p:selectOneMenu>
 			        
-			        
 			
 			        <!-- Valor do Filtro -->
 			        <h:panelGroup id="inputPanel">
-		                <p:inputText id="filtroPadrao" value="#{manterOcorrenciaBean.valorFiltro}" placeholder="Buscar... " 
+		                <p:inputText style="margin-left: 10px;" id="filtroPadrao" value="#{manterOcorrenciaBean.valorFiltro}" placeholder="Buscar... " 
 		                             rendered="#{manterOcorrenciaBean.colunaSelecionada != 'tipo'}" />
 		
 		                <!-- SelectOneMenu renderizado quando a coluna 'tipo' for selecionada -->
 		                <p:selectOneMenu id="filtroTipo" value="#{manterOcorrenciaBean.valorTipo}"
 		                			     rendered="#{manterOcorrenciaBean.colunaSelecionada == 'tipo'}">
-						    <!--  O FILTRO GERADO PELO BACKEND NAO ESTA FUNCIONANDO
+						    
 						    <f:selectItems value="#{manterOcorrenciaBean.tiposOcorrencia}" var="tipo"
-						                   itemValue="#{tipo}" itemLabel="#{tipo}" /> -->
+						                   itemValue="#{tipo}" itemLabel="#{tipo}" />
 						</p:selectOneMenu>
 		            </h:panelGroup>
 			
 			        <!-- Botão para Filtrar -->
 			        <p:commandButton value="Filtrar" actionListener="#{manterOcorrenciaBean.atualizarFiltro()}" update="tableOcorrencias" process="@form" />
-			        <p:commandButton value="Limpar Filtro" actionListener="#{manterOcorrenciaBean.limparFiltro()}" update="tableOcorrencias" process="@form" />
+			        <p:commandButton style=" margin-left: 7px;" value="Limpar Filtro" actionListener="#{manterOcorrenciaBean.limparFiltro()}" update="tableOcorrencias" process="@form" />
 			        <h:outputText value="#{manterOcorrenciaBean.colunaSelecionada}" />
 		        </p:row>
 		    </p:panelGrid>
@@ -51,8 +62,98 @@
 		
 		</p:row>
 		<p:row>
+		<p:dialog 
+		    header="Adicionar Ocorrência" 
+		    widgetVar="dlg2" 
+		    minHeight="50" 
+		    width="500" 
+		    modal="true" 
+		    closable="true" 
+		    closeOnEscape="true" 
+		    resizable="false" 
+		    styleClass="ui-dialog-modern">
+		    
+		    <h:form>
+		    <!-- 
+		    <p:autoComplete id="lazyModel" widgetVar="lazyModel" value="#{autoCompleteView.txt11}"
+                                var="customer" itemLabel="#{customer.name}" itemValue="#{customer.name}"
+                                lazyModel="#{autoCompleteView.lazyModel}" lazyField="name"
+                                forceSelection="true"
+                                maxResults="10"/>
+		     -->
+		        <div class="ui-fluid formgrid grid" style="padding: 15px;">
+		            <!-- Destinatário -->
+		            <div class="field col-12 md:col-6">
+		                <p:outputLabel for="destinatario" value="Destinatario:" styleClass="ui-text-bold" />
+		                <p:autoComplete 
+		                    id="destinatario" widgetVar="lazyModel"
+		                    value="#{cadastroOcorrenciaBean.destinatario}" 
+		                    lazyModel="#{cadastroOcorrenciaBean.lazyUsuario}" lazyField="nome" maxResults="10"
+		                    var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario}"
+		                    dropdown="true" 
+		                    placeholder="Selecione ou digite um nome" 
+		                    forceSelection="true" 
+		                    style="width: 100%;" 
+		                    converter="usuarioConverter"/>
+		            </div>
+		            
+		            <!-- Testemunha -->
+		            <div class="field col-12 md:col-6" style="margin-top:10px;">
+		            	<p:outputLabel for="testemunha" value="Testemunha:" styleClass="ui-text-bold" />
+		                <p:autoComplete 
+						    id="testemunha" widgetVar="lazyModel"
+						    value="#{cadastroOcorrenciaBean.testemunha}"
+						    lazyModel="#{cadastroOcorrenciaBean.lazyUsuario}" lazyField="nome" maxResults="10" 
+						    var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario}"
+						    dropdown="true" 
+						    placeholder="Selecione ou digite um nome" 
+						    forceSelection="true" 
+						    style="width: 100%;" 
+						    converter="usuarioConverter"/>
+		            </div>
+		            
+		            <!-- Tipo de Ocorrência -->
+		            
+		            
+		            <div class="field col-12 md:col-6" style="margin-top:15px;">
+			            <p:selectOneMenu id="tipo" value="#{cadastroOcorrenciaBean.tipo}" required="true">
+						    <f:selectItem itemLabel="Selecione um tipo" itemValue="#{null}" />
+						    <f:selectItems value="#{cadastroOcorrenciaBean.listaTipos}" var="tipo" itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
+						    <p:ajax event="change" listener="#{cadastroOcorrenciaBean.onTipoChange}" />
+						</p:selectOneMenu>
+		            </div>
+		            
+		            <!-- Descrição -->
+		            <div class="field col-12" style="margin-top:15px;">
+		                <p:outputLabel for="descricao" value="Descrição" styleClass="ui-text-bold" />
+		                <p:inputTextarea 
+		                	value="#{cadastroOcorrenciaBean.descricao}"
+		                    id="descricao" 
+		                    rows="4" 
+		                    placeholder="Insira uma descrição detalhada..." 
+		                    style="width: 100%; resize: none;" />
+		            </div>
+		            <DIV class="field col-12" style="margin-top:15px; margin-bottom:10px;">
+			            <h:form enctype="multipart/form-data">
+	    					<p:fileUpload value="#{bean.file}" mode="simple" />
+						</h:form>
+		            </DIV>
+		            
+		            <!-- Botões de Ação -->
+		            <div class="col-12" style="text-align: right; margin-top: 15px;">
+		                <p:commandButton 
+		                	actionListener="#{cadastroOcorrenciaBean.criarOcorrencia}"
+		                    value="Salvar" 
+		                    icon="pi pi-check" 
+		                    styleClass="ui-button-success" 
+		                    style="margin-right: 10px;" />
+		            </div>
+		        </div>
+		    </h:form>
+		</p:dialog>
 		
-		<p:dataTable id="tableOcorrencias" value="#{manterOcorrenciaBean.lazyOcorrencias}" var="ocorrencia" lazy="true"
+		<div style="margin-top: 18px;">
+			<p:dataTable  id="tableOcorrencias" value="#{manterOcorrenciaBean.lazyOcorrencias}" var="ocorrencia" lazy="true"
 		emptyMessage="Nenhuma ocorrência registrada." paginator="true" rows="10"
 		paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
 			<p:column headerText="Código">
@@ -71,6 +172,8 @@
 		                         <!--  update=":visualizarForm"/>  -->
 		    </p:column>
 		</p:dataTable>
+		</div>
+		
 		
 		</p:row>
 		

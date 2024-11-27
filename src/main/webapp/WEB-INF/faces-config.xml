@@ -6,6 +6,14 @@
 	 xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
 	 version="2.2">
 	 
+	 
+	 
+    <converter>
+        <converter-id>usuarioConverter</converter-id>
+        <converter-class>com.teste.converter.UsuarioConverter</converter-class>
+    </converter>
+	 
+	 
 	<application>
 	
 		<locale-config>

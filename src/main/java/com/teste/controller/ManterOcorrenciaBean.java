@@ -3,7 +3,6 @@ package com.teste.controller;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
@@ -83,11 +82,14 @@ public class ManterOcorrenciaBean implements Serializable{
         this.lazyOcorrencias.setValorFiltro(null);
     }
     
+    
+    
     public List<String> getTiposOcorrencia() {
         return Arrays.stream(TipoOcorrencia.values()) // Transforma as constantes em um Stream
                      .map(Enum::name)                // Mapeia cada constante para seu nome (String)
                      .toList();                      // Coleta como uma lista
     }
+    
     public String navegarParaOcorrencias() {
         return "/restrito/ocorrencia/ManterOcorrencia.xhtml?faces-redirect=true";
     }

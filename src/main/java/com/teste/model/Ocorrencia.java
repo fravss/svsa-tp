@@ -16,7 +16,7 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
-
+import javax.validation.constraints.NotNull;
 
 import com.teste.model.enums.StatusOcorrencia;
 import com.teste.model.enums.TipoOcorrencia;
@@ -38,22 +38,27 @@ public class Ocorrencia implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
 	
-	@NotBlank(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
+	@NotNull(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
 	@Enumerated(EnumType.STRING)
 	private TipoOcorrencia tipo;
 	
-	@NotBlank(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
+	@NotNull(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
 	@Enumerated(EnumType.STRING)
 	private StatusOcorrencia status;
 	
-	@NotBlank(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
+	@NotNull(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
 	private String descricao;
 	
 	@ManyToOne
 	private Usuario remetente;
 	
+	//@NotBlank(message="Por favor adione um destinatario")
 	@ManyToOne
 	private Usuario destinatario;
+	
+	//@NotBlank(message="Por favor adione uma testemunha")
+	@ManyToOne
+	private Usuario testemunha;
 	
 	//@ManyToOne
 	private Long unidade;
@@ -63,8 +68,6 @@ public class Ocorrencia implements Serializable {
 	
 	//@OneToMany
 	//private ArrayList<Resposta> respostas;
-	
-	
 	
 	
 	
