@@ -14,17 +14,12 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-<<<<<<< HEAD
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import com.teste.model.Ocorrencia;
 import com.teste.model.UsuarioEP;
-
-=======
-import com.teste.model.UsuarioEP;
->>>>>>> origin/UC03_Manter_Ocorrencia
 
 import lombok.extern.log4j.Log4j;
 
@@ -45,8 +40,8 @@ public class UsuarioDAO implements Serializable {
 			Map<String, FilterMeta> filterBy) {
         
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
-        CriteriaQuery<Usuario> cq = cb.createQuery(Usuario.class);
-        Root<Usuario> usuario = cq.from(Usuario.class);
+        CriteriaQuery<UsuarioEP> cq = cb.createQuery(UsuarioEP.class);
+        Root<UsuarioEP> usuario = cq.from(UsuarioEP.class);
 
         // Aplicar filtros
         List<Predicate> predicates = new ArrayList<>();
@@ -78,7 +73,7 @@ public class UsuarioDAO implements Serializable {
         cq.orderBy(orders);
 
         // Executar consulta com paginação
-        TypedQuery<Usuario> query = manager.createQuery(cq);
+        TypedQuery<UsuarioEP> query = manager.createQuery(cq);
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
 

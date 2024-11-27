@@ -15,13 +15,8 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-<<<<<<< HEAD
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-=======
-import javax.validation.constraints.NotNull;
-
->>>>>>> origin/UC03_Manter_Ocorrencia
 
 import com.teste.model.enums.StatusOcorrencia;
 import com.teste.model.enums.TipoOcorrencia;
@@ -63,7 +58,7 @@ public class Ocorrencia implements Serializable {
 	
 	//@NotBlank(message="Por favor adione uma testemunha")
 	@ManyToOne
-	private Usuario testemunha;
+	private UsuarioEP testemunha;
 	
 	//@ManyToOne
 	private Long unidade;
@@ -71,14 +66,6 @@ public class Ocorrencia implements Serializable {
 	//@ManyToOne
 	private Long tenant;
 	
-<<<<<<< HEAD
-	//@OneToMany
-	//private ArrayList<Resposta> respostas;
-	
-	
-	
-=======
->>>>>>> origin/UC03_Manter_Ocorrencia
 	/*
 	 * Datas de Criação e Modificação
 	 */
