@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -19,7 +20,8 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import com.teste.model.Ocorrencia;
-import com.teste.model.enums.TipoOcorrencia;
+import com.teste.util.jpa.Transactional;
+
 
 public class OcorrenciaDAO implements Serializable{
 	
@@ -37,6 +39,26 @@ public class OcorrenciaDAO implements Serializable{
 	public List<Ocorrencia> buscarTodos() {
 		return manager.createNamedQuery("Ocorrencia.buscarTodos").getResultList();
 	}
+	
+	@Transactional
+	public void salvar(Ocorrencia ocorrencia) throws PersistenceException {
+		try {
+			manager.merge(ocorrencia);	
+		} catch (PersistenceException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		/*} catch (RuntimeException e) {
+			e.printStackTrace();
+			throw new NegocioException("Não foi possível executar a operação.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new NegocioException("Não foi possível executar a operação.");
+		} catch (Error e) {
+			e.printStackTrace();
+			throw new NegocioException("Não foi possível executar a operação.");
+		}*/
+	}	
 	
 	
 	public List<Ocorrencia> buscarOcorrencias(int first, int pageSize, Map<String, SortMeta> sortBy,

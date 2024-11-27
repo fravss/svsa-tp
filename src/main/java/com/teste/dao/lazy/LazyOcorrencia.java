@@ -48,6 +48,8 @@ public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
                 .build());
         }
 		
+		
+		// ADICIONAR FUNCAO PARA DEFINIR O FILTRO ENTRE AS OCORRENCIAS ABERTAS E FECHADAS
 		if (this.colunaSelecionada != null && !this.colunaSelecionada.isEmpty()) {
 			FilterMeta filterMeta = new FilterMeta();
 	        filterMeta.setFilterValue(this.colunaSelecionada);
@@ -57,10 +59,10 @@ public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
 		
 		System.out.println(filterBy);
 		
-        List<Ocorrencia> ocorrencias = ocorrenciaDAO.buscarOcorrencias(first, pageSize, sortBy, filterBy);
+        this.ocorrencias = ocorrenciaDAO.buscarOcorrencias(first, pageSize, sortBy, filterBy);
         this.setRowCount(ocorrenciaDAO.contarOcorrencias(filterBy));
 
-        return ocorrencias;
+        return this.ocorrencias;
         
 	}
 
