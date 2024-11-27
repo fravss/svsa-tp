@@ -13,7 +13,7 @@ import javax.inject.Named;
 
 import com.teste.dao.lazy.LazyUsuario;
 import com.teste.model.Ocorrencia;
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 import com.teste.model.enums.StatusOcorrencia;
 import com.teste.model.enums.TipoOcorrencia;
 import com.teste.service.OcorrenciaService;
@@ -35,11 +35,13 @@ public class CadastroOcorrenciaBean implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private LazyUsuario lazyUsuario;
+	//private LazyUsuario lazyUsuario;
+	private LazyUsuario lazyDestinatario;
+	private LazyUsuario lazyTestemunha;
 	
 
-	private Usuario destinatario;
-	private Usuario testemunha;
+	private UsuarioEP destinatario;
+	private UsuarioEP testemunha;
 	private TipoOcorrencia tipo;
 	private String descricao;
 	
@@ -55,10 +57,12 @@ public class CadastroOcorrenciaBean implements Serializable{
 	@PostConstruct
     public void init() {
 		log.info("Bean CadastroOcorrenciaBean inicializado.");
-    	this.lazyUsuario = new LazyUsuario(this.usuarioService);
+    	//this.lazyUsuario = new LazyUsuario(this.usuarioService);
+		this.lazyDestinatario = new LazyUsuario(this.usuarioService);
+		this.lazyTestemunha = new LazyUsuario(this.usuarioService);
     	this.ocorrencia = new Ocorrencia();
-    	this.destinatario = new Usuario();
-    	this.testemunha = new Usuario();
+    	this.destinatario = new UsuarioEP();
+    	this.testemunha = new UsuarioEP();
     	this.tipo = TipoOcorrencia.REUNIAO;
     	this.descricao = "";
     }
@@ -84,8 +88,11 @@ public class CadastroOcorrenciaBean implements Serializable{
 	    log.info("Testemunha: " + this.testemunha);
 	    log.info("Tipo: " + this.tipo);
 	    log.info("Descrição: " + this.descricao);
+	    log.info("Remetente: " + this.autenticacao.getUsuarioAutenticado());
 		
 		this.ocorrencia.setRemetente(this.autenticacao.getUsuarioAutenticado());
+		
+		log.info(this.ocorrencia.getRemetente());
 		
 		try {
 			this.service.salvar(this.ocorrencia);
@@ -95,6 +102,21 @@ public class CadastroOcorrenciaBean implements Serializable{
 		}
 		
 		
+	}
+	
+	/*public List<UsuarioEP> filtrarUsuario(String query) {
+		log.info(query);
+		return lazyUsuario.buscarPorNome(query);
+	}*/
+	
+	public List<UsuarioEP> filtrarDestinatario(String query) {
+		log.info(query);
+		return lazyDestinatario.buscarPorNome(query);
+	}
+	
+	public List<UsuarioEP> filtrarTestemunha(String query) {
+		log.info(query);
+		return lazyTestemunha.buscarPorNome(query);
 	}
 	
 	public void onTipoChange() {

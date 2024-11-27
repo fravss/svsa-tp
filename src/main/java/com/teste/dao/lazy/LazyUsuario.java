@@ -22,7 +22,7 @@ import org.primefaces.util.LocaleUtils;
 import com.teste.dao.OcorrenciaDAO;
 import com.teste.dao.UsuarioDAO;
 import com.teste.model.Ocorrencia;
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 import com.teste.service.OcorrenciaService;
 import com.teste.service.UsuarioService;
 import com.teste.util.ShowcaseUtil;
@@ -33,11 +33,11 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class LazyUsuario extends LazyDataModel<Usuario> implements Serializable{
+public class LazyUsuario extends LazyDataModel<UsuarioEP> implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	
-	List<Usuario> usuarios = new ArrayList<Usuario>();
+	List<UsuarioEP> usuarios = new ArrayList<UsuarioEP>();
 	private UsuarioDAO usuarioDAO;
 	
 	
@@ -48,7 +48,7 @@ public class LazyUsuario extends LazyDataModel<Usuario> implements Serializable{
 	
 	public LazyUsuario(UsuarioService usuarioService) {
 		this.usuarioDAO = usuarioService.getUsuarioDAO();
-		this.usuarios = new ArrayList<Usuario>();
+		this.usuarios = new ArrayList<UsuarioEP>();
 	}
 
 
@@ -122,7 +122,7 @@ public class LazyUsuario extends LazyDataModel<Usuario> implements Serializable{
 
 	
 	@Override
-	public List<Usuario> load(int first, int pageSize, Map<String, SortMeta> sortBy,
+	public List<UsuarioEP> load(int first, int pageSize, Map<String, SortMeta> sortBy,
 			Map<String, FilterMeta> filterBy) {
 		
 		if (sortBy.isEmpty()) {
@@ -148,6 +148,10 @@ public class LazyUsuario extends LazyDataModel<Usuario> implements Serializable{
 
         return this.usuarios;
         
+	}
+	
+	public List<UsuarioEP> buscarPorNome(String nome) {
+		return usuarioDAO.buscarPorNome(nome);
 	}
 
 	@Override

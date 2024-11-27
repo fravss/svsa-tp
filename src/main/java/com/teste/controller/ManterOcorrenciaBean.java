@@ -32,9 +32,6 @@ public class ManterOcorrenciaBean implements Serializable{
     
     
     // FILTROS DE BUSCA
-    private String colunaSelecionada;
-    private String valorFiltro;
-    private String valorTipo;
     
     @Inject
     private OcorrenciaService ocorrenciaService;
@@ -44,51 +41,10 @@ public class ManterOcorrenciaBean implements Serializable{
     	this.lazyOcorrencias = new LazyOcorrencia(this.ocorrenciaService);
     }
     
-    public void atualizarFiltro() {
-    	
-    	log.info("Coluna: " + this.colunaSelecionada);
-    	log.info("Tipo: " + this.valorTipo);
-    	log.info("BUSCA: " + this.valorFiltro);
-    	
-    	if (this.colunaSelecionada == null) {
-            log.warn("Coluna selecionada está nula.");
-            return;
-        }
-
-        this.lazyOcorrencias.setColunaSelecionada(this.colunaSelecionada);
-
-        if ("tipo".equals(this.colunaSelecionada)) {
-            if (this.valorTipo != null) {
-                this.lazyOcorrencias.setValorFiltro(this.valorTipo);
-            } else {
-                log.warn("Filtro para 'tipo' está nulo.");
-            }
-        } else {
-            if (this.valorFiltro != null && !this.valorFiltro.isEmpty()) {
-                this.lazyOcorrencias.setValorFiltro(this.valorFiltro);
-            } else {
-                log.warn("Filtro padrão está vazio ou nulo.");
-            }
-        }
-
-        log.info("Filtro atualizado: Coluna=" + this.colunaSelecionada + ", Filtro=" + this.lazyOcorrencias.getValorFiltro());
-        
-    }
     
-    public void limparFiltro() {
-    	this.valorTipo = null;
-    	this.valorFiltro = null;
-    	this.lazyOcorrencias.setColunaSelecionada(null);
-        this.lazyOcorrencias.setValorFiltro(null);
-    }
-    
-    
-    
-    public List<String> getTiposOcorrencia() {
-        return Arrays.stream(TipoOcorrencia.values()) // Transforma as constantes em um Stream
-                     .map(Enum::name)                // Mapeia cada constante para seu nome (String)
-                     .toList();                      // Coleta como uma lista
-    }
+    public List<TipoOcorrencia> getListaTipos() {
+	    return Arrays.asList(TipoOcorrencia.values());
+	}
     
     public String navegarParaOcorrencias() {
         return "/restrito/ocorrencia/ManterOcorrencia.xhtml?faces-redirect=true";
