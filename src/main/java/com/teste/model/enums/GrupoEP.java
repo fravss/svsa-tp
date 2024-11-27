@@ -1,6 +1,6 @@
 package com.teste.model.enums;
 
-public enum Grupo {
+public enum GrupoEP {
 	
 	TECNICOS,
 	COORDENADORES,

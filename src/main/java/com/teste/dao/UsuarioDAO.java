@@ -14,13 +14,17 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+<<<<<<< HEAD
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import com.teste.model.Ocorrencia;
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 
+=======
+import com.teste.model.UsuarioEP;
+>>>>>>> origin/UC03_Manter_Ocorrencia
 
 import lombok.extern.log4j.Log4j;
 
@@ -32,12 +36,12 @@ public class UsuarioDAO implements Serializable {
 	@Inject
 	private EntityManager manager;
 
-	public Usuario buscarPeloCodigo(Long id) {
+	public UsuarioEP buscarPeloCodigo(Long id) {
 		log.info("Buscando usuario pelo id " + id);
-		return manager.find(Usuario.class, id);
+		return manager.find(UsuarioEP.class, id);
 	}
 
-	public List<Usuario> buscarUsuarios(int first, int pageSize, Map<String, SortMeta> sortBy,
+	public List<UsuarioEP> buscarUsuarios(int first, int pageSize, Map<String, SortMeta> sortBy,
 			Map<String, FilterMeta> filterBy) {
         
 		CriteriaBuilder cb = manager.getCriteriaBuilder();

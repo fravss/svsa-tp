@@ -15,8 +15,7 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
-
-import com.teste.model.enums.Grupo;
+import com.teste.model.enums.GrupoEP;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +26,7 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name="usuario")
-public class Usuario implements Serializable {
+public class UsuarioEP implements Serializable {
 
 	private static final long serialVersionUID = 82375949344894033L;
 
@@ -44,7 +43,7 @@ public class Usuario implements Serializable {
 
 
 	@Enumerated(EnumType.STRING)
-	private Grupo grupo;
+	private GrupoEP grupo;
 	
 	
 
