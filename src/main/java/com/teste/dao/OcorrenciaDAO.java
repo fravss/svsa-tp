@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -22,7 +24,9 @@ import org.primefaces.model.SortOrder;
 import com.teste.model.Ocorrencia;
 import com.teste.util.jpa.Transactional;
 
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class OcorrenciaDAO implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
@@ -134,6 +138,23 @@ public class OcorrenciaDAO implements Serializable{
         cq.select(cb.count(ocorrencia));
 
         return manager.createQuery(cq).getSingleResult().intValue();
+    }
+    
+    public List<Ocorrencia> buscarPorDescricao(int first, int pageSize, String descricaoFiltro) {
+    	
+    	log.info(descricaoFiltro);
+    	
+    	TypedQuery<Ocorrencia> query = manager.createQuery(
+    		    "SELECT o FROM Ocorrencia o WHERE LOWER(o.descricao) LIKE LOWER(:descricao)", Ocorrencia.class);
+
+    	if (descricaoFiltro != null && !descricaoFiltro.isEmpty()) {
+            query.setParameter("descricao", "%" + descricaoFiltro + "%");  // Utilizando LIKE para busca parcial
+        }
+    	
+    	query.setFirstResult(first);
+        query.setMaxResults(pageSize);
+        
+        return query.getResultList();
     }
 
 	public void setEntityManager(EntityManager manager) {

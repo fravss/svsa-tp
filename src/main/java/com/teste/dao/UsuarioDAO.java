@@ -103,5 +103,14 @@ public class UsuarioDAO implements Serializable {
 
         return manager.createQuery(cq).getSingleResult().intValue();
     }
+	
+	public List<UsuarioEP> buscarPorNome(String nome) {
+		String jpql = 	"SELECT u FROM UsuarioEP u " +
+						"WHERE LOWER(u.nome) LIKE LOWER(:nome)";
+		TypedQuery<UsuarioEP> query = manager.createQuery(jpql, UsuarioEP.class);
+		query.setParameter("nome", "%" + nome + "%");
+		query.setMaxResults(10);
+		return query.getResultList();
+	}
 
 }

@@ -3,13 +3,18 @@ package com.teste.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -42,12 +47,15 @@ public class Ocorrencia implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private TipoOcorrencia tipo;
 	
-	@NotNull(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
+	@NotNull(message="O STATUS DA OCORRENCIA É OBRIGATÓRIO")
 	@Enumerated(EnumType.STRING)
 	private StatusOcorrencia status;
 	
+	@Column(length = 512000, columnDefinition="Text")
+	@Basic(fetch=FetchType.LAZY)
 	@NotNull(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
 	private String descricao;
+	//mudar para tipo text
 	
 	@ManyToOne
 	private UsuarioEP remetente;

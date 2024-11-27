@@ -115,11 +115,11 @@ public class AutenticacaoBean implements Serializable {
 		return session;
 	}
    
-   public Usuario getUsuarioAutenticado() {
+   public UsuarioEP getUsuarioAutenticado() {
 
 	   try {
 			HttpSession session = getSession();
-			Usuario usuarioLogado = (Usuario)session.getAttribute("usuario");
+			UsuarioEP usuarioLogado = (UsuarioEP)session.getAttribute("usuario");
 			return usuarioLogado;
 		} catch (Exception e) {
 			e.printStackTrace();

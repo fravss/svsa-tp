@@ -1,54 +1,50 @@
 package com.teste.converter;
 
 import javax.faces.convert.Converter;
+import javax.faces.convert.ConverterException;
 import javax.faces.convert.FacesConverter;
 import javax.inject.Inject;
+import javax.faces.component.FacesComponent;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
-import com.teste.model.Usuario;
+import com.teste.model.UsuarioEP;
 import com.teste.service.UsuarioService;
 
-@FacesConverter(forClass = Usuario.class)
-public class UsuarioConverter implements Converter {
+import lombok.extern.log4j.Log4j;
+
+@Log4j
+@FacesComponent
+@FacesConverter(forClass = UsuarioEP.class, managed = true)
+public class UsuarioConverter implements Converter<Object> {
 
     @Inject
-    private UsuarioService usuarioService;  // Injeção de dependência do serviço para buscar o Usuario
-    
-    public Object getAsObject(FacesContext context, UIComponent component, Long value) {
-        if (value != null && value != 0L) {
-            // Lógica para converter o valor string para um objeto Usuario
-            try {
-                // Aqui você pode buscar o usuário por nome, id ou qualquer critério que se ajuste ao seu caso
-                return usuarioService.buscarPorId(value);  // Método do seu service para buscar o usuario pelo nome
-            } catch (Exception e) {
-                // Trate a exceção caso o valor não consiga ser convertido
-                e.printStackTrace();
-            }
-        }
-        return null;  // Retorna null se não encontrar o usuário
-    }
+    private UsuarioService usuarioService;
 
-
+    @Override
     public Object getAsObject(FacesContext context, UIComponent component, String value) {
-        if (value != null && !value.isEmpty()) {
-            // Lógica para converter o valor string para um objeto Usuario
-            try {
-                // Aqui você pode buscar o usuário por nome, id ou qualquer critério que se ajuste ao seu caso
-                return usuarioService.buscarPorNome(value);  // Método do seu service para buscar o usuario pelo nome
-            } catch (Exception e) {
-                // Trate a exceção caso o valor não consiga ser convertido
-                e.printStackTrace();
-            }
+        if (value == null || value.isEmpty()) {
+            return null;
         }
-        return null;  // Retorna null se não encontrar o usuário
+        try {
+            // Buscar o objeto pelo ID
+            return usuarioService.buscarPorId(Long.valueOf(value));
+        } catch (NumberFormatException e) {
+            throw new ConverterException("ID inválido: " + value, e);
+        }
     }
 
     @Override
     public String getAsString(FacesContext context, UIComponent component, Object value) {
-        if (value != null) {
-            // Aqui você retorna o nome ou qualquer outra propriedade que você deseja exibir
-            return ((Usuario) value).getNome();  // Retorna o nome do usuário
+        if (value == null) {
+            return "";
         }
-        return "";  // Se o valor for null, retorna uma string vazia
+        if (value instanceof UsuarioEP) {
+            UsuarioEP usuario = (UsuarioEP) value;
+            return usuario.getCodigo() != null ? usuario.getCodigo().toString() : "";
+        } else if (value instanceof Long) {
+            return value.toString(); // Se já for um ID (Long), apenas retorna como String
+        } else {
+            throw new ConverterException("Tipo não suportado: " + value.getClass().getName());
+        }
     }
 }

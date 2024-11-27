@@ -15,7 +15,9 @@ import com.teste.service.OcorrenciaService;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
+@Log4j
 public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
 	
 	private static final long serialVersionUID = 1L;
@@ -41,21 +43,29 @@ public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
 	public List<Ocorrencia> load(int first, int pageSize, Map<String, SortMeta> sortBy,
 			Map<String, FilterMeta> filterBy) {
 		
+		log.info(filterBy);
+		log.info("LAZY MODEL LOAD EXECUTDADO");
+		
+		log.info("Filtros recebidos: {}" +  filterBy);
+		
+		String descricaoFiltro = null;
+	    
+	    // Verificando se o filtro da descrição foi passado
+	    if (filterBy.containsKey("descricao")) {
+	        descricaoFiltro = (String) filterBy.get("descricao").getFilterValue();
+	        this.ocorrencias = this.ocorrenciaDAO.buscarPorDescricao(first, pageSize, descricaoFiltro);
+	        this.setRowCount(this.ocorrencias.size());
+	        return ocorrencias;
+	    }
+	    
+	    
+		
 		if (sortBy.isEmpty()) {
             sortBy.put("dataModificacao", SortMeta.builder()
                 .field("dataModificacao")
                 .order(SortOrder.DESCENDING)
                 .build());
         }
-		
-		
-		// ADICIONAR FUNCAO PARA DEFINIR O FILTRO ENTRE AS OCORRENCIAS ABERTAS E FECHADAS
-		if (this.colunaSelecionada != null && !this.colunaSelecionada.isEmpty()) {
-			FilterMeta filterMeta = new FilterMeta();
-	        filterMeta.setFilterValue(this.colunaSelecionada);
-	        filterMeta.setFilterValue(this.valorFiltro);
-	        filterBy.put(this.colunaSelecionada, filterMeta);
-		}
 		
 		System.out.println(filterBy);
 		
