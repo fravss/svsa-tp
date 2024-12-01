@@ -27,7 +27,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name="unidade")
+@Table(name="Unidade")
 public class UnidadeEP implements Serializable {
 
 
