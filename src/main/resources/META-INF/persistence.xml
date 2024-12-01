@@ -3,8 +3,10 @@
         xmlns="http://xmlns.jcp.org/xml/ns/persistence"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+		
              
 	<persistence-unit name="testePU" transaction-type="RESOURCE_LOCAL">
+		<class>gaian.svsa.ct.modelo.Tenant</class>
 
 		<properties> 		
 
@@ -21,6 +23,8 @@
 			<property name="hibernate.format_sql" value="true"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" /> 
 			<property name="hibernate.jdbc.time_zone" value="UTC"/>	
+			<property name="hibernate.archive.autodetection" value="class" />
+    		<property name="hibernate.archive.autodetection" value="hbm,class" />
 			
 			<!-- configuração do  pool de conexões -->
 			<property name="hibernate.c3p0.initialPoolSize" value="5"/>

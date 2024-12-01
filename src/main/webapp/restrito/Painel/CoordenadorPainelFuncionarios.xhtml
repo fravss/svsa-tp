@@ -8,8 +8,9 @@
 
     <ui:define name="corpo">
 
-        <h1>Unidades</h1>
+        <h1>Minha Unidade</h1>
 
+      
         
         <p:dialog 
             header="Estágio Probatório" 
@@ -55,11 +56,10 @@
                         <h:outputText value="#{usuario.email}" />
                     </p:column>
 
-                    <p:column field="Unidades" headerText="Unidades" filterMatchMode="exact">
+                    <p:column field="tipo" headerText="Departamentos" filterMatchMode="exact">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('tableUsuario').filter()" styleClass="custom-filter">
-                                <f:selectItem itemLabel="Selecione uma unidade" itemValue="#{null}" />
-                                <f:selectItems itemLabel="#{UnidadeEP}" itemValue="#{UnidadeEP}" />
+                                <f:selectItem itemLabel="Selecione um departamento" itemValue="#{null}" />
                             </p:selectOneMenu>
                             
                             
@@ -91,7 +91,6 @@
                     </p:column>
                     
                     <p:column headerText="Ações" style="text-align: center">
-                       
                         <p:commandButton 
                             value="Estágio Probatório" 
                             type="button" 

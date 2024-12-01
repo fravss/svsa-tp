@@ -107,6 +107,13 @@ public class MenuService {
 		item.setValue("Painel de funcionários ");
 		item.setIcon("pi pi-fw pi-sitemap");
 		modelo.getElements().add(item);
+		
+		item = new DefaultMenuItem();
+		item.setOutcome("/restrito/Painel/CoordenadorPainelFuncionarios");
+		item.setValue("Coordenador Painel Funcionarios");
+		item.setIcon("pi pi-fw pi-sitemap");
+		modelo.getElements().add(item);
+
 
         return modelo;
     }
