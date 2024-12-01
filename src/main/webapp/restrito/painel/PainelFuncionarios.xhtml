@@ -59,7 +59,7 @@
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('tableUsuario').filter()" styleClass="custom-filter">
                                 <f:selectItem itemLabel="Selecione uma unidade" itemValue="#{null}" />
-                                <f:selectItems itemLabel="#{UnidadeEP}" itemValue="#{UnidadeEP}" />
+                                <f:selectItems itemLabel="#{painelBean.unidades.nome}" itemValue="#{painelBean.unidades}" />
                             </p:selectOneMenu>
                             
                             

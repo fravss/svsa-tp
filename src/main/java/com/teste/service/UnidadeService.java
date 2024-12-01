@@ -20,10 +20,8 @@ import javax.naming.NamingException;
 import org.apache.log4j.Logger;
 
 import com.teste.dao.UnidadeDAO;
+import com.teste.model.UnidadeEP;
 import com.teste.model.UsuarioEP;
-
-import gaian.svsa.ct.modelo.Unidade;
-
 
 @ApplicationScoped
 public class UnidadeService implements Serializable {
@@ -33,11 +31,10 @@ public class UnidadeService implements Serializable {
 	@Inject
 	private UnidadeDAO unidadeDAO;
 	
-	@Inject
-	private AutenticacaoService autenticacaoService;
+	private UsuarioService usuarioService;
 	
-	public List<Unidade> listarUnidades() {
-		return this.unidadeDAO.listarUnidades(this.autenticacaoService.getUsuarioAutenticado());
+	public List<UnidadeEP> listarUnidades() {
+		return this.unidadeDAO.listarUnidades(this.usuarioService.getUsuarioAutenticado());
 	}
 	
 }

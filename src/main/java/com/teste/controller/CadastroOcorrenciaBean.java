@@ -51,8 +51,6 @@ public class CadastroOcorrenciaBean implements Serializable{
 	private OcorrenciaService service;
 	@Inject
 	private UsuarioService usuarioService;
-	@Inject
-	private AutenticacaoBean autenticacao;
 	
 	@PostConstruct
     public void init() {
@@ -77,7 +75,7 @@ public class CadastroOcorrenciaBean implements Serializable{
 		this.ocorrencia.setStatus(StatusOcorrencia.COORDENADOR);
 		this.ocorrencia.setDataCriacao(new Date());
 
-		this.ocorrencia.setRemetente(this.autenticacao.getUsuarioAutenticado());
+		this.ocorrencia.setRemetente(this.usuarioService.getUsuarioAutenticado());
 		
 		log.info(this.ocorrencia.getRemetente());
 		

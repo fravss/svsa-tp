@@ -14,6 +14,7 @@ import javax.inject.Named;
 
 import com.teste.dao.lazy.LazyUsuario;
 import com.teste.model.Ocorrencia;
+import com.teste.model.UnidadeEP;
 import com.teste.model.UsuarioEP;
 import com.teste.model.enums.StatusOcorrencia;
 import com.teste.model.enums.TipoOcorrencia;
@@ -21,7 +22,6 @@ import com.teste.service.OcorrenciaService;
 import com.teste.service.UnidadeService;
 import com.teste.service.UsuarioService;
 
-import gaian.svsa.ct.modelo.Unidade;
 
 import com.teste.model.enums.UnidadePainel;
 
@@ -44,9 +44,6 @@ public class PainelBean  implements Serializable{
 	//private LazyUsuario lazyUsuario;
 	private LazyUsuario lazyUsuario;
 	
-	@RequestScoped
-	private List<Unidade> unidades;
-	
 	
 	@Inject
 	private UsuarioService usuarioService;
@@ -58,9 +55,7 @@ public class PainelBean  implements Serializable{
 	@PostConstruct
     public void init() {
 		log.info("Bean CadastroOcorrenciaBean inicializado.");
-    	//this.lazyUsuario = new LazyUsuario(this.usuarioService);
 		this.lazyUsuario = new LazyUsuario(this.usuarioService);
-		this.unidades = this.unidadeService.listarUnidades();
     }
 	
 	public List<UnidadePainel> getListaTipos() {
@@ -70,6 +65,10 @@ public class PainelBean  implements Serializable{
 	 public String navegarParaPainel() {
 	        return "/restrito/Painel/PainelFuncionarios.xhtml?faces-redirect=true";
 	    }
+	 
+	 public List<UnidadeEP> getListaUnidades() {
+		    return this.unidadeService.listarUnidades();
+		}
 	    
 	
 }

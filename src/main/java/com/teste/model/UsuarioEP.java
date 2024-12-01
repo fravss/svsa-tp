@@ -2,14 +2,12 @@ package com.teste.model;
 
 import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -18,10 +16,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
 
-import gaian.svsa.ct.modelo.Tenant;
+import com.teste.model.enums.GrupoEP;
 
 //import com.teste.model.enums.GrupoEP;
 
@@ -47,12 +43,13 @@ public class UsuarioEP implements Serializable {
 	private String registroProfissional;
 	
 	@ManyToOne
-	private Tenant tenant;
+	private TenantEP tenant;
+	
+	@Enumerated(EnumType.STRING)
+	private GrupoEP grupo;
 	
 	@Column(unique=true)
 	private String email;
-	
-	private String grupo;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCriacao;	
