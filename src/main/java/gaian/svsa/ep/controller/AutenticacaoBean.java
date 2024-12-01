@@ -1,9 +1,12 @@
-package com.teste.controller;
+package gaian.svsa.ep.controller;
 
 import java.io.IOException;
 import java.io.Serializable;
 
 import org.primefaces.model.menu.MenuModel;
+
+import gaian.svsa.ep.model.UsuarioEP;
+import gaian.svsa.ep.service.AutenticacaoService;
 
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -14,10 +17,8 @@ import javax.inject.Named;
 import javax.persistence.NoResultException;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import com.teste.model.UsuarioEP;
-import com.teste.service.AutenticacaoService;
 
 import lombok.*;
 import lombok.extern.log4j.Log4j;
@@ -49,7 +50,6 @@ public class AutenticacaoBean implements Serializable {
 			HttpSession session = getSession();
 			UsuarioEP usuarioLogado = (UsuarioEP)session.getAttribute("usuario");
 			if(usuarioLogado == null) {
-				log.info("o usuario é null");
 				
 				HttpServletRequest request = this.getRequest();
 				String idCriptografado = this.getCookie(request);
@@ -91,6 +91,7 @@ public class AutenticacaoBean implements Serializable {
 		if (cookies != null) {
 			for (Cookie cookie : cookies) {
 				if ("SESSIONID".equals(cookie.getName())) {
+					removerCookie();
 					return cookie.getValue();
 				}
 			}
@@ -98,6 +99,29 @@ public class AutenticacaoBean implements Serializable {
 		return null;
 	}
 	
+	 public void removerCookie() {
+		 HttpServletResponse response = (HttpServletResponse) FacesContext.getCurrentInstance().getExternalContext().getResponse();
+         Cookie sessionCookie = new Cookie("SESSIONID", null);
+         sessionCookie.setMaxAge(0);
+         sessionCookie.setPath("/");
+         sessionCookie.setHttpOnly(true);
+         sessionCookie.setSecure(true);
+       
+
+       response.addCookie(sessionCookie);
+   }
+	public String sair() {
+		log.info("Invalidando sessão");		
+		FacesContext context = FacesContext.getCurrentInstance();
+		context.getExternalContext().invalidateSession();	    
+		
+		try {
+			 FacesContext.getCurrentInstance().getExternalContext().redirect("/svsa-ep/index.xhtml");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "/Home.xhtml";
+	}
 
  
    public HttpServletRequest getRequest() {	

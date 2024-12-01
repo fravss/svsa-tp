@@ -1,4 +1,4 @@
-package com.teste.util.filters;
+package gaian.svsa.ep.util.filters;
 
 import java.io.IOException;
 
@@ -13,8 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.teste.model.UsuarioEP;
-
+import gaian.svsa.ep.model.UsuarioEP;
 import lombok.extern.log4j.Log4j;
 
 @Log4j

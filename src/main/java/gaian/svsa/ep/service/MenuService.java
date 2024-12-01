@@ -1,4 +1,4 @@
-package com.teste.service;
+package gaian.svsa.ep.service;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +19,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.teste.model.UsuarioEP;
+import gaian.svsa.ep.model.UsuarioEP;
 
 @Named
 @RequestScoped
@@ -90,8 +90,8 @@ public class MenuService {
 
         }
         DefaultMenuItem item = new DefaultMenuItem();
-        item.setOutcome("/index.xhtml"); 
-        item.setValue("Home");
+        item.setCommand("#{autenticacaoBean.sair}"); 
+        item.setValue("Sair");
         item.setIcon("pi pi-fw pi-power-off");
 		modelo.getElements().add(item);
 

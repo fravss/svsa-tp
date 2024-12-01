@@ -1,0 +1,12 @@
+package gaian.svsa.ep.model.enums;
+
+public enum TipoOcorrencia {
+	
+	REUNIAO, 						// REUNIÕES
+	COMUNICACAO_AVISO, 				// COMUNICADOS E AVISOS
+	RELATORIO, 						//APRESENTACAO DE RELATORIOS
+	GERAIS, 						//ASSUNTOS GERAIS
+	PENDENTES, 						//ASSUNTOS PENDENTES
+	APROVACAO_DOCUMENTOS 			// APROVAÇÃO DE DOCUMENTOS
+	
+}

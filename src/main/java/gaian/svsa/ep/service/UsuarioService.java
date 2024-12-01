@@ -1,13 +1,12 @@
-package com.teste.service;
+package gaian.svsa.ep.service;
 
 import java.io.Serializable;
 
 
 import javax.inject.Inject;
 
-import com.teste.dao.UsuarioDAO;
-import com.teste.model.UsuarioEP;
-
+import gaian.svsa.ep.dao.UsuarioDAO;
+import gaian.svsa.ep.model.UsuarioEP;
 import lombok.extern.log4j.Log4j;
 
 @Log4j

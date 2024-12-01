@@ -1,4 +1,4 @@
-package com.teste.util.jpa;
+package gaian.svsa.ep.util.jpa;
 
 import java.io.Serializable;
 

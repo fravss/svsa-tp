@@ -1,11 +1,11 @@
-package com.teste.service;
+package gaian.svsa.ep.service;
 
 import javax.inject.Inject;
 
 import org.primefaces.model.menu.MenuModel;
 
-import com.teste.model.UsuarioEP;
-import com.teste.util.CriptografiaUtil;
+import gaian.svsa.ep.model.UsuarioEP;
+import gaian.svsa.ep.util.CriptografiaUtil;
 
 import java.io.Serializable;
 
