@@ -52,8 +52,6 @@ public class OcorrenciaPDFService implements Serializable {
 
 			generateContent(pdf, document, ocorrencias);
 			
-			pdf.addNewPage();
-			
 			document.close();
 
 			log.info("documento feito");
