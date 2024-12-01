@@ -58,7 +58,7 @@ public class RespostaOcorrenciaBean implements Serializable {
 
     public void salvarResposta() {
         try {
-            System.out.println("aqui a resp " + novaResposta);
+   
             this.novaResposta.setOcorrencia(ocorrencia);
             this.novaResposta.setUsuario(this.usuarioLogado);
             this.ocorrenciaService.novaResposta(novaResposta);
@@ -85,9 +85,6 @@ public class RespostaOcorrenciaBean implements Serializable {
     public void buscarPendencias() {
         try {
             this.ocorrencias = this.ocorrenciaService.buscarTodasPendencias(usuarioLogado);
-            System.out.println("O user: " + usuarioLogado.getNome());
-            System.out.println("A unidade: " + usuarioLogado.getUnidade());
-            System.out.println("O Grupo: " + usuarioLogado.getGrupo());
         } catch (Exception e) {
             log.error("Erro ao buscar pendências para o usuário " + usuarioLogado.getNome(), e);
             MessageUtil.erro("Não foi possível carregar as pendências. " + e.getMessage());

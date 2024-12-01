@@ -50,7 +50,6 @@ public class AutenticacaoBean implements Serializable {
 			HttpSession session = getSession();
 			UsuarioEP usuarioLogado = (UsuarioEP)session.getAttribute("usuario");
 			if(usuarioLogado == null) {
-				log.info("o usuario é null");
 				
 				HttpServletRequest request = this.getRequest();
 				String idCriptografado = this.getCookie(request);
@@ -117,7 +116,7 @@ public class AutenticacaoBean implements Serializable {
 		context.getExternalContext().invalidateSession();	    
 		
 		try {
-			 FacesContext.getCurrentInstance().getExternalContext().redirect("/teste/index.xhtml"); // mudar quando mudar esse teste
+			 FacesContext.getCurrentInstance().getExternalContext().redirect("/svsa-ep/index.xhtml");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

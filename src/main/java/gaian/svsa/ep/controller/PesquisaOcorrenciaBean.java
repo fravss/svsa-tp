@@ -130,7 +130,7 @@ public class PesquisaOcorrenciaBean implements Serializable {
 			else
 				ocorrencias = ocorrenciaService.buscarOcorrenciasGestorStatus(datasTO.getIni(),datasTO.getFim(), tipo);
 		}else {
-			ocorrencias = ocorrenciaService.buscarOcorrenciaStatus(unidade, datasTO.getIni(), datasTO.getFim(), autenticacaoBean.getUsuario().getUnidade().getTenant_id());
+			ocorrencias = ocorrenciaService.buscarOcorrenciaStatus(unidade, datasTO.getIni(), datasTO.getFim());
 		}
 		System.out.println("Tipo selecionado para a pesquisa: " + tipo);
 		System.out.println("Gestor selecionado para a pesquisa: " + isGestor);

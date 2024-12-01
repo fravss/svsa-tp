@@ -34,7 +34,7 @@ public class OcorrenciaDAO implements Serializable {
 	    try {
 	        return manager.createNamedQuery("Ocorrencia.buscarPendencias", Ocorrencia.class)
 	                .setParameter("usuario", usuario)  
-	                .setParameter("unidade", usuario.getUnidade().getCodigo())
+	                .setParameter("unidade", usuario.getUnidade())
 	                .setParameter("grupo", usuario.getGrupo().toString())
 	                .getResultList();
 	    } catch (NoResultException e) {

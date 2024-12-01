@@ -9,6 +9,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -21,6 +22,7 @@ import javax.validation.constraints.NotNull;
 
 import gaian.svsa.ep.model.enums.StatusOcorrencia;
 import gaian.svsa.ep.model.enums.TipoOcorrencia;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -48,13 +50,11 @@ import lombok.ToString;
     @NamedQuery(name="Ocorrencia.buscarOcorrenciaStatusPeriodo", query="select o from Ocorrencia o "
 			+ "where o.status = :status "
 			+ "and o.unidade = :unidade "
-			+ "and o.tenant = :tenant_id "
 			+ "and o.dataCriacao between :ini and :fim "
 			+ "order by o.status"),
 	@NamedQuery(name="Ocorrencia.buscarOcorrenciaStatus", query="select o from Ocorrencia o "
 			+ "where o.status = :status "
 			+ "and o.unidade = :unidade "
-			+ "and o.tenant = :tenant_id "
 			+ "order by o.status")
                 
     
@@ -77,25 +77,22 @@ public class Ocorrencia implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusOcorrencia status;
 	
-	@NotNull(message = "POR FAVOR, PREENCHA A DESCRIÇÃO") ///TAVA NOT BLANK E TAVA DANDO ERRO 
+	@NotNull(message = "POR FAVOR, PREENCHA A DESCRIÇÃO")
 	private String descricao;
 	
+	
+	@NotNull(message = "O REMETENTE É OBRIGATÓRIO")
+	@JoinColumn(name="codigo_remetente")
 	@ManyToOne
 	private UsuarioEP remetente;
 	
+	@JoinColumn(name="codigo_destinatario")
 	@ManyToOne
 	private UsuarioEP destinatario;
 	
-	//@ManyToOne
-	private Long unidade;
-	
-	//@ManyToOne
-	private Long tenant;
-	
-	//@OneToMany
-	//private ArrayList<Resposta> respostas;
-	
-	
+	@JoinColumn(name="codigo_unidade")
+	@ManyToOne
+	private UnidadeEP unidade;
 	
 	
 	

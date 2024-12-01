@@ -13,8 +13,6 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotBlank;
-
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -38,13 +36,9 @@ public class UnidadeEP implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
-	
-	private Long tenant_id;
-	
-	@NotBlank(message="O nome da unidade é obrigatório.")
+
 	private String nome;
 	
-	private String contato;
 	
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCriacao;	
