@@ -10,4 +10,9 @@
 	<grupo value="COORDENADORES"></grupo>
 		<menuitem value="Manter Unidade" outcome="/restrito/unidade/ManterUnidade.xhtml"/>
 	</submenu>
+	<submenu label="Relatório" icon="ui-icon-home">
+	<grupo value="COORDENADORES"></grupo>
+	<grupo value="GESTORES"></grupo>
+		<menuitem value="Gerar Relatório" outcome="/restrito/relatorio/PesquisaOcorrencia.xhtml"/>
+	</submenu>
 </menu>

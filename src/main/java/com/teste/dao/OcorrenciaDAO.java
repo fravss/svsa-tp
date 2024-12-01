@@ -1,18 +1,19 @@
 package com.teste.dao;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
-
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-
+import javax.persistence.TemporalType;
 import com.teste.model.Ocorrencia;
-
+import com.teste.model.UnidadeEP;
 import com.teste.model.UsuarioEP;
-
+import com.teste.model.enums.StatusOcorrencia;
+import com.teste.model.enums.TipoOcorrencia;
+import com.teste.util.DateUtils;
 import com.teste.util.jpa.Transactional;
-
 import lombok.extern.log4j.Log4j;
 
 @Log4j
@@ -49,5 +50,46 @@ public class OcorrenciaDAO implements Serializable {
 			log.warn("Nenhuma resposta encontrada para a ocorrência com código: " + e.getMessage());
 		}
 	}
+	
+	public List<Ocorrencia> buscarOcorrenciasGestor(Date ini, Date fim){
+		return manager
+				.createNamedQuery("Ocorrencia.buscarOcorrenciasGestor",Ocorrencia.class)
+				.setParameter("ini",ini,TemporalType.TIMESTAMP)
+				.setParameter("fim",DateUtils.plusDay(fim),TemporalType.TIMESTAMP).getResultList();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Ocorrencia> buscarTodos() {
+		return manager.createNamedQuery("Ocorrencia.buscarTodos").getResultList();
+	}
+
+	public List<Ocorrencia> buscarOcorrenciaStatus(Long unidade, Date ini, Date fim, Long tenant_id) {
+		
+		return manager
+				.createNamedQuery("Ocorrencia.buscarOcorrenciaStatusPeriodo", Ocorrencia.class)
+				.setParameter("unidade", unidade).setParameter("tenant_id", tenant_id)
+				.setParameter("ini", ini, TemporalType.TIMESTAMP)
+				.setParameter("fim", DateUtils.plusDay(fim), TemporalType.TIMESTAMP)
+				.setParameter("status", StatusOcorrencia.GESTOR).getResultList();
+	
+	}
+	
+	public List<Ocorrencia> buscarOcorrenciaStatus(Long unidade, Long tenant_id) {
+		
+		return manager.createNamedQuery("Ocorrencia.buscarOcorrenciaStatus", Ocorrencia.class)
+				.setParameter("unidade", unidade).setParameter("tenantId", tenant_id)
+				.setParameter("status", StatusOcorrencia.GESTOR).getResultList();
+	
+	}
+
+	public List<Ocorrencia> buscarOcorrenciasGestorStatus(Date ini, Date fim, TipoOcorrencia tipo) {
+		return manager
+				.createNamedQuery("Ocorrencia.buscarOcorrenciasGestorStatus",Ocorrencia.class)
+				.setParameter("ini",ini,TemporalType.TIMESTAMP)
+				.setParameter("fim",DateUtils.plusDay(fim),TemporalType.TIMESTAMP)
+				.setParameter("tipo", tipo).getResultList();
+				
+	}
+	
 
 }
