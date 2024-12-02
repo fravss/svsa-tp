@@ -32,6 +32,12 @@
 	</build>
 	<dependencies>
 		<dependency>
+		    <groupId>com.softarum</groupId>
+			<artifactId>svsa-ct</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+
+		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.15</version>
@@ -166,11 +172,6 @@
 		</dependency>
 
 
-		<dependency>
-			<groupId>com.softarum</groupId>
-			<artifactId>svsa-ct</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
 	</dependencies>
 	<!-- Repositorio PrimeFaces atzualizado 	-->
 	<repositories>

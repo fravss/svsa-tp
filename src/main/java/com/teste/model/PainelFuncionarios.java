@@ -12,14 +12,15 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import com.teste.model.enums.StatusOcorrencia;
@@ -33,8 +34,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @Entity
-@Table(name="ocorrencia")
-public class Ocorrencia implements Serializable {
+@Table(name="painel")
+public class PainelFuncionarios implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -50,7 +51,6 @@ public class Ocorrencia implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusOcorrencia status;
 	
-	@Lob
 	@Column(length = 512000, columnDefinition="Text")
 	@Basic(fetch=FetchType.LAZY)
 	@NotNull(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
@@ -68,13 +68,11 @@ public class Ocorrencia implements Serializable {
 	@ManyToOne
 	private UsuarioEP testemunha;
 	
-	@ManyToOne
-	@JoinColumn(name="unidade")
-	private UnidadeEP unidade;
+	//@ManyToOne
+	private Long unidade;
 	
-	@ManyToOne
-	@JoinColumn(name="tenant")
-	private TenantEP tenant;
+	//@ManyToOne
+	private Long tenant;
 	
 	/*
 	 * Datas de Criação e Modificação

@@ -103,10 +103,19 @@ public class MenuService {
 		modelo.getElements().add(item);
 		
 		item = new DefaultMenuItem();
-		item.setOutcome("/restrito/Painel/PainelFuncionarios");
+		item.setOutcome("/restrito/painel/PainelFuncionarios");
 		item.setValue("Painel de funcionários ");
 		item.setIcon("pi pi-fw pi-sitemap");
 		modelo.getElements().add(item);
+		
+		
+		/*
+		item = new DefaultMenuItem();
+		item.setOutcome("/restrito/painel/PainelFuncionariosCoordenador");
+		item.setValue("Coordenador Painel Funcionarios");
+		item.setIcon("pi pi-fw pi-sitemap");
+		modelo.getElements().add(item);*/
+
 
         return modelo;
     }

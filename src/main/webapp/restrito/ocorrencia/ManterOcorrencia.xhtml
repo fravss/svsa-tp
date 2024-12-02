@@ -8,6 +8,7 @@
 	<ui:define name="corpo">
 
 		<h1>Manter Ocorrencias</h1>
+		
 		<div>
 			<p:commandButton 
 			    value="Adicionar Ocorrência" 
@@ -18,12 +19,11 @@
 				
 		</div>
 		
-		
 		<p:dialog 
 		    header="Adicionar Ocorrência" 
 		    widgetVar="dlg2" 
 		    minHeight="50" 
-		    width="500" 
+		    width="1100" 
 		    modal="true" 
 		    closable="true" 
 		    closeOnEscape="true" 
@@ -91,13 +91,17 @@
 		                    id="descricao" 
 		                    rows="4" 
 		                    placeholder="Insira uma descrição detalhada..." 
-		                    style="width: 100%; resize: none;" />
+		                    style="width: 100%; min-height: 350px; resize: vertical;" />
 		            </div>
+		            
+		            <!-- 
 		            <div class="field col-12" style="margin-top:15px; margin-bottom:10px;">
 			            <h:form enctype="multipart/form-data">
 	    					<p:fileUpload value="#{bean.file}" mode="simple" />
 						</h:form>
 		            </div>
+		            
+		             -->
 		            
 		            <!-- Botões de Ação -->
 		            <div class="col-12" style="text-align: right; margin-top: 15px;">
@@ -113,8 +117,11 @@
 		    </h:form>
 		</p:dialog>
 		
+		
+		
 		<h:form id="formOcorrencias">
 		<div style="margin-top: 18px;">
+			
 			<p:dataTable  id="tableOcorrencias" widgetVar="tableOcorrencias" value="#{manterOcorrenciaBean.lazyOcorrencias}" var="ocorrencia" lazy="true"
 		emptyMessage="Nenhuma ocorrência registrada." paginator="true" rows="10"
 		paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
@@ -132,19 +139,59 @@
                				itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
 	             	</p:selectOneMenu>
 	             </f:facet>
-	             <h:outputText style="vertical-align: middle;" value="#{ocorrencia.tipo}" />
+	             <h:outputText style="vertical-align: middle;" value="#{ocorrencia.tipo.nome}" />
              </p:column>
+             
+             
 
 		    <p:column headerText="Descrição" filterBy="#{ocorrencia.descricao}" onchange="PF('tableOcorrencias').filter()" filterMatchMode="contains" filterPlaceholder="Filter By Descrição">
-    			<h:outputText value="#{ocorrencia.descricao}" />
+    			<h:outputText value="#{ocorrencia.descricao}" escape="false" />
 			</p:column>
+		   
+		   
+		   
 		    <p:column headerText="Ações">
-		    <!--  action="#{registrosBean.visualizar(registro.id)}"  -->
-		        <p:commandButton value="Visualizar"     
-		                         action="https://www.google.com" />
-		                         <!--  update=":visualizarForm"/>  -->
-		    </p:column>
-		</p:dataTable>
+    <!-- Botão de Visualizar -->
+                  <p:commandButton  icon="pi pi-eye" 
+                  	value="Visualizar"
+                     actionListener="#{manterOcorrenciaBean.editarOcorrencia(ocorrencia)}"
+                     onclick="PF('dlgEditar').show()" 
+                     update=":formOcorrencias:tableOcorrencias" />
+                     <!-- rendered="#{manterOcorrencia.isRascunho(ocorrencia)}"/>  -->
+		   
+	
+
+    <!-- Botão de Ediar -->
+    			<p:commandButton  icon="pi pi-pencil"
+    				value="Editar"
+                     actionListener="#{manterOcorrenciaBean.editarOcorrencia(ocorrencia)}"
+                     onclick="PF('dlgEditar').show()" 
+                     update=":formOcorrencias:tableOcorrencias" 
+                     rendered="#{ocorrencia.status} != ABERTO"/>
+    	    		
+		    		<p:commandButton icon="pi pi-trash" title="Excluir" 
+		    				value="Excluir"		    				
+		    				onclick="PF('confirmacaoExclusao').show();"
+							process="@this" 
+							rendered="#{ocorrencia.status} != ABERTO"
+							>
+						<f:setPropertyActionListener target="#{ManterOcorrenciaBean.ocorrenciaSelecionada}" value="#{ocorrencia}" />
+					</p:commandButton>
+		    	</p:column>
+		   	
+		   	<p:confirmDialog id="confirmacaoExclusaoDialog" 
+		   			widgetVar="confirmacaoExclusao"
+	        		message="Tem certeza que deseja excluir a inscrição #{ManterOcorrenciaBean.ocorrenciaSelecionada.codigo}?"  
+	                header="Exclusão de inscricao" severity="alert">
+	        	<p:button icon="pi pi-thumbs-down" value="Não" 
+	        		onclick="PF('confirmacaoExclusao').hide(); return false;" />
+	        	<p:commandButton icon="pi pi-thumbs-up" value="Sim" 
+	        		update=":formOcorrencias:tableOcorrencias"
+	        		onclick="PF('confirmacaoExclusao').hide();" action="#{ManterOcorrenciaBean.excluir}" />
+	    	</p:confirmDialog> 
+	    	
+		
+			</p:dataTable>
 		</div>
 		</h:form>
 

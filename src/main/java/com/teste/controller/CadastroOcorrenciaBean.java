@@ -51,8 +51,6 @@ public class CadastroOcorrenciaBean implements Serializable{
 	private OcorrenciaService service;
 	@Inject
 	private UsuarioService usuarioService;
-	@Inject
-	private AutenticacaoBean autenticacao;
 	
 	@PostConstruct
     public void init() {
@@ -69,30 +67,19 @@ public class CadastroOcorrenciaBean implements Serializable{
 	
 	
 	public void criarOcorrencia() throws SQLIntegrityConstraintViolationException {
-		
-		log.info("Destinatário: " + this.destinatario);
-	    log.info("Testemunha: " + this.testemunha);
-	    log.info("Tipo: " + this.tipo);
-	    log.info("Descrição: " + this.descricao);
 	
 		this.ocorrencia.setDestinatario(this.destinatario);
 		this.ocorrencia.setTestemunha(this.testemunha);
+		log.info(this.testemunha);
 		this.ocorrencia.setTipo(this.tipo);
 		this.ocorrencia.setDescricao(this.descricao);
-		this.ocorrencia.setStatus(StatusOcorrencia.COORDENADOR);
+		this.ocorrencia.setStatus(StatusOcorrencia.ABERTO);
 		this.ocorrencia.setDataCriacao(new Date());
 		
-		log.info(this.ocorrencia);
-		
-		log.info("Destinatário: " + this.destinatario);
-	    log.info("Testemunha: " + this.testemunha);
-	    log.info("Tipo: " + this.tipo);
-	    log.info("Descrição: " + this.descricao);
-	    log.info("Remetente: " + this.autenticacao.getUsuarioAutenticado());
-		
-		this.ocorrencia.setRemetente(this.autenticacao.getUsuarioAutenticado());
-		
-		log.info(this.ocorrencia.getRemetente());
+
+		this.ocorrencia.setRemetente(this.usuarioService.getUsuarioAutenticado());
+		this.ocorrencia.setUnidade(this.ocorrencia.getRemetente().getUnidade());
+		this.ocorrencia.setTenant(this.ocorrencia.getRemetente().getTenant());
 		
 		try {
 			this.service.salvar(this.ocorrencia);
@@ -104,10 +91,14 @@ public class CadastroOcorrenciaBean implements Serializable{
 		
 	}
 	
-	/*public List<UsuarioEP> filtrarUsuario(String query) {
-		log.info(query);
-		return lazyUsuario.buscarPorNome(query);
-	}*/
+	public void editarOcorrencia(Long id) {
+        log.info("Editando ocorrência com ID: " + id);
+        this.ocorrencia = service.buscarPorId(id); // Busca ocorrência pelo ID
+        this.destinatario = this.ocorrencia.getDestinatario();
+        this.testemunha = this.ocorrencia.getTestemunha();
+        this.tipo = this.ocorrencia.getTipo();
+        this.descricao = this.ocorrencia.getDescricao();
+    }
 	
 	public List<UsuarioEP> filtrarDestinatario(String query) {
 		log.info(query);

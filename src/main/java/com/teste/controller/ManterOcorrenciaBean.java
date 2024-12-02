@@ -11,8 +11,11 @@ import javax.inject.Named;
 
 import com.teste.dao.lazy.LazyOcorrencia;
 import com.teste.model.Ocorrencia;
+import com.teste.model.UsuarioEP;
+import com.teste.model.enums.StatusOcorrencia;
 import com.teste.model.enums.TipoOcorrencia;
 import com.teste.service.OcorrenciaService;
+import com.teste.service.UsuarioService;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -30,15 +33,17 @@ public class ManterOcorrenciaBean implements Serializable{
 	private LazyOcorrencia lazyOcorrencias;
     private List<Ocorrencia> ocorrencias;
     
-    
-    // FILTROS DE BUSCA
+    private UsuarioEP usuario;
+    @Inject
+    private UsuarioService usuarioService;
     
     @Inject
     private OcorrenciaService ocorrenciaService;
     
     @PostConstruct
     public void init() {
-    	this.lazyOcorrencias = new LazyOcorrencia(this.ocorrenciaService);
+    	this.usuario = this.usuarioService.getUsuarioAutenticado();
+    	this.lazyOcorrencias = new LazyOcorrencia(this.ocorrenciaService, this.usuario);
     }
     
     
@@ -48,6 +53,10 @@ public class ManterOcorrenciaBean implements Serializable{
     
     public String navegarParaOcorrencias() {
         return "/restrito/ocorrencia/ManterOcorrencia.xhtml?faces-redirect=true";
+    }
+    
+    public Boolean isRascunho(Ocorrencia ocorrencia) {
+    	return ocorrencia.getStatus() == StatusOcorrencia.ABERTO;
     }
     
 	
