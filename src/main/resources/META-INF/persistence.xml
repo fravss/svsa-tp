@@ -11,7 +11,7 @@
 			<!-- String de conexão com o BD -->
 			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/svsact?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
 			<property name="javax.persistence.jdbc.user" value="root"/>
-			<property name="javax.persistence.jdbc.password" value="anaflavia01"/>
+			<property name="javax.persistence.jdbc.password" value="ifsp"/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
 
 			<!--  Configuração do hibernate JPA -->			
@@ -21,6 +21,8 @@
 			<property name="hibernate.format_sql" value="true"/>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5InnoDBDialect" /> 
 			<property name="hibernate.jdbc.time_zone" value="UTC"/>	
+			<property name="hibernate.archive.autodetection" value="class" />
+    		<property name="hibernate.archive.autodetection" value="hbm,class" />
 			
 			<!-- configuração do  pool de conexões -->
 			<property name="hibernate.c3p0.initialPoolSize" value="5"/>

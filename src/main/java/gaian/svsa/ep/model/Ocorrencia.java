@@ -3,19 +3,21 @@ package gaian.svsa.ep.model;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -42,8 +44,6 @@ import lombok.ToString;
                 
     ),
 })
-
-
 public class Ocorrencia implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -52,16 +52,20 @@ public class Ocorrencia implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
 	
-	@NotNull(message = "O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
+	@NotNull(message="O TIPO DE OCORRÊNCIA É OBRIGATÓRIO")
 	@Enumerated(EnumType.STRING)
 	private TipoOcorrencia tipo;
 	
-	@NotNull(message = "O STATUS É OBRIGATÓRIO")
+	@NotNull(message="O STATUS DA OCORRENCIA É OBRIGATÓRIO")
 	@Enumerated(EnumType.STRING)
 	private StatusOcorrencia status;
 	
-	@NotNull(message = "POR FAVOR, PREENCHA A DESCRIÇÃO")
+	@Lob
+	@Column(length = 512000, columnDefinition="Text")
+	@Basic(fetch=FetchType.LAZY)
+	@NotNull(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
 	private String descricao;
+	//mudar para tipo text
 	
 	
 	@NotNull(message = "O REMETENTE É OBRIGATÓRIO")
@@ -69,19 +73,21 @@ public class Ocorrencia implements Serializable {
 	@ManyToOne
 	private UsuarioEP remetente;
 	
-	@JoinColumn(name="codigo_destinatario")
+	//@NotBlank(message="Por favor adione um destinatario")
 	@ManyToOne
 	private UsuarioEP destinatario;
 	
-	@JoinColumn(name="codigo_unidade")
+	//@NotBlank(message="Por favor adione uma testemunha")
 	@ManyToOne
+	private UsuarioEP testemunha;
+	
+	@ManyToOne
+	@JoinColumn(name="unidade")
 	private UnidadeEP unidade;
 	
+	@JoinColumn(name="tenant")
+	private TenantEP tenant;
 	
-	
-	/*
-	 * Datas de Criação e Modificação
-	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCriacao;	
 	@Temporal(TemporalType.TIMESTAMP)

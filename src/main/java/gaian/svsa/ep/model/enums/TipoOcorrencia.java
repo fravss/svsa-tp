@@ -1,12 +1,24 @@
 package gaian.svsa.ep.model.enums;
 
+import lombok.Getter;
+
 public enum TipoOcorrencia {
 	
-	REUNIAO, 						// REUNIÕES
-	COMUNICACAO_AVISO, 				// COMUNICADOS E AVISOS
-	RELATORIO, 						//APRESENTACAO DE RELATORIOS
-	GERAIS, 						//ASSUNTOS GERAIS
-	PENDENTES, 						//ASSUNTOS PENDENTES
-	APROVACAO_DOCUMENTOS 			// APROVAÇÃO DE DOCUMENTOS
+	REUNIAO("Reunião"),
+	FALTA("Falta"),
+	ATESTADO("Atestado"),
+	ASSEDIO("Assédio");
+	
+	@Getter
+	private String nome;
+
+    TipoOcorrencia(String nome) {
+        this.nome = nome;
+    }
+    
+    @Override
+    public String toString() {
+        return nome;
+    }
 	
 }
