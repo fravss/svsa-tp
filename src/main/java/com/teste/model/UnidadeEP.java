@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
@@ -25,6 +26,7 @@ import org.hibernate.envers.RelationTargetAuditMode;
 
 import com.teste.model.enums.TipoUnidade;
 
+import gaian.svsa.ct.modelo.Tenant;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,6 +38,7 @@ import lombok.ToString;
 @Setter
 @Entity
 @Audited
+@Table(name="unidade")
 public class UnidadeEP implements Serializable {
 
 	/**
@@ -49,7 +52,10 @@ public class UnidadeEP implements Serializable {
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Long codigo;
 	
-	private Long tenant_id;
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+	@ManyToOne
+	@JoinColumn(name="tenant_id")
+	private TenantEP tenant;
 	
 	@NotBlank(message="O nome da unidade é obrigatório.")
 	private String nome;
@@ -62,11 +68,6 @@ public class UnidadeEP implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="codigo_vinculada")
 	private UnidadeEP unidadeVinculada;
-	
-	@OneToOne(cascade=CascadeType.ALL)
-	@JoinColumn(name="codigo_endereco")
-	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-	private EnderecoEP endereco;
 	
 	/*
 	 * Datas de Criação e Modificação

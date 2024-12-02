@@ -48,12 +48,12 @@ public class LazyPainel extends LazyDataModel<Ocorrencia> {
 		
 		log.info("Filtros recebidos: {}" +  filterBy);
 		
-		String descricaoFiltro = null;
-	    
+		
 	    // Verificando se o filtro da descrição foi passado
 	    if (filterBy.containsKey("descricao")) {
+	    	String descricaoFiltro;
 	        descricaoFiltro = (String) filterBy.get("descricao").getFilterValue();
-	        this.ocorrencias = this.ocorrenciaDAO.buscarPorDescricao(first, pageSize, descricaoFiltro);
+	        //this.ocorrencias = this.ocorrenciaDAO.buscarPorDescricao(first, pageSize, descricaoFiltro);
 	        this.setRowCount(this.ocorrencias.size());
 	        return ocorrencias;
 	    }

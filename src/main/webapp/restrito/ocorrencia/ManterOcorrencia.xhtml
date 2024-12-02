@@ -93,11 +93,15 @@
 		                    placeholder="Insira uma descrição detalhada..." 
 		                    style="width: 100%; min-height: 350px; resize: vertical;" />
 		            </div>
+		            
+		            <!-- 
 		            <div class="field col-12" style="margin-top:15px; margin-bottom:10px;">
 			            <h:form enctype="multipart/form-data">
 	    					<p:fileUpload value="#{bean.file}" mode="simple" />
 						</h:form>
 		            </div>
+		            
+		             -->
 		            
 		            <!-- Botões de Ação -->
 		            <div class="col-12" style="text-align: right; margin-top: 15px;">
@@ -135,13 +139,13 @@
                				itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
 	             	</p:selectOneMenu>
 	             </f:facet>
-	             <h:outputText style="vertical-align: middle;" value="#{ocorrencia.tipo}" />
+	             <h:outputText style="vertical-align: middle;" value="#{ocorrencia.tipo.nome}" />
              </p:column>
              
              
 
 		    <p:column headerText="Descrição" filterBy="#{ocorrencia.descricao}" onchange="PF('tableOcorrencias').filter()" filterMatchMode="contains" filterPlaceholder="Filter By Descrição">
-    			<h:outputText value="#{ocorrencia.descricao}" />
+    			<h:outputText value="#{ocorrencia.descricao}" escape="false" />
 			</p:column>
 		   
 		   
@@ -149,21 +153,27 @@
 		    <p:column headerText="Ações">
     <!-- Botão de Visualizar -->
                   <p:commandButton  icon="pi pi-eye" 
+                  	value="Visualizar"
                      actionListener="#{manterOcorrenciaBean.editarOcorrencia(ocorrencia)}"
                      onclick="PF('dlgEditar').show()" 
                      update=":formOcorrencias:tableOcorrencias" />
+                     <!-- rendered="#{manterOcorrencia.isRascunho(ocorrencia)}"/>  -->
 		   
-		  
+	
 
     <!-- Botão de Ediar -->
     			<p:commandButton  icon="pi pi-pencil"
+    				value="Editar"
                      actionListener="#{manterOcorrenciaBean.editarOcorrencia(ocorrencia)}"
                      onclick="PF('dlgEditar').show()" 
-                     update=":formOcorrencias:tableOcorrencias" />
+                     update=":formOcorrencias:tableOcorrencias" 
+                     rendered="#{ocorrencia.status} != ABERTO"/>
     	    		
-		    		<p:commandButton icon="pi pi-trash" title="Excluir" 		    				
+		    		<p:commandButton icon="pi pi-trash" title="Excluir" 
+		    				value="Excluir"		    				
 		    				onclick="PF('confirmacaoExclusao').show();"
 							process="@this" 
+							rendered="#{ocorrencia.status} != ABERTO"
 							>
 						<f:setPropertyActionListener target="#{ManterOcorrenciaBean.ocorrenciaSelecionada}" value="#{ocorrencia}" />
 					</p:commandButton>
@@ -179,6 +189,7 @@
 	        		update=":formOcorrencias:tableOcorrencias"
 	        		onclick="PF('confirmacaoExclusao').hide();" action="#{ManterOcorrenciaBean.excluir}" />
 	    	</p:confirmDialog> 
+	    	
 		
 			</p:dataTable>
 		</div>

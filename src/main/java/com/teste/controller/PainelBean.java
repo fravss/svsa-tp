@@ -9,6 +9,7 @@ import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -28,12 +29,13 @@ import com.teste.model.enums.UnidadePainel;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.log4j.Log4j;
+import net.bytebuddy.asm.Advice.This;
 
 @Log4j
 @Getter
 @Setter
 @Named
-@SessionScoped
+@ViewScoped
 public class PainelBean  implements Serializable{
 	
 	/**
@@ -41,34 +43,63 @@ public class PainelBean  implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	//private LazyUsuario lazyUsuario;
+	private UsuarioEP usuario;
+	private Boolean estagioProbatorio;
+	
+	
 	private LazyUsuario lazyUsuario;
+	
+	private List<UnidadeEP> unidades;
 	
 	
 	@Inject
 	private UsuarioService usuarioService;
-	@Inject
-	private AutenticacaoBean autenticacao;
+
 	@Inject
 	private UnidadeService unidadeService;
 	
+	
 	@PostConstruct
     public void init() {
-		log.info("Bean CadastroOcorrenciaBean inicializado.");
 		this.lazyUsuario = new LazyUsuario(this.usuarioService);
+		this.usuario = new UsuarioEP();
     }
 	
-	public List<UnidadePainel> getListaTipos() {
-		    return Arrays.asList(UnidadePainel.values());
-		}
-	
 	 public String navegarParaPainel() {
-	        return "/restrito/Painel/PainelFuncionarios.xhtml?faces-redirect=true";
+	        return "/restrito/painel/PainelFuncionarios.xhtml?faces-redirect=true";
 	    }
 	 
-	 public List<UnidadeEP> getListaUnidades() {
-		    return this.unidadeService.listarUnidades();
+	 public List<UnidadeEP> getListarUnidades() {
+		try {
+			 return this.unidadeService.listarUnidades();
+		} catch (Exception e) {
+			log.info(e.getMessage());
 		}
+		return unidades;
+	}
+	 
+	 public void prepararEdicao(UsuarioEP usuario) {
+		 
+		 try {
+			 this.usuario = usuario;
+			 this.estagioProbatorio = this.usuario.getEstagioProbatorio();
+		 } catch (Exception e) {
+			log.warn("ERRO PREPARAR EDICAO");
+			log.warn(this.usuario);
+		}
+		 
+	 }
+
+	 public void alterarEP() {
+		 try {
+			 log.info("alterarEP executado");
+			 this.usuario.setEstagioProbatorio(this.estagioProbatorio);
+			 this.usuarioService.salvar(this.usuario);
+		} catch (SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
+			log.warn(e.getMessage());
+		}
+	 }
 	    
 	
 }

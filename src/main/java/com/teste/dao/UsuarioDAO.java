@@ -7,12 +7,15 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.transaction.UserTransaction;
 
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
@@ -20,6 +23,7 @@ import org.primefaces.model.SortOrder;
 
 import com.teste.model.Ocorrencia;
 import com.teste.model.UsuarioEP;
+import com.teste.util.jpa.Transactional;
 
 import lombok.extern.log4j.Log4j;
 
@@ -29,12 +33,38 @@ public class UsuarioDAO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Inject
+	@PersistenceContext
 	private EntityManager manager;
+	
+
+	
+	@Transactional
+	public void salvar(UsuarioEP usuario) throws Exception {
+		log.info("USUARIO DAO");
+		
+		try {
+            
+			manager.getTransaction().begin();
+			UsuarioEP managedUsuario = manager.merge(usuario);
+            manager.merge(usuario);
+            manager.getTransaction().commit();
+            manager.close();
+            
+        } catch (Exception e) {
+                log.warn(e.getMessage());
+            
+            throw new RuntimeException("Erro ao salvar", e);
+        }
+		
+	}	
+	
 
 	public UsuarioEP buscarPeloCodigo(Long id) {
 		log.info("Buscando usuario pelo id " + id);
 		return manager.find(UsuarioEP.class, id);
 	}
+	
+	
 
 	public List<UsuarioEP> buscarUsuarios(int first, int pageSize, Map<String, SortMeta> sortBy,
 			Map<String, FilterMeta> filterBy) {

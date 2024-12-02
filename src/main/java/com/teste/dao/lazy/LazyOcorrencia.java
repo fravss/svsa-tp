@@ -11,6 +11,7 @@ import org.primefaces.model.SortOrder;
 
 import com.teste.dao.OcorrenciaDAO;
 import com.teste.model.Ocorrencia;
+import com.teste.model.UsuarioEP;
 import com.teste.service.OcorrenciaService;
 
 import lombok.Getter;
@@ -26,6 +27,8 @@ public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
 	private OcorrenciaDAO ocorrenciaDAO;
 	
 	
+	private UsuarioEP usuario;
+	
 	// FILTROS
 	@Setter
 	private String colunaSelecionada;
@@ -34,7 +37,8 @@ public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
     private Object valorFiltro;
 	
 	
-	public LazyOcorrencia(OcorrenciaService ocorrenciaService) {
+	public LazyOcorrencia(OcorrenciaService ocorrenciaService, UsuarioEP usuario) {
+		this.usuario = usuario;
 		this.ocorrenciaDAO = ocorrenciaService.getOcorrenciaDAO();
 	}
 
@@ -44,20 +48,32 @@ public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
 			Map<String, FilterMeta> filterBy) {
 		
 		log.info(filterBy);
-		log.info("LAZY MODEL LOAD EXECUTDADO");
 		
-		log.info("Filtros recebidos: {}" +  filterBy);
-		
-		String descricaoFiltro = null;
-	    
-	    // Verificando se o filtro da descrição foi passado
-	    if (filterBy.containsKey("descricao")) {
-	        descricaoFiltro = (String) filterBy.get("descricao").getFilterValue();
-	        this.ocorrencias = this.ocorrenciaDAO.buscarPorDescricao(first, pageSize, descricaoFiltro);
-	        this.setRowCount(this.ocorrencias.size());
-	        return ocorrencias;
-	    }
-	    
+		log.info(this.usuario);
+
+		// Filtro para o grupo do usuário
+		FilterMeta grupoMeta = new FilterMeta();
+		grupoMeta.setFilterValue(usuario.getGrupo());
+		filterBy.put("grupo", grupoMeta);
+		log.info(filterBy.get("grupo").getFilterValue());
+
+		// Filtro para o tenant do usuário
+		FilterMeta tenantMeta = new FilterMeta();
+		tenantMeta.setFilterValue(usuario.getTenant());
+		filterBy.put("tenant", tenantMeta);
+		log.info(filterBy.get("tenant").getFilterValue());
+
+		// Filtro para o usuário
+		FilterMeta usuarioMeta = new FilterMeta();
+		usuarioMeta.setFilterValue(usuario);
+		filterBy.put("usuario", usuarioMeta);
+		log.info(filterBy.get("usuario").getFilterValue());
+
+		// Filtro para a unidade do usuário
+		FilterMeta unidadeMeta = new FilterMeta();
+		unidadeMeta.setFilterValue(usuario.getUnidade());
+		filterBy.put("unidade", unidadeMeta);
+		log.info(filterBy.get("unidade").getFilterValue());
 	    
 		
 		if (sortBy.isEmpty()) {
@@ -70,11 +86,12 @@ public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
 		System.out.println(filterBy);
 		
         this.ocorrencias = ocorrenciaDAO.buscarOcorrencias(first, pageSize, sortBy, filterBy);
-        this.setRowCount(ocorrenciaDAO.contarOcorrencias(filterBy));
+        this.setRowCount(this.ocorrencias.size());
 
         return this.ocorrencias;
         
 	}
+	
 
 	@Override
 	public int count(Map<String, FilterMeta> filterBy) {

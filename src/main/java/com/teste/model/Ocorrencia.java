@@ -12,6 +12,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
@@ -48,6 +50,7 @@ public class Ocorrencia implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private StatusOcorrencia status;
 	
+	@Lob
 	@Column(length = 512000, columnDefinition="Text")
 	@Basic(fetch=FetchType.LAZY)
 	@NotNull(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
@@ -65,11 +68,13 @@ public class Ocorrencia implements Serializable {
 	@ManyToOne
 	private UsuarioEP testemunha;
 	
-	//@ManyToOne
-	private Long unidade;
+	@ManyToOne
+	@JoinColumn(name="unidade")
+	private UnidadeEP unidade;
 	
-	//@ManyToOne
-	private Long tenant;
+	@ManyToOne
+	@JoinColumn(name="tenant")
+	private TenantEP tenant;
 	
 	/*
 	 * Datas de Criação e Modificação

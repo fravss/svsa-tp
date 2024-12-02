@@ -7,12 +7,11 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -22,6 +21,9 @@ import org.primefaces.model.SortMeta;
 import org.primefaces.model.SortOrder;
 
 import com.teste.model.Ocorrencia;
+import com.teste.model.UsuarioEP;
+import com.teste.model.enums.GrupoEP;
+import com.teste.model.enums.StatusOcorrencia;
 import com.teste.util.jpa.Transactional;
 
 import lombok.extern.log4j.Log4j;
@@ -33,6 +35,8 @@ public class OcorrenciaDAO implements Serializable{
 	
 	@Inject
 	private EntityManager manager;
+	
+	private List<Ocorrencia> resultado;
 
 	public Ocorrencia buscarPeloCodigo(Long id) {
 		//log.info("Buscando usuario pelo id " + id);
@@ -47,7 +51,10 @@ public class OcorrenciaDAO implements Serializable{
 	@Transactional
 	public void salvar(Ocorrencia ocorrencia) throws PersistenceException {
 		try {
-			manager.merge(ocorrencia);	
+			manager.getTransaction().begin();
+			Ocorrencia managedOcorrencia = manager.merge(ocorrencia);
+			manager.getTransaction().commit();
+			manager.flush();
 		} catch (PersistenceException e) {
 			e.printStackTrace();
 			throw e;
@@ -72,8 +79,54 @@ public class OcorrenciaDAO implements Serializable{
         CriteriaQuery<Ocorrencia> cq = cb.createQuery(Ocorrencia.class);
         Root<Ocorrencia> ocorrencia = cq.from(Ocorrencia.class);
 
+        Join<Ocorrencia, UsuarioEP> remetente = ocorrencia.join("remetente");
+        
         // Aplicar filtros
+        
         List<Predicate> predicates = new ArrayList<>();
+        
+        //FILTRAR POR TENANT
+        if(filterBy.get("tenant").getFilterValue() != null)
+        	predicates.add(cb.equal(remetente.get("tenant"), filterBy.get("tenant").getFilterValue()));
+        
+        //FILTRAR POR REMETENTE, DESTINATARIO OU TESTEMUNHA
+        if(filterBy.get("usuario").getFilterValue() != null) {
+	        Predicate usuarioPredicate = cb.or(
+	                cb.equal(ocorrencia.get("remetente"), filterBy.get("usuario").getFilterValue()),
+	                cb.equal(ocorrencia.get("destinatario"), filterBy.get("usuario").getFilterValue()),
+	                cb.equal(ocorrencia.get("testemunha"), filterBy.get("usuario").getFilterValue())
+	            );
+	        //predicates.add(usuarioPredicate);
+        
+        
+        // FILTROS POR GRUPO
+        if(filterBy.get("grupo").getFilterValue() != null) {
+	        GrupoEP grupo = (GrupoEP) filterBy.get("grupo").getFilterValue();
+	        switch (grupo) {
+			case GESTORES: {
+				predicates.add(cb.or(
+						cb.equal(ocorrencia.get("status"), StatusOcorrencia.GESTOR),
+						usuarioPredicate));
+				//predicates.add(cb.equal(ocorrencia.get("status"), StatusOcorrencia.GESTOR));
+	            break;
+			}
+			case COORDENADORES:
+				Predicate unidadePredicate = cb.equal(ocorrencia.get("unidade"), filterBy.get("unidade").getFilterValue());
+	            Predicate statusPredicate = cb.or(
+	                cb.equal(ocorrencia.get("status"), StatusOcorrencia.COORDENADOR),
+	                cb.equal(ocorrencia.get("status"), StatusOcorrencia.GESTOR)
+	            );
+	            predicates.add(cb.or(
+	            		cb.and(unidadePredicate, statusPredicate),
+	            		usuarioPredicate));
+	            break;
+			default:
+				predicates.add(usuarioPredicate);
+				break;
+			}
+        }
+        }
+        
         
         // *************************************************
         // ADICIONAR A LOGICA PARA FILTRAR BASEADO EM FUNCAO
@@ -85,14 +138,18 @@ public class OcorrenciaDAO implements Serializable{
         for (Map.Entry<String, FilterMeta> filtro : filterBy.entrySet()) {
             FilterMeta meta = filtro.getValue();
             if (meta.getFilterValue() != null) {
-            	predicates.add(cb.equal(ocorrencia.get(filtro.getKey()), meta.getFilterValue()));
-            	/*if ("tipo".equals(filtro.getKey())) {
-            		TipoOcorrencia tipo = TipoOcorrencia.valueOf(meta.getFilterValue().toString().toUpperCase());  // Converte para o enum correspondente
-            		predicates.add(cb.equal(ocorrencia.get(filtro.getKey()), tipo));
+            	
+            	if ("descricao".equals(filtro.getKey())) {
+            		String descricaoFiltro = meta.getFilterValue().toString().toLowerCase();
+            		predicates.add(cb.like(cb.lower(ocorrencia.get(filtro.getKey())), "%" + descricaoFiltro + "%"));
+            	} else if ("usuario".equals(filtro.getKey()) || "grupo".equals(filtro.getKey())) {
+            		// PREVECAO DE FILTRO POR ATRIBUTOS NAO EXISTENTES NA CLASSE
+            	} else if ("tenant".equals(filtro.getKey()) || "unidade".equals(filtro.getKey())) {
+            		
             	}
             	else {
             		predicates.add(cb.equal(ocorrencia.get(filtro.getKey()), meta.getFilterValue()));
-            	}*/
+            	}
             }
         }
         cq.where(predicates.toArray(new Predicate[0]));
@@ -112,8 +169,9 @@ public class OcorrenciaDAO implements Serializable{
         TypedQuery<Ocorrencia> query = manager.createQuery(cq);
         query.setFirstResult(first);
         query.setMaxResults(pageSize);
-
-        return query.getResultList();
+        
+        resultado = query.getResultList();
+        return resultado;
         
     }
 
@@ -130,17 +188,17 @@ public class OcorrenciaDAO implements Serializable{
                 predicates.add(cb.like(ocorrencia.get("descricao"), "%" + filterValue + "%"));
             } else if ("codigo".equals(field) && filterValue != null){
             	predicates.add(cb.equal(ocorrencia.get("codigo"), filterValue));
-            } else if ("usuario".equals(field) && filterValue != null) {
-                predicates.add(cb.equal(ocorrencia.get("usuario").get("codigo"), filterValue));
             }
         });
         cq.where(predicates.toArray(new Predicate[0]));
         cq.select(cb.count(ocorrencia));
 
         return manager.createQuery(cq).getSingleResult().intValue();
+    	//return resultado.size();
+        
     }
     
-    public List<Ocorrencia> buscarPorDescricao(int first, int pageSize, String descricaoFiltro) {
+    /*public List<Ocorrencia> buscarPorDescricao(int first, int pageSize, String descricaoFiltro) {
     	
     	log.info(descricaoFiltro);
     	
@@ -155,7 +213,7 @@ public class OcorrenciaDAO implements Serializable{
         query.setMaxResults(pageSize);
         
         return query.getResultList();
-    }
+    }*/
 
 	public void setEntityManager(EntityManager manager) {
 		this.manager = manager;

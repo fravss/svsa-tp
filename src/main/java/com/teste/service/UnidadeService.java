@@ -31,6 +31,7 @@ public class UnidadeService implements Serializable {
 	@Inject
 	private UnidadeDAO unidadeDAO;
 	
+	@Inject
 	private UsuarioService usuarioService;
 	
 	public List<UnidadeEP> listarUnidades() {

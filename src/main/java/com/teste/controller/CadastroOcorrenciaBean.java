@@ -70,14 +70,16 @@ public class CadastroOcorrenciaBean implements Serializable{
 	
 		this.ocorrencia.setDestinatario(this.destinatario);
 		this.ocorrencia.setTestemunha(this.testemunha);
+		log.info(this.testemunha);
 		this.ocorrencia.setTipo(this.tipo);
 		this.ocorrencia.setDescricao(this.descricao);
-		this.ocorrencia.setStatus(StatusOcorrencia.COORDENADOR);
+		this.ocorrencia.setStatus(StatusOcorrencia.ABERTO);
 		this.ocorrencia.setDataCriacao(new Date());
+		
 
 		this.ocorrencia.setRemetente(this.usuarioService.getUsuarioAutenticado());
-		
-		log.info(this.ocorrencia.getRemetente());
+		this.ocorrencia.setUnidade(this.ocorrencia.getRemetente().getUnidade());
+		this.ocorrencia.setTenant(this.ocorrencia.getRemetente().getTenant());
 		
 		try {
 			this.service.salvar(this.ocorrencia);

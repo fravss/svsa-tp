@@ -1,7 +1,9 @@
 package com.teste.service;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -18,6 +20,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Getter
 @Setter
+@Named
+@ApplicationScoped
 public class AutenticacaoService implements Serializable {
 private static final long serialVersionUID = 1L;
 

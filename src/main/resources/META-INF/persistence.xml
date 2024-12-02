@@ -6,7 +6,7 @@
 		
              
 	<persistence-unit name="testePU" transaction-type="RESOURCE_LOCAL">
-		<class>gaian.svsa.ct.modelo.Tenant</class>
+		
 
 		<properties> 		
 

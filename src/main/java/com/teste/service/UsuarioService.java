@@ -1,11 +1,14 @@
 package com.teste.service;
 
 import java.io.Serializable;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 import com.teste.dao.UsuarioDAO;
 import com.teste.model.UsuarioEP;
@@ -27,6 +30,15 @@ public class UsuarioService implements Serializable {
 		log.info("Buscando usuario por Id");
 
 		return this.usuarioDAO.buscarPeloCodigo(id);
+	}
+	
+	public void salvar(UsuarioEP usuario) throws SQLIntegrityConstraintViolationException {		
+		try {
+			this.usuarioDAO.salvar(usuario);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.warn(e.getMessage());
+		}
 	}
 
 	public Object buscarPorNome(String value) {
