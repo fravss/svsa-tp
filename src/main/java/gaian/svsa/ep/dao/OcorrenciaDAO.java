@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -47,6 +48,19 @@ public class OcorrenciaDAO implements Serializable{
 		return manager.createNamedQuery("Ocorrencia.buscarTodos").getResultList();
 	}
 	
+	public List<Ocorrencia> buscarPendenciasPorUsuario(UsuarioEP usuario) throws NoResultException {
+	    try {
+	        return manager.createNamedQuery("Ocorrencia.buscarPendencias", Ocorrencia.class)
+	                .setParameter("usuario", usuario)  
+	                .setParameter("unidade", usuario.getUnidade())
+	                .setParameter("grupo", usuario.getGrupo().toString())
+	                .getResultList();
+	    } catch (NoResultException e) {
+	        log.warn("Nenhuma pendência encontrada para o usuário: " + usuario.getNome());
+	        return null;
+	    }
+	}
+	
 	@Transactional
 	public void salvar(Ocorrencia ocorrencia) throws PersistenceException {
 		try {
@@ -58,16 +72,7 @@ public class OcorrenciaDAO implements Serializable{
 			e.printStackTrace();
 			throw e;
 		}
-		/*} catch (RuntimeException e) {
-			e.printStackTrace();
-			throw new NegocioException("Não foi possível executar a operação.");
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw new NegocioException("Não foi possível executar a operação.");
-		} catch (Error e) {
-			e.printStackTrace();
-			throw new NegocioException("Não foi possível executar a operação.");
-		}*/
+		
 	}	
 	
 	

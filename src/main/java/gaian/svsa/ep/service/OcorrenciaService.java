@@ -18,33 +18,29 @@ import javax.naming.NamingException;
 import org.apache.log4j.Logger;
 
 import gaian.svsa.ep.dao.OcorrenciaDAO;
+import gaian.svsa.ep.dao.RespostaDAO;
 import gaian.svsa.ep.model.Ocorrencia;
+import gaian.svsa.ep.model.Resposta;
+import gaian.svsa.ep.model.UsuarioEP;
+import gaian.svsa.ep.model.enums.GrupoEP;
+import gaian.svsa.ep.model.enums.StatusOcorrencia;
+import gaian.svsa.ep.util.jpa.Transactional;
+import lombok.extern.log4j.Log4j;
 
 
-
+@Log4j
 @ApplicationScoped
 public class OcorrenciaService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Logger log = Logger.getLogger(OcorrenciaService.class);
+	@Inject
+	private OcorrenciaDAO ocorrenciaDAO;
 	
 	@Inject
 	private OcorrenciaDAO ocorrenciaDAO;
 	
 	public void salvar(Ocorrencia ocorrencia) throws SQLIntegrityConstraintViolationException {
-			
-		/*
-		 * Verifica se existe agendamento em aberto	
-		 */		
-		
-		
-		//if (ocorrencia.getDestinatario() == null)
-		//	throw new NegocioException("O destinatario é obrigatorio");
-		/*if (ocorrencia.getTestemunha() == null)
-			throw new NegocioException("A testemunha é obrigatorio");
-		if (ocorrencia.getDescricao() == null)
-			throw new NegocioException("A descrição é obrigatorio");*/
 		
 		this.ocorrenciaDAO.salvar(ocorrencia);
 
@@ -60,6 +56,32 @@ public class OcorrenciaService implements Serializable {
 	public OcorrenciaDAO getOcorrenciaDAO() {
 		return this.ocorrenciaDAO;
 	}
+	
+	public List<Resposta> buscarTodasRespostas(Ocorrencia ocorrencia) {
+		
+		return this.respostaDAO.buscarTodasPorOcorrencia(ocorrencia);
+		
+	}
+	
+	public List<Ocorrencia> buscarTodasPendencias (UsuarioEP usuario) {
+		return this.ocorrenciaDAO.buscarPendenciasPorUsuario(usuario);
+	}
+	
+	@Transactional
+	public void novaResposta(Resposta resposta) {
+	    try {
+	        this.respostaDAO.salvar(resposta);
+
+	        Ocorrencia ocorrencia = resposta.getOcorrencia();
+	        if (resposta.getUsuario().getGrupo() == GrupoEP.COORDENADORES && ocorrencia.getStatus() == StatusOcorrencia.COORDENADOR) {
+	            ocorrencia.setStatus(StatusOcorrencia.GESTOR);
+	            log.info("Coordenador criando nova ocorrência: " + ocorrencia);
+	            this.ocorrenciaDAO.salvar(ocorrencia);
+	        }
+	    } catch (Exception e) {
+	        log.error("Erro", e);
+        }
+    }
 
 	private static BeanManager getBeanManager() {
 		try {

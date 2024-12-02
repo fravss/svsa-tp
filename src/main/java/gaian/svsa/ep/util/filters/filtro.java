@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import gaian.svsa.ep.model.UsuarioEP;
-
 import lombok.extern.log4j.Log4j;
 
 @Log4j

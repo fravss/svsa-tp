@@ -112,14 +112,10 @@ public class MenuService {
 			modelo.getElements().add(item);
 		}
 		
-		
-		/*
-		item = new DefaultMenuItem();
-		item.setOutcome("/restrito/painel/PainelFuncionariosCoordenador");
-		item.setValue("Coordenador Painel Funcionarios");
-		item.setIcon("pi pi-fw pi-sitemap");
-		modelo.getElements().add(item);*/
-
+		item.setCommand("#{autenticacaoBean.sair}"); 
+        item.setValue("Sair");
+        item.setIcon("pi pi-fw pi-power-off");
+		modelo.getElements().add(item);
 
         return modelo;
     }

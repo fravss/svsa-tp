@@ -45,10 +45,8 @@ public class UsuarioDAO implements Serializable {
             
 			manager.getTransaction().begin();
 			UsuarioEP managedUsuario = manager.merge(usuario);
-            //manager.merge(usuario);
             manager.getTransaction().commit();
             manager.flush();
-            //manager.close();
             
         } catch (Exception e) {
                 log.warn(e.getMessage());

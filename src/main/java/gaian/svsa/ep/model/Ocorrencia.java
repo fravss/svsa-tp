@@ -15,6 +15,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
@@ -24,6 +26,7 @@ import javax.validation.constraints.NotNull;
 
 import gaian.svsa.ep.model.enums.StatusOcorrencia;
 import gaian.svsa.ep.model.enums.TipoOcorrencia;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -33,6 +36,18 @@ import lombok.ToString;
 @Setter
 @Entity
 @Table(name="ocorrencia")
+@NamedQueries({
+    @NamedQuery(
+        name = "Ocorrencia.buscarPendencias",
+        query = "select o from Ocorrencia o "
+                + "where o.destinatario = :usuario " // se a ocorrencia se destinar a ele, ** se ele escreveu a ocorrencia ele vai acompanhar ela na tabela do crud
+                + "or (o.unidade = :unidade and :grupo = ('COORDENADORES'))"  // se ele for o cordenador da ocorrenica, ele deve ver todas as fases
+                + "or (o.status in ('GESTOR', 'FECHADO') and  :grupo = ('GESTORES'))" // o gestor só seria depois de passar pelo coordenador
+                
+    ),
+})
+
+
 public class Ocorrencia implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -56,6 +71,9 @@ public class Ocorrencia implements Serializable {
 	private String descricao;
 	//mudar para tipo text
 	
+	
+	@NotNull(message = "O REMETENTE É OBRIGATÓRIO")
+	@JoinColumn(name="codigo_remetente")
 	@ManyToOne
 	private UsuarioEP remetente;
 	

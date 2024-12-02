@@ -23,9 +23,6 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
 
 import gaian.svsa.ep.model.enums.GrupoEP;
-
-//import com.teste.model.enums.GrupoEP;
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

@@ -30,6 +30,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+
 @ToString(onlyExplicitlyIncluded = true)
 @EqualsAndHashCode(callSuper = false, onlyExplicitlyIncluded = true)
 @Getter
@@ -39,9 +40,7 @@ import lombok.ToString;
 @Table(name="unidade")
 public class UnidadeEP implements Serializable {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = -5526059262907035239L;
 	
 	@EqualsAndHashCode.Include
@@ -55,14 +54,9 @@ public class UnidadeEP implements Serializable {
 	@JoinColumn(name="tenant_id")
 	private TenantEP tenant;
 	
-	@NotBlank(message="O nome da unidade é obrigatório.")
 	private String nome;
 	
 	
-	
-	/*
-	 * Datas de Criação e Modificação
-	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCriacao;	
 	@Temporal(TemporalType.TIMESTAMP)

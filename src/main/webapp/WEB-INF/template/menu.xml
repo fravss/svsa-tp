@@ -1,12 +1,10 @@
 <!DOCTYPE xml>
 <menu>
-	<submenu label="Usuário" icon="ui-icon-home">
+	<submenu label="Ocorrencias" icon="ui-icon-home">
+	<grupo value="ADMINISTRATIVOS"></grupo>
 	<grupo value="COORDENADORES"></grupo>
+	<grupo value="GESTORES"></grupo>
 	<grupo value="TECNICOS"></grupo>
-		<menuitem value="Manter Usuário" outcome="/restrito/usuario/ManterUsuario.xhtml"/>>
-	</submenu>
-	<submenu label="Unidade" icon="ui-icon-home">
-	<grupo value="COORDENADORES"></grupo>
-		<menuitem value="Manter Unidade" outcome="/restrito/unidade/ManterUnidade.xhtml"/>
+		<menuitem value="Pendências" outcome="/restrito/ocorrencia/GerirOcorrencia.xhtml"/>>
 	</submenu>
 </menu>
