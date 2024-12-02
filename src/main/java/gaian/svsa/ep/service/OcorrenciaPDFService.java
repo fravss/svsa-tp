@@ -223,7 +223,7 @@ public class OcorrenciaPDFService implements Serializable {
 
 			pTable.addCell(new Cell(1, 1).add(new Paragraph("Status: " + Ocorrencia.getStatus())));
 			
-			pTable.addCell(new Cell(1, 1).add(new Paragraph("Unidade: " + Ocorrencia.getUnidade())));			
+			pTable.addCell(new Cell(1, 1).add(new Paragraph("Unidade: " + Ocorrencia.getUnidade().getNome())));			
 			try {
 			  
 			 String dataFormatada = DateUtils.parseDateToString(Ocorrencia.getDataCriacao());

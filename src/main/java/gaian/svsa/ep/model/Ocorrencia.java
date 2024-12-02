@@ -48,13 +48,11 @@ import lombok.ToString;
 	         + "and o.dataCriacao between :ini and :fim "
 	         + "order by o.dataCriacao"),
     @NamedQuery(name="Ocorrencia.buscarOcorrenciaStatusPeriodo", query="select o from Ocorrencia o "
-			+ "where o.status = :status "
-			+ "and o.unidade = :unidade "
+			+ "where o.unidade = :unidade "
 			+ "and o.dataCriacao between :ini and :fim "
 			+ "order by o.status"),
 	@NamedQuery(name="Ocorrencia.buscarOcorrenciaStatus", query="select o from Ocorrencia o "
-			+ "where o.status = :status "
-			+ "and o.unidade = :unidade "
+			+ "where o.unidade = :unidade "
 			+ "order by o.status")
                 
     

@@ -75,7 +75,7 @@ public class PesquisaOcorrenciaBean implements Serializable {
 
 	private Mes mes;
 	
-	private Long unidade;
+	private UnidadeEP unidade;
 
 	private DatasIniFim datasTO;
 
@@ -113,7 +113,7 @@ public class PesquisaOcorrenciaBean implements Serializable {
 		
 		tipos = Arrays.asList(TipoOcorrencia.values());
 		
-		unidade = autenticacaoBean.getUsuario().getUnidade().getCodigo();
+		unidade = autenticacaoBean.getUsuario().getUnidade();
 		
 		temPermissao = isTemPermissao(); 
 		System.out.println("Tem permissao selecionado para a pesquisa: " + temPermissao);

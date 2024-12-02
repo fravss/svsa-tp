@@ -64,22 +64,20 @@ public class OcorrenciaDAO implements Serializable {
 		return manager.createNamedQuery("Ocorrencia.buscarTodos").getResultList();
 	}
 
-	public List<Ocorrencia> buscarOcorrenciaStatus(Long unidade, Date ini, Date fim, Long tenant_id) {
+	public List<Ocorrencia> buscarOcorrenciaStatus(UnidadeEP unidade, Date ini, Date fim) {
 		
 		return manager
 				.createNamedQuery("Ocorrencia.buscarOcorrenciaStatusPeriodo", Ocorrencia.class)
-				.setParameter("unidade", unidade).setParameter("tenant_id", tenant_id)
+				.setParameter("unidade", unidade)
 				.setParameter("ini", ini, TemporalType.TIMESTAMP)
-				.setParameter("fim", DateUtils.plusDay(fim), TemporalType.TIMESTAMP)
-				.setParameter("status", StatusOcorrencia.GESTOR).getResultList();
+				.setParameter("fim", DateUtils.plusDay(fim), TemporalType.TIMESTAMP).getResultList();
 	
 	}
 	
-	public List<Ocorrencia> buscarOcorrenciaStatus(Long unidade, Long tenant_id) {
+	public List<Ocorrencia> buscarOcorrenciaStatus(UnidadeEP unidade) {
 		
 		return manager.createNamedQuery("Ocorrencia.buscarOcorrenciaStatus", Ocorrencia.class)
-				.setParameter("unidade", unidade).setParameter("tenantId", tenant_id)
-				.setParameter("status", StatusOcorrencia.GESTOR).getResultList();
+				.setParameter("unidade", unidade).getResultList();
 	
 	}
 

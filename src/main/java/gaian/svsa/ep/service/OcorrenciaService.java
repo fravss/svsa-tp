@@ -88,14 +88,14 @@ public class OcorrenciaService implements Serializable {
 		return ocorrenciaDAO.buscarTodos();
 	}
 
-	public List<Ocorrencia> buscarOcorrenciaStatus(Long unidade, Date ini, Date fim, Long tenant_id) {
+	public List<Ocorrencia> buscarOcorrenciaStatus(UnidadeEP unidade, Date ini, Date fim) {
 	
 		if(ini != null)
 			if(fim != null)
-				return ocorrenciaDAO.buscarOcorrenciaStatus(unidade, ini, fim, tenant_id);
+				return ocorrenciaDAO.buscarOcorrenciaStatus(unidade, ini, fim);
 			else
-				return ocorrenciaDAO.buscarOcorrenciaStatus(unidade, ini, new Date(), tenant_id);
-		return ocorrenciaDAO.buscarOcorrenciaStatus(unidade, tenant_id);
+				return ocorrenciaDAO.buscarOcorrenciaStatus(unidade, ini, new Date());
+		return ocorrenciaDAO.buscarOcorrenciaStatus(unidade);
 	}
 
 	public List<Ocorrencia> buscarOcorrenciasGestorStatus(Date ini, Date fim, TipoOcorrencia tipo) {
