@@ -28,7 +28,7 @@
                         <h:outputText value="#{usuario.email}" />
                     </p:column>
 
-                    <p:column field="Unidades" headerText="Unidades" filterMatchMode="exact">
+                    <p:column field="unidade" headerText="Unidade" filterMatchMode="exact">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('tableUsuario').filter()" styleClass="custom-filter">
                                 <f:selectItem itemLabel="Selecione uma unidade" itemValue="#{null}" />
@@ -48,7 +48,7 @@
                         <h:outputText value="#{usuario.grupo}" />
                     </p:column>
                     
-                    <p:column headerText="Está em Estágio Probatório?" filterBy="#{usuario.estagioProbatorio}" onchange="PF('tableOcorrencias').filter()" filterPlaceholder="Filter By EP">
+                    <p:column headerText="Está em Estágio Probatório?" onchange="PF('tableOcorrencias').filter()" filterPlaceholder="Filter By EP">
                         <h:outputText value="#{usuario.estagioProbatorio ? 'Sim' : 'Não'}" />
                     </p:column>
                     
