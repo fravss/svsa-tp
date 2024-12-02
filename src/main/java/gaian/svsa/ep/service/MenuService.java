@@ -22,7 +22,6 @@ import org.xml.sax.SAXException;
 import gaian.svsa.ep.model.UsuarioEP;
 import gaian.svsa.ep.model.enums.GrupoEP;
 
-
 @Named
 @RequestScoped
 public class MenuService {

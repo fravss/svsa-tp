@@ -201,23 +201,6 @@ public class OcorrenciaDAO implements Serializable{
     	//return resultado.size();
         
     }
-    
-    /*public List<Ocorrencia> buscarPorDescricao(int first, int pageSize, String descricaoFiltro) {
-    	
-    	log.info(descricaoFiltro);
-    	
-    	TypedQuery<Ocorrencia> query = manager.createQuery(
-    		    "SELECT o FROM Ocorrencia o WHERE LOWER(o.descricao) LIKE LOWER(:descricao)", Ocorrencia.class);
-
-    	if (descricaoFiltro != null && !descricaoFiltro.isEmpty()) {
-            query.setParameter("descricao", "%" + descricaoFiltro + "%");  // Utilizando LIKE para busca parcial
-        }
-    	
-    	query.setFirstResult(first);
-        query.setMaxResults(pageSize);
-        
-        return query.getResultList();
-    }*/
 
 	public void setEntityManager(EntityManager manager) {
 		this.manager = manager;

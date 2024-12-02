@@ -16,10 +16,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
-import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
@@ -46,8 +44,6 @@ import lombok.ToString;
                 
     ),
 })
-
-
 public class Ocorrencia implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -89,13 +85,9 @@ public class Ocorrencia implements Serializable {
 	@JoinColumn(name="unidade")
 	private UnidadeEP unidade;
 	
-	@ManyToOne
 	@JoinColumn(name="tenant")
 	private TenantEP tenant;
 	
-	/*
-	 * Datas de Criação e Modificação
-	 */
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataCriacao;	
 	@Temporal(TemporalType.TIMESTAMP)

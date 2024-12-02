@@ -62,8 +62,6 @@ public class UsuarioDAO implements Serializable {
 		return manager.find(UsuarioEP.class, id);
 	}
 	
-	
-
 	public List<UsuarioEP> buscarUsuarios(int first, int pageSize, Map<String, SortMeta> sortBy,
 			Map<String, FilterMeta> filterBy) {
         
@@ -78,13 +76,6 @@ public class UsuarioDAO implements Serializable {
             FilterMeta meta = filtro.getValue();
             if (meta.getFilterValue() != null) {
             	predicates.add(cb.equal(usuario.get(filtro.getKey()), meta.getFilterValue()));
-            	/*if ("tipo".equals(filtro.getKey())) {
-            		TipoOcorrencia tipo = TipoOcorrencia.valueOf(meta.getFilterValue().toString().toUpperCase());  // Converte para o enum correspondente
-            		predicates.add(cb.equal(ocorrencia.get(filtro.getKey()), tipo));
-            	}
-            	else {
-            		predicates.add(cb.equal(ocorrencia.get(filtro.getKey()), meta.getFilterValue()));
-            	}*/
             }
         }
         cq.where(predicates.toArray(new Predicate[0]));
@@ -118,13 +109,6 @@ public class UsuarioDAO implements Serializable {
         List<Predicate> predicates = new ArrayList<>();
         filterBy.forEach((field, filterMeta) -> {
             Object filterValue = filterMeta.getFilterValue();
-            /*if ("descricao".equals(field) && filterValue != null) {
-                predicates.add(cb.like(ocorrencia.get("descricao"), "%" + filterValue + "%"));
-            } else if ("codigo".equals(field) && filterValue != null){
-            	predicates.add(cb.equal(ocorrencia.get("codigo"), filterValue));
-            } else if ("usuario".equals(field) && filterValue != null) {
-                predicates.add(cb.equal(ocorrencia.get("usuario").get("codigo"), filterValue));
-            }*/
         });
         cq.where(predicates.toArray(new Predicate[0]));
         cq.select(cb.count(ocorrencia));

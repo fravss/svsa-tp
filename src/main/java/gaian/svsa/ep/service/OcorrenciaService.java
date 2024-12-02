@@ -17,6 +17,8 @@ import javax.naming.NamingException;
 
 import org.apache.log4j.Logger;
 
+import java.util.List;
+
 import gaian.svsa.ep.dao.OcorrenciaDAO;
 import gaian.svsa.ep.dao.RespostaDAO;
 import gaian.svsa.ep.model.Ocorrencia;
