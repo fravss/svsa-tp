@@ -8,12 +8,11 @@
 
 		<properties> 		
 
-			<!-- String de conexão com o BD -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/svsact?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
-			<property name="javax.persistence.jdbc.user" value="root"/>
-			<property name="javax.persistence.jdbc.password" value="ifsp"/>
+			<property name="javax.persistence.jdbc.url" value="jdbc:mysql://database-1.cluster-cclxx7zo89ja.us-east-1.rds.amazonaws.com:3306/svsact?autoReconnect=true&amp;useSSL=false&amp;useTimezone=true&amp;serverTimezone=UTC"/>
+			<property name="javax.persistence.jdbc.user" value="admin"/>
+			<property name="javax.persistence.jdbc.password" value="SenhaProjeto"/>
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
-
+			
 			<!--  Configuração do hibernate JPA -->			
 			<!-- validate | update | create | create-drop -->			
 			<property name="hibernate.hbm2ddl.auto" value="update"/>
