@@ -40,12 +40,12 @@ public class OcorrenciaService implements Serializable {
 	private OcorrenciaDAO ocorrenciaDAO;
 	
 	@Inject
-	private OcorrenciaDAO ocorrenciaDAO;
+	private RespostaDAO respostaDAO;
 	
-	public void salvar(Ocorrencia ocorrencia) throws SQLIntegrityConstraintViolationException {
-		
+	
+	@Transactional
+	public void salvar(Ocorrencia ocorrencia) {
 		this.ocorrenciaDAO.salvar(ocorrencia);
-
 	}
 		
 	public Ocorrencia buscarPorId(Long id) {

@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -37,6 +36,22 @@ public class OcorrenciaDAO implements Serializable{
 	private EntityManager manager;
 	
 	private List<Ocorrencia> resultado;
+	
+	@Transactional
+	public void salvar(Ocorrencia ocorrencia) throws NoResultException {
+		try {
+			manager.getTransaction().begin();
+			Ocorrencia managedOcorrencia = manager.merge(ocorrencia);
+			manager.getTransaction().commit();
+            manager.flush();
+		} catch (NoResultException e) {
+			log.warn("Nenhuma resposta encontrada para a ocorrência com código: " + e.getMessage());
+		} catch (Exception e) {
+			log.warn(e.getMessage());
+		}
+	}
+
+	
 
 	public Ocorrencia buscarPeloCodigo(Long id) {
 		//log.info("Buscando usuario pelo id " + id);
@@ -61,19 +76,6 @@ public class OcorrenciaDAO implements Serializable{
 	    }
 	}
 	
-	@Transactional
-	public void salvar(Ocorrencia ocorrencia) throws PersistenceException {
-		try {
-			manager.getTransaction().begin();
-			Ocorrencia managedOcorrencia = manager.merge(ocorrencia);
-			manager.getTransaction().commit();
-			manager.flush();
-		} catch (PersistenceException e) {
-			e.printStackTrace();
-			throw e;
-		}
-		
-	}	
 	
 	
 	public List<Ocorrencia> buscarOcorrencias(int first, int pageSize, Map<String, SortMeta> sortBy,
@@ -97,8 +99,8 @@ public class OcorrenciaDAO implements Serializable{
         if(filterBy.get("usuario").getFilterValue() != null) {
 	        Predicate usuarioPredicate = cb.or(
 	                cb.equal(ocorrencia.get("remetente"), filterBy.get("usuario").getFilterValue()),
-	                cb.equal(ocorrencia.get("destinatario"), filterBy.get("usuario").getFilterValue()),
-	                cb.equal(ocorrencia.get("testemunha"), filterBy.get("usuario").getFilterValue())
+	                cb.equal(ocorrencia.get("destinatario"), filterBy.get("usuario").getFilterValue()) //,
+	                //cb.equal(ocorrencia.get("testemunha"), filterBy.get("usuario").getFilterValue())
 	            );
 	        //predicates.add(usuarioPredicate);
         
@@ -128,6 +130,7 @@ public class OcorrenciaDAO implements Serializable{
 				predicates.add(usuarioPredicate);
 				break;
 			}
+	        filterBy.remove("grupo");
         }
         }
         
@@ -201,13 +204,6 @@ public class OcorrenciaDAO implements Serializable{
     	//return resultado.size();
         
     }
-
-	public void setEntityManager(EntityManager manager) {
-		this.manager = manager;
-	}
-
-	public void teste() {
-		System.out.println("teste");
-	}
+    
 	
 }

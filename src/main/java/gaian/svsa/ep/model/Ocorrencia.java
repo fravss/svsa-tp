@@ -16,11 +16,16 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import gaian.svsa.ep.model.enums.StatusOcorrencia;
 import gaian.svsa.ep.model.enums.TipoOcorrencia;
@@ -46,7 +51,7 @@ import lombok.ToString;
 })
 public class Ocorrencia implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 82375949344894033L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -65,11 +70,9 @@ public class Ocorrencia implements Serializable {
 	@Basic(fetch=FetchType.LAZY)
 	@NotNull(message="POR FAVOR, PREENCHA A DESCRIÇÃO")
 	private String descricao;
-	//mudar para tipo text
 	
 	
 	@NotNull(message = "O REMETENTE É OBRIGATÓRIO")
-	@JoinColumn(name="codigo_remetente")
 	@ManyToOne
 	private UsuarioEP remetente;
 	
@@ -85,6 +88,8 @@ public class Ocorrencia implements Serializable {
 	@JoinColumn(name="unidade")
 	private UnidadeEP unidade;
 	
+	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+	@ManyToOne
 	@JoinColumn(name="tenant")
 	private TenantEP tenant;
 	

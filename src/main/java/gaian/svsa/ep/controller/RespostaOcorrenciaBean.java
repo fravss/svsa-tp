@@ -58,7 +58,8 @@ public class RespostaOcorrenciaBean implements Serializable {
 
     public void salvarResposta() {
         try {
-  
+        	
+        	log.warn(ocorrencia);
             this.novaResposta.setOcorrencia(ocorrencia);
             this.novaResposta.setUsuario(this.usuarioLogado);
             this.ocorrenciaService.novaResposta(novaResposta);
@@ -99,11 +100,11 @@ public class RespostaOcorrenciaBean implements Serializable {
             if (acao == 1) {
                 ocorrencia.setStatus(StatusOcorrencia.FECHADO);
                 log.info("Fechando ocorrência com ID " + ocorrencia.getDescricao());
-                this.ocorrenciaService.gerirOcorrencia(ocorrencia);
+                this.ocorrenciaService.salvar(ocorrencia);
             } else if (acao == 0) {
                 ocorrencia.setStatus(StatusOcorrencia.COORDENADOR);
                 log.info("Enviando ocorrência com ID " + ocorrencia.getCodigo() + " de volta ao coordenador.");
-                this.ocorrenciaService.gerirOcorrencia(ocorrencia);
+                this.ocorrenciaService.salvar(ocorrencia);
             }
 
             PrimeFaces.current().ajax().update("frmPesquisa:pendenciasTable");
@@ -113,6 +114,20 @@ public class RespostaOcorrenciaBean implements Serializable {
             log.error("Erro ao gerir a ocorrência com ID " + ocorrencia.getCodigo(), e);
             MessageUtil.erro("Não foi possível realizar a ação na ocorrência. " + e.getMessage());
         }
+    }
+    
+    public boolean renderizarPainel() {
+    	if (this.ocorrencia == null)
+    		return false;
+    	if (this.ocorrencia.getStatus() == StatusOcorrencia.FECHADO)
+    		return false;
+    	if (this.ocorrencia.getRemetente() == this.usuarioLogado)
+    		return false;
+    	return true;
+    }
+    
+    public boolean isRemetente() {
+    	return this.ocorrencia != null && !(this.ocorrencia.getRemetente() == this.usuarioLogado);
     }
 
     public void limpar() {

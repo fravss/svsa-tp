@@ -46,33 +46,26 @@ public class LazyOcorrencia extends LazyDataModel<Ocorrencia> {
 	public List<Ocorrencia> load(int first, int pageSize, Map<String, SortMeta> sortBy,
 			Map<String, FilterMeta> filterBy) {
 		
-		log.info(filterBy);
 		
-		log.info(this.usuario);
-
 		// Filtro para o grupo do usuário
 		FilterMeta grupoMeta = new FilterMeta();
 		grupoMeta.setFilterValue(usuario.getGrupo());
 		filterBy.put("grupo", grupoMeta);
-		log.info(filterBy.get("grupo").getFilterValue());
 
 		// Filtro para o tenant do usuário
 		FilterMeta tenantMeta = new FilterMeta();
 		tenantMeta.setFilterValue(usuario.getTenant());
 		filterBy.put("tenant", tenantMeta);
-		log.info(filterBy.get("tenant").getFilterValue());
 
 		// Filtro para o usuário
 		FilterMeta usuarioMeta = new FilterMeta();
 		usuarioMeta.setFilterValue(usuario);
 		filterBy.put("usuario", usuarioMeta);
-		log.info(filterBy.get("usuario").getFilterValue());
 
 		// Filtro para a unidade do usuário
 		FilterMeta unidadeMeta = new FilterMeta();
 		unidadeMeta.setFilterValue(usuario.getUnidade());
 		filterBy.put("unidade", unidadeMeta);
-		log.info(filterBy.get("unidade").getFilterValue());
 	    
 		
 		if (sortBy.isEmpty()) {

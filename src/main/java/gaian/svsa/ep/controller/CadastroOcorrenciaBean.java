@@ -44,10 +44,10 @@ public class CadastroOcorrenciaBean implements Serializable{
 	private TipoOcorrencia tipo;
 	private String descricao;
 	
-	private Ocorrencia ocorrencia;
+	private Ocorrencia novaOcorrencia;
 	
 	@Inject
-	private OcorrenciaService service;
+	private OcorrenciaService ocorrenciaService;
 	@Inject
 	private UsuarioService usuarioService;
 	
@@ -57,7 +57,7 @@ public class CadastroOcorrenciaBean implements Serializable{
     	//this.lazyUsuario = new LazyUsuario(this.usuarioService);
 		this.lazyDestinatario = new LazyUsuario(this.usuarioService);
 		this.lazyTestemunha = new LazyUsuario(this.usuarioService);
-    	this.ocorrencia = new Ocorrencia();
+    	this.novaOcorrencia = new Ocorrencia();
     	this.destinatario = new UsuarioEP();
     	this.testemunha = new UsuarioEP();
     	this.tipo = TipoOcorrencia.REUNIAO;
@@ -65,38 +65,52 @@ public class CadastroOcorrenciaBean implements Serializable{
     }
 	
 	
-	public void criarOcorrencia() throws SQLIntegrityConstraintViolationException {
-	
-		this.ocorrencia.setDestinatario(this.destinatario);
-		this.ocorrencia.setTestemunha(this.testemunha);
-		log.info(this.testemunha);
-		this.ocorrencia.setTipo(this.tipo);
-		this.ocorrencia.setDescricao(this.descricao);
-		this.ocorrencia.setStatus(StatusOcorrencia.COORDENADOR);
-		this.ocorrencia.setDataCriacao(new Date());
+	public void criarOcorrencia() {
+		
+		if (this.destinatario == null
+				|| this.testemunha == null
+				|| this.tipo == null
+				|| this.descricao == null)
+			return;
+			
+		this.novaOcorrencia = new Ocorrencia();
+		this.novaOcorrencia.setCodigo(null);
+		this.novaOcorrencia.setDestinatario(this.destinatario);
+		this.novaOcorrencia.setTestemunha(this.testemunha);
+		this.novaOcorrencia.setTipo(this.tipo);
+		this.novaOcorrencia.setDescricao(this.descricao);
+		this.novaOcorrencia.setStatus(StatusOcorrencia.COORDENADOR);
+		this.novaOcorrencia.setDataCriacao(new Date());
 		
 
-		this.ocorrencia.setRemetente(this.usuarioService.getUsuarioAutenticado());
-		this.ocorrencia.setUnidade(this.ocorrencia.getRemetente().getUnidade());
-		this.ocorrencia.setTenant(this.ocorrencia.getRemetente().getTenant());
+		this.novaOcorrencia.setRemetente(this.usuarioService.getUsuarioAutenticado());
+		this.novaOcorrencia.setUnidade(this.novaOcorrencia.getRemetente().getUnidade());
+		this.novaOcorrencia.setTenant(this.novaOcorrencia.getRemetente().getTenant());
 		
 		try {
-			this.service.salvar(this.ocorrencia);
+			log.info(this.novaOcorrencia);
+			this.ocorrenciaService.salvar(this.novaOcorrencia);
+			log.info(this.novaOcorrencia);
 		}
 		catch (Exception e) {
 			log.warn(e.getMessage());
 		}
+		
+		this.destinatario = null;
+		this.testemunha = null;
+		this.tipo = null;
+		this.descricao = null;
 		
 		
 	}
 	
 	public void editarOcorrencia(Long id) {
         log.info("Editando ocorrência com ID: " + id);
-        this.ocorrencia = service.buscarPorId(id); // Busca ocorrência pelo ID
-        this.destinatario = this.ocorrencia.getDestinatario();
-        this.testemunha = this.ocorrencia.getTestemunha();
-        this.tipo = this.ocorrencia.getTipo();
-        this.descricao = this.ocorrencia.getDescricao();
+        this.novaOcorrencia = ocorrenciaService.buscarPorId(id); // Busca ocorrência pelo ID
+        this.destinatario = this.novaOcorrencia.getDestinatario();
+        this.testemunha = this.novaOcorrencia.getTestemunha();
+        this.tipo = this.novaOcorrencia.getTipo();
+        this.descricao = this.novaOcorrencia.getDescricao();
     }
 	
 	public List<UsuarioEP> filtrarDestinatario(String query) {

@@ -10,7 +10,7 @@
 	 
     <converter>
         <converter-id>usuarioConverter</converter-id>
-        <converter-class>com.teste.converter.UsuarioConverter</converter-class>
+        <converter-class>gaian.svsa.ep.converter.UsuarioConverter</converter-class>
     </converter>
 	 
 	 

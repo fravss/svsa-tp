@@ -34,9 +34,14 @@ public class RespostaDAO implements Serializable {
 	@Transactional
 	public void salvar(Resposta resposta) throws NoResultException {
 		try {
-			manager.merge(resposta);
+			manager.getTransaction().begin();
+			Resposta managedResposta = manager.merge(resposta);
+			manager.getTransaction().commit();
+            manager.flush();
 		} catch (NoResultException e) {
 			log.warn("Nenhuma resposta encontrada para a ocorrência com código: " + e.getMessage());
+		} catch (Exception e) {
+			log.warn(e.getMessage());
 		}
 	}
 

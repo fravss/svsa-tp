@@ -8,14 +8,12 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-import javax.transaction.UserTransaction;
 
 import org.primefaces.model.FilterMeta;
 import org.primefaces.model.SortMeta;
@@ -39,7 +37,6 @@ public class UsuarioDAO implements Serializable {
 	
 	@Transactional
 	public void salvar(UsuarioEP usuario) throws Exception {
-		log.info("USUARIO DAO");
 		
 		try {
             

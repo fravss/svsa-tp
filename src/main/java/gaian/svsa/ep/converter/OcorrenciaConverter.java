@@ -10,7 +10,7 @@ import gaian.svsa.ep.model.Ocorrencia;
 import gaian.svsa.ep.service.OcorrenciaService;
 
 @FacesConverter(forClass=Ocorrencia.class)
-public class OcorrenciaConverter implements Converter {
+public class OcorrenciaConverter implements Converter<Object> {
 	
 	private OcorrenciaDAO ocorrenciaDAO;
 	

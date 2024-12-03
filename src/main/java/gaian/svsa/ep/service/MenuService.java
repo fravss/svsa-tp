@@ -111,6 +111,7 @@ public class MenuService {
 			modelo.getElements().add(item);
 		}
 		
+		item = new DefaultMenuItem();
 		item.setCommand("#{autenticacaoBean.sair}"); 
         item.setValue("Sair");
         item.setIcon("pi pi-fw pi-power-off");
