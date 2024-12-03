@@ -66,15 +66,15 @@ public class PesquisaOcorrenciaBean implements Serializable {
 	private List<String> anos = new ArrayList<>(Arrays.asList(Ano.getAnos()));
 
 	private Integer ano;
-	
+
 	private List<TipoOcorrencia> tipos;
-	
+
 	private TipoOcorrencia tipo;
 
 	private List<Mes> meses;
 
 	private Mes mes;
-	
+
 	private UnidadeEP unidade;
 
 	private DatasIniFim datasTO;
@@ -84,9 +84,9 @@ public class PesquisaOcorrenciaBean implements Serializable {
 	private Date dataFim;
 
 	private boolean consultado = false;
-	
+
 	private boolean temPermissao = false;
-	
+
 	private boolean isGestor = false;
 
 	@Inject
@@ -94,7 +94,7 @@ public class PesquisaOcorrenciaBean implements Serializable {
 
 	@Inject
 	private OcorrenciaPDFService ocorrenciaPDFService;
-	
+
 	@Inject
 	private AutenticacaoBean	autenticacaoBean;
 
@@ -110,14 +110,14 @@ public class PesquisaOcorrenciaBean implements Serializable {
 		anos = new ArrayList<>(Arrays.asList(Ano.getAnos()));
 
 		meses = Arrays.asList(Mes.values());
-		
+
 		tipos = Arrays.asList(TipoOcorrencia.values());
-		
+
 		unidade = autenticacaoBean.getUsuario().getUnidade();
-		
+
 		temPermissao = isTemPermissao(); 
 		System.out.println("Tem permissao selecionado para a pesquisa: " + temPermissao);
-		
+
 
 	}
 
@@ -132,12 +132,12 @@ public class PesquisaOcorrenciaBean implements Serializable {
 		}else {
 			ocorrencias = ocorrenciaService.buscarOcorrenciaStatus(unidade, datasTO.getIni(), datasTO.getFim());
 		}
-		System.out.println("Tipo selecionado para a pesquisa: " + tipo);
-		System.out.println("Gestor selecionado para a pesquisa: " + isGestor);
+		
+		
 		qdeTotal = (long) ocorrencias.size();
 		consultado = true;
 	}
-	
+
 	public boolean isTemPermissao() {
 		if(autenticacaoBean.getUsuario().getGrupo() == GrupoEP.GESTORES) {
 			this.isGestor=true;
@@ -162,7 +162,6 @@ public class PesquisaOcorrenciaBean implements Serializable {
 			response.setHeader("Content-disposition", "inline=filename=file.pdf");
 
 			ByteArrayOutputStream baos = ocorrenciaPDFService.generateStream(ocorrencias);
-
 			response.setHeader("Expires", "0");
 
 			response.setHeader("Cache-Control", "must-revalidate, post-check=0, pre-check=0");
@@ -206,5 +205,5 @@ public class PesquisaOcorrenciaBean implements Serializable {
 		log.info("PDF gerado!");
 
 	}
-	
+
 }

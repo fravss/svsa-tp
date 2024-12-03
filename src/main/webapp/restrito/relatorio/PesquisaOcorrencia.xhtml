@@ -53,14 +53,16 @@
 		            	update="ocorrenciasTable toolbar">		            		            	
 	            	</p:commandButton>
 	            	
-					<p:commandButton id="showOcorrencia" icon="pi pi-file-pdf" title="Exportar para PDF"
-						value="Exportar para PDF"
-						rendered="#{pesquisaOcorrenciaBean.consultado}"
-						action="#{pesquisaOcorrenciaBean.showPDFOcorrencia}"
-						process="showOcorrencia" immediate="true" ajax="false"
-						update="frmPesquisa:addGrowl">
-					</p:commandButton>
-		    		
+					<p:commandButton id="showOcorrencia" 
+				                 icon="pi pi-file-pdf" 
+				                 title="Exportar para PDF"
+				                 value="Exportar para PDF"
+				                 rendered="#{pesquisaOcorrenciaBean.consultado}"
+				                 action="#{pesquisaOcorrenciaBean.showPDFOcorrencia}"
+				                 onclick="this.form.target='_blank';"
+				                 immediate="true" 
+				                 ajax="false" 
+				                 update="frmPesquisa:addGrowl" />	
 	    		</p:toolbarGroup>
 	    	</p:toolbar>
 	    	
