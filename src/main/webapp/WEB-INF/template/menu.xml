@@ -1,0 +1,15 @@
+<!DOCTYPE xml>
+<menu>
+	<submenu label="Ocorrencias" icon="ui-icon-home">
+	<grupo value="ADMINISTRATIVOS"></grupo>
+	<grupo value="COORDENADORES"></grupo>
+	<grupo value="GESTORES"></grupo>
+	<grupo value="TECNICOS"></grupo>
+		<menuitem value="Pendências" outcome="/restrito/ocorrencia/GerirOcorrencia.xhtml"/>>
+	</submenu>
+	<submenu label="Relatório" icon="ui-icon-home">
+	<grupo value="COORDENADORES"></grupo>
+	<grupo value="GESTORES"></grupo>
+		<menuitem value="Gerar Relatório" outcome="/restrito/relatorio/PesquisaOcorrencia.xhtml"/>
+	</submenu>
+</menu>
