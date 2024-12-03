@@ -217,6 +217,35 @@ public class OcorrenciaDAO implements Serializable{
     	//return resultado.size();
         
     }
+    public List<Ocorrencia> buscarOcorrenciasGestor(Date ini, Date fim){
+		return manager
+				.createNamedQuery("Ocorrencia.buscarOcorrenciasGestor",Ocorrencia.class)
+				.setParameter("ini",ini,TemporalType.TIMESTAMP)
+				.setParameter("fim",DateUtils.plusDay(fim),TemporalType.TIMESTAMP).getResultList();
+	}
+public List<Ocorrencia> buscarOcorrenciaStatus(UnidadeEP unidade, Date ini, Date fim) {
+		
+		return manager
+				.createNamedQuery("Ocorrencia.buscarOcorrenciaStatusPeriodo", Ocorrencia.class)
+				.setParameter("unidade", unidade)
+				.setParameter("ini", ini, TemporalType.TIMESTAMP)
+				.setParameter("fim", DateUtils.plusDay(fim), TemporalType.TIMESTAMP).getResultList();
+	
+	}
+public List<Ocorrencia> buscarOcorrenciasGestorStatus(Date ini, Date fim, TipoOcorrencia tipo) {
+	return manager
+			.createNamedQuery("Ocorrencia.buscarOcorrenciasGestorStatus",Ocorrencia.class)
+			.setParameter("ini",ini,TemporalType.TIMESTAMP)
+			.setParameter("fim",DateUtils.plusDay(fim),TemporalType.TIMESTAMP)
+			.setParameter("tipo", tipo).getResultList();
+			
+}
+public List<Ocorrencia> buscarOcorrenciaStatus(UnidadeEP unidade) {
+	
+	return manager.createNamedQuery("Ocorrencia.buscarOcorrenciaStatus", Ocorrencia.class)
+			.setParameter("unidade", unidade).getResultList();
+
+}
     
 	
 }
