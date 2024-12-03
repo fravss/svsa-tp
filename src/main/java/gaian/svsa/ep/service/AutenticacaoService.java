@@ -1,6 +1,11 @@
 package gaian.svsa.ep.service;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.primefaces.model.menu.MenuModel;
 
@@ -15,6 +20,8 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 @Getter
 @Setter
+@Named
+@ApplicationScoped
 public class AutenticacaoService implements Serializable {
 private static final long serialVersionUID = 1L;
 
@@ -25,9 +32,6 @@ private static final long serialVersionUID = 1L;
 	@Inject
 	private MenuService menuService;
 	
-	
-	
-
 	public UsuarioEP autenticar(String idCriptografado) {
 		
 		try {
@@ -46,6 +50,28 @@ private static final long serialVersionUID = 1L;
 		UsuarioEP usuario = null;
 		return usuario;
 	}
+	
+	private HttpSession getSession() {
+		
+		FacesContext context = FacesContext.getCurrentInstance();
+		HttpServletRequest request = (HttpServletRequest) context.getExternalContext().getRequest();
+		HttpSession session = request.getSession();
+		
+		return session;
+	}
+	
+	public UsuarioEP getUsuarioAutenticado() {
+
+		   try {
+				HttpSession session = getSession();
+				UsuarioEP usuarioLogado = (UsuarioEP)session.getAttribute("usuario");
+				return usuarioLogado;
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			} 
+		   
+	   }
 
 	private UsuarioEP buscarUsuario (Long id) {
 		if(id != null) {
@@ -61,4 +87,7 @@ private static final long serialVersionUID = 1L;
 	   public MenuModel criarMenu(UsuarioEP usuario) {
 	       return menuService.montarMenu(usuario);
 		}
+	   
+	   
+	   
 }

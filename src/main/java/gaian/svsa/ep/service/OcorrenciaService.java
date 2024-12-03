@@ -1,10 +1,23 @@
 package gaian.svsa.ep.service;
 
 import java.io.Serializable;
+
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
+
+
+import java.util.Set;
+
+import javax.enterprise.context.spi.CreationalContext;
+import javax.enterprise.inject.spi.Bean;
+import javax.enterprise.inject.spi.BeanManager;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
+
 import java.util.Date;
 import java.util.List;
-
-import javax.inject.Inject;
 
 import gaian.svsa.ep.dao.OcorrenciaDAO;
 import gaian.svsa.ep.dao.RespostaDAO;
@@ -18,7 +31,9 @@ import gaian.svsa.ep.model.enums.TipoOcorrencia;
 import gaian.svsa.ep.util.jpa.Transactional;
 import lombok.extern.log4j.Log4j;
 
+
 @Log4j
+@ApplicationScoped
 public class OcorrenciaService implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -29,11 +44,21 @@ public class OcorrenciaService implements Serializable {
 	@Inject
 	private RespostaDAO respostaDAO;
 	
+	
+	@Transactional
+	public void salvar(Ocorrencia ocorrencia) {
+		this.ocorrenciaDAO.salvar(ocorrencia);
+	}
+		
 	public Ocorrencia buscarPorId(Long id) {
 
-		log.info("Buscando ocorrencia por Id");
+		log.info("Buscando usuario por Id");
 
 		return this.ocorrenciaDAO.buscarPeloCodigo(id);
+	}
+	
+	public OcorrenciaDAO getOcorrenciaDAO() {
+		return this.ocorrenciaDAO;
 	}
 	
 	public List<Resposta> buscarTodasRespostas(Ocorrencia ocorrencia) {
@@ -59,27 +84,35 @@ public class OcorrenciaService implements Serializable {
 	        }
 	    } catch (Exception e) {
 	        log.error("Erro", e);
+        }
+    }
 
-	    }
+	private static BeanManager getBeanManager() {
+		try {
+			InitialContext initialContext = new InitialContext();
+			return (BeanManager) initialContext.lookup("java:comp/env/BeanManager");
+		} catch (NamingException e) {
+			throw new RuntimeException("Não pôde encontrar BeanManager no JNDI.");
+		}
 	}
 	
-	@Transactional
-	public void gerirOcorrencia (Ocorrencia ocorrencia) {
-	    try {
-	    	
-	        this.ocorrenciaDAO.salvar(ocorrencia);
-	       
-	    } catch (Exception e) {
-	        log.error("Erro", e);
+	@SuppressWarnings("unchecked")
+	public static <T> T getBean(Class<T> clazz) {
+		BeanManager bm = getBeanManager();
+		Set<Bean<?>> beans = (Set<Bean<?>>) bm.getBeans(clazz);
 
-	    }
+		if (beans == null || beans.isEmpty()) {
+			return null;
+		}
+
+		Bean<T> bean = (Bean<T>) beans.iterator().next();
+
+		CreationalContext<T> ctx = bm.createCreationalContext(bean);
+		T o = (T) bm.getReference(bean, clazz, ctx);
+
+		return o;
 	}
-	
-	public List<Ocorrencia> buscarTodos() {
-		return ocorrenciaDAO.buscarTodos();
-	}
-	
-	public List<Ocorrencia> buscarOcorrenciasGestor(Date ini,Date fim){
+  	public List<Ocorrencia> buscarOcorrenciasGestor(Date ini,Date fim){
 		if(ini!=null)
 			if(fim != null)
 				return ocorrenciaDAO.buscarOcorrenciasGestor(ini, fim);
@@ -107,5 +140,6 @@ public class OcorrenciaService implements Serializable {
 		return ocorrenciaDAO.buscarTodos();
 
 	}
-		
+	
+	
 }

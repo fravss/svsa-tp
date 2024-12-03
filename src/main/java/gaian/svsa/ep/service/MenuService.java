@@ -20,12 +20,13 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
 import gaian.svsa.ep.model.UsuarioEP;
+import gaian.svsa.ep.model.enums.GrupoEP;
 
 @Named
 @RequestScoped
 public class MenuService {
 
-    NodeList subMenus = obterSubMenusDoXML(); 
+    NodeList subMenus = obterSubMenusDoXML();
     
     
 	private NodeList obterSubMenusDoXML() {
@@ -89,8 +90,29 @@ public class MenuService {
             }   
 
         }
+        
         DefaultMenuItem item = new DefaultMenuItem();
-        item.setCommand("#{autenticacaoBean.sair}"); 
+        item.setOutcome("/index.xhtml"); 
+        item.setValue("Home");
+        item.setIcon("pi pi-fw pi-home");
+		modelo.getElements().add(item);
+		
+		item = new DefaultMenuItem();
+		item.setOutcome("/restrito/ocorrencia/ManterOcorrencia.xhtml");
+		item.setValue("Ocorrências");
+		item.setIcon("pi pi-fw pi-book");
+		modelo.getElements().add(item);
+		
+		if (usuario.getGrupo().equals(GrupoEP.GESTORES) || usuario.getGrupo().equals(GrupoEP.COORDENADORES)) {
+			item = new DefaultMenuItem();
+			item.setOutcome("/restrito/painel/PainelFuncionarios");
+			item.setValue("Painel de funcionários ");
+			item.setIcon("pi pi-fw pi-sitemap");
+			modelo.getElements().add(item);
+		}
+		
+		item = new DefaultMenuItem();
+		item.setCommand("#{autenticacaoBean.sair}"); 
         item.setValue("Sair");
         item.setIcon("pi pi-fw pi-power-off");
 		modelo.getElements().add(item);
