@@ -27,6 +27,18 @@ import gaian.svsa.ep.model.enums.StatusOcorrencia;
 import gaian.svsa.ep.util.jpa.Transactional;
 import lombok.extern.log4j.Log4j;
 
+
+
+import java.util.Date;
+
+import javax.persistence.TemporalType;
+
+import gaian.svsa.ep.model.UnidadeEP;
+
+import gaian.svsa.ep.model.enums.TipoOcorrencia;
+import gaian.svsa.ep.util.DateUtils;
+
+
 @Log4j
 public class OcorrenciaDAO implements Serializable{
 	
@@ -172,6 +184,7 @@ public class OcorrenciaDAO implements Serializable{
         });
         cq.orderBy(orders);
 
+
         // Executar consulta com paginação
         TypedQuery<Ocorrencia> query = manager.createQuery(cq);
         query.setFirstResult(first);
@@ -204,6 +217,36 @@ public class OcorrenciaDAO implements Serializable{
     	//return resultado.size();
         
     }
+    public List<Ocorrencia> buscarOcorrenciasGestor(Date ini, Date fim){
+		return manager
+				.createNamedQuery("Ocorrencia.buscarOcorrenciasGestor",Ocorrencia.class)
+				.setParameter("ini",ini,TemporalType.TIMESTAMP)
+				.setParameter("fim",DateUtils.plusDay(fim),TemporalType.TIMESTAMP).getResultList();
+	}
+public List<Ocorrencia> buscarOcorrenciaStatus(UnidadeEP unidade, Date ini, Date fim) {
+		
+		return manager
+				.createNamedQuery("Ocorrencia.buscarOcorrenciaStatusPeriodo", Ocorrencia.class)
+				.setParameter("unidade", unidade)
+				.setParameter("ini", ini, TemporalType.TIMESTAMP)
+				.setParameter("fim", DateUtils.plusDay(fim), TemporalType.TIMESTAMP).getResultList();
+	
+	}
+public List<Ocorrencia> buscarOcorrenciasGestorStatus(Date ini, Date fim, TipoOcorrencia tipo) {
+	return manager
+			.createNamedQuery("Ocorrencia.buscarOcorrenciasGestorStatus",Ocorrencia.class)
+			.setParameter("ini",ini,TemporalType.TIMESTAMP)
+			.setParameter("fim",DateUtils.plusDay(fim),TemporalType.TIMESTAMP)
+			.setParameter("tipo", tipo).getResultList();
+			
+}
+public List<Ocorrencia> buscarOcorrenciaStatus(UnidadeEP unidade) {
+	
+	return manager.createNamedQuery("Ocorrencia.buscarOcorrenciaStatus", Ocorrencia.class)
+			.setParameter("unidade", unidade).getResultList();
+
+}
     
 	
 }
+

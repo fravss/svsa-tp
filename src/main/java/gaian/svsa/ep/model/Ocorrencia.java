@@ -40,14 +40,29 @@ import lombok.ToString;
 @Entity
 @Table(name="ocorrencia")
 @NamedQueries({
+	@NamedQuery(name="Ocorrencia.buscarTodos", query="select o from Ocorrencia o"),
     @NamedQuery(
         name = "Ocorrencia.buscarPendencias",
         query = "select o from Ocorrencia o "
                 + "where o.destinatario = :usuario " // se a ocorrencia se destinar a ele, ** se ele escreveu a ocorrencia ele vai acompanhar ela na tabela do crud
                 + "or (o.unidade = :unidade and :grupo = ('COORDENADORES'))"  // se ele for o cordenador da ocorrenica, ele deve ver todas as fases
-                + "or (o.status in ('GESTOR', 'FECHADO') and  :grupo = ('GESTORES'))" // o gestor só seria depois de passar pelo coordenador
+                + "or (o.status in ('GESTOR', 'FECHADO') and  :grupo = ('GESTORES'))"), // o gestor só seria depois de passar pelo coordenador
+    @NamedQuery(name="Ocorrencia.buscarOcorrenciasGestor", query="select o from Ocorrencia o "
+	         + "where o.dataCriacao between :ini and :fim "
+	         + "order by o.dataCriacao"),
+    @NamedQuery(name="Ocorrencia.buscarOcorrenciasGestorStatus", query="select o from Ocorrencia o "
+    		 + "where o.tipo = :tipo "	
+	         + "and o.dataCriacao between :ini and :fim "
+	         + "order by o.dataCriacao"),
+    @NamedQuery(name="Ocorrencia.buscarOcorrenciaStatusPeriodo", query="select o from Ocorrencia o "
+			+ "where o.unidade = :unidade "
+			+ "and o.dataCriacao between :ini and :fim "
+			+ "order by o.status"),
+	@NamedQuery(name="Ocorrencia.buscarOcorrenciaStatus", query="select o from Ocorrencia o "
+			+ "where o.unidade = :unidade "
+			+ "order by o.status")
                 
-    ),
+    
 })
 public class Ocorrencia implements Serializable {
 
