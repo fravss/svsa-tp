@@ -121,7 +121,7 @@ public class RespostaOcorrenciaBean implements Serializable {
     		return false;
     	if (this.ocorrencia.getStatus() == StatusOcorrencia.FECHADO)
     		return false;
-    	if (ocorrenciaService.buscarRemetente(this.usuarioLogado) != null)
+    	if (this.ocorrenciaService.buscarRemetente(this.usuarioLogado) != null)
     		return false;
     	return true;
     }
