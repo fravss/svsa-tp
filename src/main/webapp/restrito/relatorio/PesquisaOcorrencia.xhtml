@@ -47,13 +47,13 @@
 		    		</p:selectOneMenu>
 		    		
 		    		<p:commandButton title="Ocorrências" value="Consultar" icon="pi pi-search"	            		
-		            	actionListener="#{pesquisaOcorrenciaBean.consultarOcorrencias}"
-		            	rendered="#{pesquisaOcorrenciaBean.temPermissao}"
-		            	process="@this mesRef anoRef tipo"
-		            	update="ocorrenciasTable toolbar">		            		            	
-	            	</p:commandButton>
+			            	actionListener="#{pesquisaOcorrenciaBean.consultarOcorrencias}"
+			            	rendered="#{pesquisaOcorrenciaBean.temPermissao}"
+			            	process="@this mesRef anoRef tipo"
+			            	update="ocorrenciasTable toolbar">		            		            	
+	            		</p:commandButton>
 	            	
-					<p:commandButton id="showOcorrencia" 
+				<p:commandButton id="showOcorrencia" 
 				                 icon="pi pi-file-pdf" 
 				                 title="Exportar para PDF"
 				                 value="Exportar para PDF"
