@@ -32,7 +32,7 @@ import lombok.ToString;
 @Setter
 @Entity
 @Audited
-@Table(name="usuario")
+@Table(name="Usuario")
 public class UsuarioEP implements Serializable {
 
 	private static final long serialVersionUID = 82375949344894033L;

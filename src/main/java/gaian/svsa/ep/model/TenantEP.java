@@ -18,7 +18,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="tenant")
+@Table(name="Tenant")
 public class TenantEP implements Serializable {
 
 	private static final long serialVersionUID = -5526059262907035239L;
