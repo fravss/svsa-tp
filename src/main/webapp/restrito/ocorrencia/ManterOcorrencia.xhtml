@@ -1,0 +1,282 @@
+<ui:composition template="/WEB-INF/template/LayoutPadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="corpo">
+
+		<h1>Manter Ocorrências</h1>
+		
+		<p:messages id="messages" showDetail="false" closable="true">
+       		<p:autoUpdate />
+   		</p:messages>
+		
+		<div>
+			<p:commandButton 
+			    value="Adicionar Ocorrência" 
+			    type="button" 
+			    onclick="PF('dlg2').show()" 
+			    style="margin-bottom: 25px;" />		 
+			    
+				
+		</div>
+		
+		<p:dialog 
+		    header="Adicionar Ocorrência" 
+		    widgetVar="dlg2" 
+		    minHeight="50" 
+		    width="1100" 
+		    modal="true" 
+		    closable="true" 
+		    closeOnEscape="true" 
+		    resizable="false" 
+		    styleClass="ui-dialog-modern">
+		    
+		    <h:form>
+		        <div class="ui-fluid formgrid grid" style="padding: 15px;">
+		            <!-- Destinatário -->
+		            <div class="field col-12 md:col-6">
+		                <p:outputLabel for="destinatario" value="Destinatario:" styleClass="ui-text-bold" />
+		                <p:autoComplete 
+						    id="destinatario" widgetVar="lazyDestinatario"
+						    value="#{cadastroOcorrenciaBean.destinatario}"
+						    lazyModel="#{cadastroOcorrenciaBean.lazyDestinatario}" lazyField="nome" maxResults="10" 
+						    var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario.codigo}"
+						    completeMethod="#{cadastroOcorrenciaBean.filtrarDestinatario}"
+						    required="true"
+						    dropdown="true" 
+						    placeholder="Selecione ou digite um nome" 
+						    forceSelection="true" 
+						    style="width: 100%;" 
+						    converter="usuarioConverter"/>
+		            </div>
+		            
+		            <!-- Testemunha -->
+		            <div class="field col-12 md:col-6" style="margin-top:10px;">
+		            	<p:outputLabel for="testemunha" value="Testemunha:" styleClass="ui-text-bold" />
+		                <p:autoComplete 
+						    id="testemunha" widgetVar="lazyTestemunha"
+						    value="#{cadastroOcorrenciaBean.testemunha}"
+						    lazyModel="#{cadastroOcorrenciaBean.lazyTestemunha}" lazyField="nome" maxResults="10" 
+						    var="usuario" itemLabel="#{usuario.nome}" itemValue="#{usuario.codigo}"
+						    completeMethod="#{cadastroOcorrenciaBean.filtrarTestemunha}"
+						    required="true"
+						    dropdown="true" 
+						    placeholder="Selecione ou digite um nome" 
+						    forceSelection="true" 
+						    style="width: 100%;" 
+						    converter="usuarioConverter"/>
+		            </div>
+		            
+		            <!-- Tipo de Ocorrência -->
+		            
+		            
+		            <div class="field col-12 md:col-6" style="margin-top:15px;">
+		            <p:outputLabel for="tipo" value="Tipo de Ocorrencia" styleClass="ui-text-bold" />
+			            <p:selectOneMenu id="tipo" value="#{cadastroOcorrenciaBean.tipo}" required="true">
+						    <f:selectItem itemLabel="Selecione um tipo" itemValue="#{null}" />
+						    <f:selectItems value="#{cadastroOcorrenciaBean.listaTipos}" var="tipo" itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
+						    <p:ajax event="change" listener="#{cadastroOcorrenciaBean.onTipoChange}" />
+						</p:selectOneMenu>
+		            </div>
+		            
+		            <!-- Descrição -->
+		            <div class="field col-12" style="margin-top:15px;">
+		                <p:outputLabel for="descricao" value="Descrição" styleClass="ui-text-bold" />
+		                <p:inputTextarea 
+		                	value="#{cadastroOcorrenciaBean.descricao}"
+		                    id="descricao" 
+		                    required="true"
+		                    rows="4" 
+		                    placeholder="Insira uma descrição detalhada..." 
+		                    style="width: 100%; min-height: 350px; resize: vertical;" />
+		            </div>
+		            
+		            <!-- 
+		            <div class="field col-12" style="margin-top:15px; margin-bottom:10px;">
+			            <h:form enctype="multipart/form-data">
+	    					<p:fileUpload value="#{bean.file}" mode="simple" />
+						</h:form>
+		            </div>
+		            
+		             -->
+		            
+		            <!-- Botões de Ação -->
+		            <div class="col-12" style="text-align: right; margin-top: 15px;">
+		                <p:commandButton 
+		                	actionListener="#{cadastroOcorrenciaBean.criarOcorrencia}"
+		                    value="Salvar" 
+		                    icon="pi pi-check" 
+		                    styleClass="ui-button-success" 
+		                    style="margin-right: 10px;" 
+		                    onclick="PF('dlg2').close()"/>
+		            </div>
+		        </div>
+		    </h:form>
+		</p:dialog>
+		
+		
+		
+		<h:form id="formOcorrencias">
+		<div style="margin-top: 18px;">
+			
+			<p:dataTable  id="tableOcorrencias" widgetVar="tableOcorrencias" value="#{manterOcorrenciaBean.lazyOcorrencias}" var="ocorrencia" lazy="true"
+		emptyMessage="Nenhuma ocorrência registrada." paginator="true" rows="10"
+		paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+		
+		
+			<p:column headerText="Código" filterBy="#{ocorrencia.codigo}" onchange="PF('tableOcorrencias').filter()" filterPlaceholder="Filter By Name">
+                <h:outputText value="#{ocorrencia.codigo}" />
+            </p:column>
+             
+             <p:column field="tipo" headerText="Tipo de Ocorrência" filterMatchMode="exact">
+	             <f:facet name="filter">
+	             	<p:selectOneMenu onchange="PF('tableOcorrencias').filter()" styleClass="custom-filter">
+	             		<f:selectItem itemLabel="Selecione um tipo" itemValue="#{null}" />
+					   	<f:selectItems value="#{manterOcorrenciaBean.listaTipos}" var="tipo"
+               				itemLabel="#{tipo.nome}" itemValue="#{tipo}" />
+	             	</p:selectOneMenu>
+	             </f:facet>
+	             <h:outputText style="vertical-align: middle;" value="#{ocorrencia.tipo.nome}" />
+             </p:column>
+             
+             
+
+		    <p:column headerText="Descrição" filterBy="#{ocorrencia.descricao}" onchange="PF('tableOcorrencias').filter()" filterMatchMode="contains" filterPlaceholder="Filter By Descrição">
+    			<h:outputText value="#{ocorrencia.descricao}" escape="false" />
+			</p:column>
+			
+			<p:column headerText="Status" >
+    			<h:outputText value="#{ocorrencia.status}"/>
+			</p:column>
+		   
+		   
+		   
+		    <p:column headerText="Ações">
+    			<p:commandButton title="Visualizar"
+    				icon="pi pi-eye" 
+                  	value="Visualizar"
+					action="#{respostaOcorrenciaBean.carregarOcorrencia}"
+					update="ocorrenciaDialog"
+					oncomplete="PF('ocorrenciaDialog').show()">
+					<f:setPropertyActionListener
+						target="#{respostaOcorrenciaBean.ocorrencia}"
+						value="#{ocorrencia}" />
+				</p:commandButton>
+			</p:column>
+	
+		</p:dataTable>
+		</div>
+		</h:form>
+		
+		
+		<!-- RESPOSTAS DA OCORRENCIA -->
+		<p:dialog header="Detalhes da Ocorrência" id="ocorrenciaDialog"
+			widgetVar="ocorrenciaDialog" modal="true" resizable="true"
+			closeOnEscape="true" showEffect="explode" hideEffect="explode"
+			width="100%" position="center" maximizable="true" height="100vh"
+			fitViewport="true" responsive="true" color="#ff4c4c">
+			<h:form update="painelResponder">
+				<h:panelGroup id="ocorrenciaDetalhes" styleClass="p-3">
+
+
+					<p:panelGrid columns="6" style="width: 100%;">
+						<h:outputText value="Tipo: " style="font-weight: bold;" />
+						<h:outputText value="#{respostaOcorrenciaBean.ocorrencia.tipo}" />
+						<h:outputText value="Status: " style="font-weight: bold;" />
+						<h:outputText value="#{respostaOcorrenciaBean.ocorrencia.status}" />
+						<h:outputText value="Data: " style="font-weight: bold;" />
+						<h:outputText
+							value="#{respostaOcorrenciaBean.ocorrencia.dataCriacao}">
+							<f:convertDateTime pattern="dd/MM/yyyy" />
+						</h:outputText>
+					</p:panelGrid>
+					<p:panelGrid columns="2" style="width: 100%; margin-top: 5px">
+						<h:outputText value="Descrição: " style="font-weight: bold;" />
+						<h:outputText
+							value="#{respostaOcorrenciaBean.ocorrencia.descricao}"
+							styleClass="ui-font-italic ui-text-primary" />
+					</p:panelGrid>
+
+				</h:panelGroup>
+				<br></br>
+
+				<p:panel styleClass="p-mb-3" header="Responder" toggleable="true">
+
+					<h:outputText value="Não há respostas para esta ocorrência."
+						rendered="#{empty respostaOcorrenciaBean.respostas}"
+						style="font-weight: bold; color: #ff4c4c; padding: 10px;" />
+
+
+
+					<p:panel rendered="#{not empty respostaOcorrenciaBean.respostas}"
+						style="max-height: 350px; overflow-y: auto; display: flex; flex-direction: column-reverse;">
+						<ui:repeat value="#{respostaOcorrenciaBean.respostas}"
+							var="resposta">
+							<h:outputText
+								value="#{resposta.usuario.nome} (#{resposta.usuario.grupo}): "
+								style="font-weight: bold;" />
+							<p:card styleClass="p-shadow-2 p-mb-2"
+								style="border: 1px solid #c1c1c1; border-radius: 8px; min-height: 20px; max-height: 200px; overflow-y: auto; word-wrap: break-word;">
+								<h:outputText value="#{resposta.resposta}"
+									styleClass="ui-text-muted " />
+
+							</p:card>
+							<br />
+						</ui:repeat>
+					</p:panel>
+						<br></br>
+					<p:panel id="painelResponder" rendered="#{respostaOcorrenciaBean.renderizarPainel()}">
+						<p:inputTextarea id="descricaoResposta"
+							value="#{respostaOcorrenciaBean.novaResposta.resposta}" rows="5"
+							required="true"
+							style="width:97%; max-height: 100px;  overflow-y: auto;"
+							height="100vh" />
+						<br />
+						<h:panelGroup
+							style="display: flex; justify-content: flex-end; margin-top: 10px;">
+							<p:commandButton value="Enviar"
+								action="#{respostaOcorrenciaBean.salvarResposta}"
+								update="ocorrenciaDialog"
+								oncomplete="PF('ocorrenciaDialog').show();" />
+						</h:panelGroup>
+					</p:panel>
+				</p:panel>
+
+
+				<p:dialog header="Ocorrencia" id="confirmacaoDialog"
+					widgetVar="confirmacaoDialog" modal="true" resizable="false"
+					closeOnEscape="true" showEffect="fade" hideEffect="fade"
+					width="300" height="150" position="center"
+					closable="true">
+					<h:outputText value="Deseja retornar a ocorrência ao coordenador novamente?" />
+
+					<h:panelGroup
+					style="display: flex; justify-content: flex-end; margin-top: 70px;">
+					<p:commandButton value="Solicitar nova resposta"
+						action="#{respostaOcorrenciaBean.gerirOcorrencia}"
+						onclick="PF('confirmacaoDialog').hide(); PF('ocorrenciaDialog').hide();" process="@this">
+						<f:setPropertyActionListener
+							target="#{respostaOcorrenciaBean.acao}" value="0" />
+					</p:commandButton>
+
+					<p:commandButton value="Encerrar ocorrência"
+						action="#{respostaOcorrenciaBean.gerirOcorrencia}"
+						onclick="PF('confirmacaoDialog').hide(); PF('ocorrenciaDialog').hide();" process="@this">
+						<f:setPropertyActionListener
+							target="#{respostaOcorrenciaBean.acao}" value="1" />
+					</p:commandButton>
+				</h:panelGroup>
+
+				</p:dialog>
+
+
+			</h:form>
+		</p:dialog>
+
+
+	</ui:define>
+
+</ui:composition>
