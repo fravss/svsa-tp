@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.svsa-ep</groupId>
-	<artifactId>svsa-tp</artifactId>
+	<artifactId>svsa-ep</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<description>Teste</description>
@@ -32,11 +32,6 @@
 		</plugins>
 	</build>
 	<dependencies>
-		<dependency>
-		    <groupId>com.softarum</groupId>
-			<artifactId>svsa-ct</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
 
 		<dependency>
 			<groupId>commons-codec</groupId>
