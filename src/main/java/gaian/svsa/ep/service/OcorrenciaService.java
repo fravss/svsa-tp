@@ -65,8 +65,8 @@ public class OcorrenciaService implements Serializable {
 		
 	}
 
-	public Ocorrencia buscarRemetente(UsuarioEP usuario) {
-		return this.ocorrenciaDAO.buscarRemetente(usuario);
+	public Ocorrencia buscarRemetente(Ocorrencia ocorrencia,UsuarioEP usuario) {
+		return this.ocorrenciaDAO.buscarRemetente(ocorrencia, usuario);
 	}
 	
 	public List<Ocorrencia> buscarTodasPendencias (UsuarioEP usuario) {

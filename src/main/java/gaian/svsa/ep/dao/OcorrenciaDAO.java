@@ -182,13 +182,14 @@ public class OcorrenciaDAO implements Serializable{
         
     }
 
-	public UsuarioEP buscarRemetente(UsuarioEP usuario) {
+	public Ocorrencia buscarRemetente(Ocorrencia buscaOcorrencia, UsuarioEP usuario) {
 		CriteriaBuilder cb = manager.getCriteriaBuilder();
         CriteriaQuery<Ocorrencia> cq = cb.createQuery(Ocorrencia.class);
         Root<Ocorrencia> ocorrencia = cq.from(Ocorrencia.class);
    
         List<Predicate> predicates = new ArrayList<>();
 		predicates.add(cb.equal(ocorrencia.get("remetente"), usuario));
+		predicates.add(cb.equal(ocorrencia.get("codigo"), buscaOcorrencia));
 		cq.where(predicates.toArray(new Predicate[0]));
 
 		TypedQuery<Ocorrencia> query = manager.createQuery(cq);

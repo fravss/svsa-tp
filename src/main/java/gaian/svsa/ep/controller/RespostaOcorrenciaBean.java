@@ -13,6 +13,7 @@ import org.primefaces.PrimeFaces;
 import gaian.svsa.ep.model.Ocorrencia;
 import gaian.svsa.ep.model.Resposta;
 import gaian.svsa.ep.model.UsuarioEP;
+import gaian.svsa.ep.model.enums.GrupoEP;
 import gaian.svsa.ep.model.enums.StatusOcorrencia;
 import gaian.svsa.ep.service.OcorrenciaService;
 import gaian.svsa.ep.util.MessageUtil;
@@ -117,11 +118,24 @@ public class RespostaOcorrenciaBean implements Serializable {
     }
     
     public boolean renderizarPainel() {
-    	if (this.ocorrencia == null)
+    	if (this.ocorrencia == null) /// ESSA CONDICAO PRECISA SER A PRIMEIRA, POIS QUANDO A PAGINA CARREGAR O VALOR SEMPRE VAI SER
+    								/// NULO, E VAI DAR ERRO SEMPRE
     		return false;
+    	
+    	
+    	if (this.usuarioLogado.getGrupo() == GrupoEP.COORDENADORES) {
+    		if (this.ocorrencia.getStatus() == StatusOcorrencia.GESTOR)
+    			return false;
+    		return true;
+    	}
+    	if (this.usuarioLogado.getGrupo() == GrupoEP.GESTORES) {
+    		if (this.ocorrencia.getStatus() == StatusOcorrencia.COORDENADOR)
+    			return false;
+    		return true;
+    	}
     	if (this.ocorrencia.getStatus() == StatusOcorrencia.FECHADO)
     		return false;
-    	if (this.ocorrenciaService.buscarRemetente(this.usuarioLogado) != null)
+    	if (this.ocorrenciaService.buscarRemetente(this.ocorrencia,this.usuarioLogado) != null)
     		return false;
     	return true;
     }
